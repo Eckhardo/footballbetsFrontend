@@ -10,6 +10,13 @@ export default defineConfig({
     vue(),
     vueDevTools(),
   ],
+    server: {
+        port: 5000,
+        open: true, // opens the app in the browser on start
+        watch: {
+            usePolling: true
+        }
+    },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))

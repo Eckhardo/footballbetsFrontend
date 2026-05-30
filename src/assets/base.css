@@ -84,3 +84,23 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+
+.btn-success {
+    --bs-btn-bg: #89b4e6 !important;         /* Background color */
+    --bs-btn-border-color: #6f42c1 !important;  /* Border color */
+    --bs-btn-hover-bg: #5a0ce8 !important;    /* Hover state */
+    --bs-btn-active-bg: #8650ea !important;   /* Active state */
+    --bs-btn-color: #000 !important;
+}
+
+.btn-warning {
+    --bs-btn-bg: #63a1ea !important;         /* Background color */
+    --bs-btn-border-color: #6f42c1 !important;  /* Border color */
+    --bs-btn-hover-bg: #681def !important;    /* Hover state */
+    --bs-btn-active-bg: #a079ea !important;   /* Active state */
+    --bs-btn-color: #fff !important;
+}
+th {
+    font-weight: 700 !important; /* Forces 700 weight if other styles conflict */
+}
