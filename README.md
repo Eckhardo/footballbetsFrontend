@@ -1,5 +1,5 @@
 # footballbetsFrontend
-
+A Vue 3 based Frontend for a Spring Boot REST backend called FootballBets
 ## Customize configuration
 
 See [Vite Configuration Reference](https://vite.dev/config/).
