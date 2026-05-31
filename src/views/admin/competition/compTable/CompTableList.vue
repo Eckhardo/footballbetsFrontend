@@ -119,7 +119,9 @@ import CompTableDataService from "@/service/competition/CompTableDataService.js"
 import CompDataService from "@/service/competition/CompDataService.js";
 import MatchdayDataService from "@/service/competition/MatchdayDataService.js";
 import CompRoundDataService from "@/service/competition/CompRoundDataService.js";
-import ShowError from "@/components/ShowError.vue";
+import ShowError from "@/components/admin/competition/ShowError.vue";
+import ShowMessage from "@/components/admin/competition/ShowMessage.vue";
+
 
 export default {
   name: "CompTableList",

@@ -15,7 +15,6 @@ import PrimeVue from 'primevue/config';
 const app = createApp(App);
 // Use the router and pinia instances
 app.use(pinia);
-
 app.use(router);
 app.use(PrimeVue);
 

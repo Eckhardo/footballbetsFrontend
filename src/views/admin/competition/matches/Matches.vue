@@ -42,8 +42,8 @@ import MatchList from "./MatchList.vue";
 import MatchForm from "./MatchForm.vue";
 import MatchesForm from "./MatchesForm.vue";
 import {saveMessage} from "@/util/errorMessages.js";
-import ShowMessage from "@/components/ShowMessage.vue";
-import ShowError from "@/components/ShowError.vue";
+import ShowError from "@/components/admin/competition/ShowError.vue";
+import ShowMessage from "@/components/admin/competition/ShowMessage.vue";
 
 
 import {mapState} from "pinia";

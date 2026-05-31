@@ -31,7 +31,9 @@ import {mapState} from "pinia";
 import {useUmsInfoStore} from "@/stores/umsInfoStore.js";
 import {saveMessage} from "@/util/errorMessages.js";
 import FamilyDataService from "@/service/competition/FamilyDataService.js";
-import ShowError from "@/components/ShowError.vue";
+import ShowError from "@/components/admin/competition/ShowError.vue";
+
+
 
 
 export default {

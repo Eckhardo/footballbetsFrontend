@@ -24,8 +24,8 @@ import CompTeamDataService from "@/service/competition/CompTeamDataService.js";
 import PickList from 'primevue/picklist';
 import CompDataService from "@/service/competition/CompDataService.js";
 import {saveMessage} from "@/util/errorMessages.js";
-import ShowMessage from "@/components/ShowMessage.vue";
-import ShowError from "@/components/ShowError.vue";
+import ShowError from "@/components/admin/competition/ShowError.vue";
+import ShowMessage from "@/components/admin/competition/ShowMessage.vue";
 
 export default {
   name: 'CompTeams',

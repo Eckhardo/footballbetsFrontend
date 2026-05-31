@@ -19,12 +19,12 @@
 import CompFamilyList from './CompFamilyList.vue';
 import CompFamilyForm from './CompFamilyForm.vue';
 
-import FamilyDataService from "@/service/competition/FamilyDataService.js";
+import FamilyDataService from '@/service/competition/FamilyDataService.js';
 import {mapState} from "pinia";
-import {useUmsInfoStore} from "@/stores/umsInfoStore.js";
-import {saveMessage} from "@/util/errorMessages.js";
-import ShowError from "@/components/ShowError.vue";
-import ShowMessage from "@/components/ShowMessage.vue";
+import {useUmsInfoStore} from '@/stores/umsInfoStore.js';
+import {saveMessage} from '@/util/errorMessages.js';
+import ShowError from "@/components/admin/competition/ShowError.vue";
+import ShowMessage from "@/components/admin/competition/ShowMessage.vue";
 
 
 export default {

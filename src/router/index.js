@@ -1,5 +1,5 @@
 import {createRouter, createWebHistory} from 'vue-router';
-import MainLayout from '@/layouts/MainLayout.vue';
+import MainLayout from '../layouts/MainLayout.vue';
 import Home from '@/views/Home.vue';
 import Login from "@/views/Login.vue";
 import Competitions from "@/views/admin/competition/competitions/Competitions.vue";

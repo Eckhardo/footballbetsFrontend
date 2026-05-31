@@ -3,6 +3,7 @@
     <AppHeader/>
     <CompAdminMenu/>
     <CommAdminMenu/>
+
     <main class="main-content">
 
       <div class="button-container  mt-3 mx-1">
@@ -18,23 +19,25 @@
         </button>
       </div>
 
-      <!-- The content of the current route (Home or Dashboard) will be rendered here -->
-      <router-view></router-view>
+      <!-- The content of the current route  will be rendered here -->
+      <router-view/>
+
     </main>
   </div>
 </template>
 
 <script>
 import AppHeader from '../components/Header.vue';
-import CompAdminMenu from '../components/CompAdminMenu.vue';
+import CompAdminMenu from '../components/admin/competition/CompAdminMenu.vue';
+import CommAdminMenu from "../components/admin/community/CommAdminMenu.vue";
 import {mapState} from "pinia";
 import {useUmsInfoStore} from "@/stores/umsInfoStore.js";
-import CommAdminMenu from "../components/CommAdminMenu.vue";
+
 
 export default {
   name: 'MainLayout',
   components: {
-    AppHeader, CompAdminMenu,CommAdminMenu,
+    AppHeader, CompAdminMenu,CommAdminMenu
   },
 
   data() {

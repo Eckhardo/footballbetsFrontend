@@ -46,7 +46,9 @@ import FamilyDataService from "@/service/competition/FamilyDataService.js";
 import {mapActions, mapState} from "pinia";
 import {useUmsInfoStore} from "@/stores/umsInfoStore.js";
 import CompDataService from "@/service/competition/CompDataService.js";
-import ShowMessage from "@/components/ShowMessage.vue";
+
+import ShowMessage from "@/components/admin/competition/ShowMessage.vue";
+
 
 export default {
   name: 'DefaultCompForm',

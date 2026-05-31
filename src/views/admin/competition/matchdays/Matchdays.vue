@@ -43,10 +43,8 @@ import MatchdaysForm from "./MatchdaysForm.vue";
 import {mapState} from "pinia";
 import {useUmsInfoStore} from "@/stores/umsInfoStore.js";
 import {saveMessage} from "@/util/errorMessages.js";
-
-
-import ShowError from "@/components/ShowError.vue";
-import ShowMessage from "@/components/ShowMessage.vue";
+import ShowError from "@/components/admin/competition/ShowError.vue";
+import ShowMessage from "@/components/admin/competition/ShowMessage.vue";
 
 import CompRoundDataService from "@/service/competition/CompRoundDataService.js";
 import MatchdayDataService from "@/service/competition/MatchdayDataService.js";
