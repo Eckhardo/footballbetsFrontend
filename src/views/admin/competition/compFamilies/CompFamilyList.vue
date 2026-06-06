@@ -51,7 +51,7 @@
 
           <td>
             <button class="btn btn-warning btn-sm me-2" @click="$emit('edit-compFamily',{
-                 compFamily:compFamily,
+              compFamily:compFamily,
               isVisible:true
             })">Ändern
             </button>
@@ -68,7 +68,7 @@
 <script>
 export default {
   name: 'CompFamilyList',
-  emits: ['create-compFamily','edit-compFamily','delete-compFamily'],
+  emits: ['create-compFamily', 'edit-compFamily', 'delete-compFamily'],
   props: {
     compFamilies: {
       type: Array,

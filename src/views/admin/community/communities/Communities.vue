@@ -1,12 +1,12 @@
 <template>
   <div v-if="loggedIn" class="container mt-5">
     <!--  Form for Create/Update -->
-    <CommForm v-if="isVisible" v-bind:current-community="editingCommunity" @save-community="handleSave"/>
+    <CommForm v-if="isVisible" v-bind:selected-item="editingCommunity" @save-item="handleSave"/>
 
     <!--  List for Read/Delete/Edit -->
-    <CommList v-if="! isVisible" v-bind:communities="communities" @create-community="handleCreate"
-              @edit-community="handleEdit"
-              @delete-community="handleDelete"/>
+    <CommList v-if="! isVisible" v-bind:communities="communities" @create-item="handleCreate"
+              @edit-item="handleEdit"
+              @delete-item="handleDelete"/>
   </div>
 </template>
 
@@ -22,15 +22,16 @@ import CommList from "./CommList.vue";
 import {useError} from '@/composables/useError';
 import {useMessage} from '@/composables/useMessage';
 import {saveMessage} from "@/util/errorMessages.js";
+const communities = ref(null);
+const editingCommunity = ref(null);
+const isVisible = ref(false);
 const {setMessage} = useMessage();
 const {setError} = useError();
 // Reactive states
 // Instantiate the global store
 const umsInfoStore = useUmsInfoStore();
 const {loggedIn} = storeToRefs(umsInfoStore)
-const communities = ref(null);
-const editingCommunity = ref(null);
-const isVisible = ref(false);
+
 
 
 const handleSave = (payload) => {
@@ -46,6 +47,8 @@ const handleCreate = (payload) => {
 
 const handleEdit = (payload) => {
   console.log("handleEdit", JSON.stringify(payload));
+  editingCommunity.value = {...payload.community};
+  isVisible.value = payload.isVisible;
 }
 
 const handleDelete = (payload) => {

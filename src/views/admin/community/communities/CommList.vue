@@ -1,27 +1,66 @@
 <template>
   <div class="card">
     <div class="card-header">
-      Tipp-Gemeinschaften
+      Tippgemeinschaften
     </div>
     <div class="card-body">
 
-      <ul>
-        <li v-for="comm in communities" :key="comm.id">
-          <h3>{{ comm.name }}</h3>
-          <p>{{ comm.description }}</p>
-        </li>
-      </ul>
+      <button class="btn btn-warning btn-sm me-2" @click="createItem">Neu anlegen
+      </button>
+      <table class="table table-striped table-hover">
+        <thead>
+        <tr>
+          <th>Name</th>
+          <th>Beschreibung</th>
+          <th>Aktionen</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="(community) in communities" :key="community.id">
+          <td>{{ community.name }}</td>
+          <td>{{ community.description }}</td>
+          <td>
+            <button class="btn btn-warning btn-sm me-2" @click="editItem(community)">Ändern
+            </button>
+            <button class="btn btn-danger btn-sm" @click="deleteItem( community)">Löschen</button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+
     </div>
   </div>
 </template>
 
 <script setup>
+import {defineProps, defineEmits} from 'vue';
+
 defineProps({
   communities: {
     type: Array,
     default: () => []
   }
 })
+
+const emitter = defineEmits('edit-item', 'select-item', 'delete-item');
+
+
+// Funktionen zum Auslösen der Emits
+const createItem = () => {
+  emitter('create-item', {
+    community: null,
+    isVisible: true
+  })
+}
+const editItem = (item) => {
+  emitter('edit-item', {
+    community: item,
+    isVisible: true
+  })
+}
+const deleteItem = (item) => {
+  emitter('delete-item', {community: item})
+}
 </script>
 
 <style scoped>
