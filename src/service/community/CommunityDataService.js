@@ -21,6 +21,7 @@ class CommunityDataService {
     }
 
     delete(id) {
+        console.log("Delete Community id", id);
         return http.delete(`/communities/${id}`);
     }
 

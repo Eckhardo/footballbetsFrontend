@@ -42,24 +42,24 @@ defineProps({
   }
 })
 
-const emitter = defineEmits('edit-item', 'select-item', 'delete-item');
+const emit = defineEmits(['edit-item', 'create-item', 'delete-item']);
 
 
 // Funktionen zum Auslösen der Emits
 const createItem = () => {
-  emitter('create-item', {
+  emit('create-item', {
     community: null,
     isVisible: true
   })
 }
 const editItem = (item) => {
-  emitter('edit-item', {
+  emit('edit-item', {
     community: item,
     isVisible: true
   })
 }
 const deleteItem = (item) => {
-  emitter('delete-item', {community: item})
+  emit('delete-item', { item})
 }
 </script>
 
