@@ -93,7 +93,12 @@ const routes = [
                 path: '', // Matches "/community"
                 name: 'communities',
                 component: () => import('@/views/admin/community/communities/Communities.vue')
-            }
+            },
+            {
+                path: 'tests', // Matches "/community"
+                name: 'tests',
+                component: () => import('@/views/admin/community/baseViews/ExampleList.vue')
+            },
         ]
     }
 ];
