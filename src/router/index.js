@@ -93,7 +93,7 @@ const routes = [
                 path: '', // Matches "/community"
                 name: 'communities',
                 component: () => import('@/views/admin/community/communities/Communities.vue')
-            },
+            }
         ]
     }
 ];
