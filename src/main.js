@@ -7,9 +7,9 @@ import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 // Import global styles
 import './assets/base.css';
+import PrimeVue from 'primevue/config';
 // Create the Pinia instance
 const pinia = createPinia();
-import PrimeVue from 'primevue/config';
 
 // Create the Vue app instance
 const app = createApp(App);

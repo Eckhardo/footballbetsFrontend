@@ -34,8 +34,6 @@ import FamilyDataService from "@/service/competition/FamilyDataService.js";
 import ShowError from "@/components/admin/competition/ShowError.vue";
 
 
-
-
 export default {
   name: 'Teams',
   components: {

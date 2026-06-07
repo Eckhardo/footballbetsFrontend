@@ -11,6 +11,7 @@
 
 <script setup>
 import {useMessage} from "../../../composables/useMessage.js";
+
 const { message, isVisible, clearMessage } = useMessage();
 </script>
 

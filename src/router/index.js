@@ -85,6 +85,7 @@ const routes = [
 
         ],
     },
+
     {
         path: '/community',
         component: MainLayout,

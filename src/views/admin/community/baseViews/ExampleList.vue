@@ -1,6 +1,6 @@
 <!-- App.vue -->
 <script setup>
-import { ref } from 'vue'
+import {ref} from 'vue'
 import BaseList from './BaseList.vue'
 
 // Dataset A: Users

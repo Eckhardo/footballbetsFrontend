@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { ref, inject } from 'vue';
+import {inject, ref} from 'vue';
 
 export default {
   setup() {

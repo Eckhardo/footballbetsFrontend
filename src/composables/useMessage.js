@@ -1,5 +1,5 @@
 // composables/useMessage.js
-import { ref, readonly } from 'vue'
+import {readonly, ref} from 'vue'
 
 const message = ref('');
 const isVisible = ref(false);

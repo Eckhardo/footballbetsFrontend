@@ -12,7 +12,7 @@
 
 
 <script setup>
-import {ref, onMounted} from 'vue';
+import {onMounted, ref} from 'vue';
 import {storeToRefs} from "pinia";
 import {useUmsInfoStore} from "@/stores/umsInfoStore.js";
 

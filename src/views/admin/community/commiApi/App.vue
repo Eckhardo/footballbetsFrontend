@@ -4,7 +4,7 @@
 </template>
 
 <script>
-import { ref, provide } from 'vue';
+import {provide, ref} from 'vue';
 
 import TheHeader from './components/TheHeader.vue';
 

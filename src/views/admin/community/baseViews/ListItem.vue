@@ -1,6 +1,6 @@
 <!-- ListItem.vue -->
 <script setup>
-import {defineProps, defineEmits} from 'vue';
+import {defineEmits, defineProps} from 'vue';
 
 // Define the data properties the component expects
 defineProps({

@@ -9,7 +9,7 @@
 </template>
 
 <script setup>
-import { useError } from '@/composables/useError'
+import {useError} from '@/composables/useError'
 
 const { message, isVisible, clearError } = useError()
 </script>

@@ -25,7 +25,6 @@ import CompRoundDataService from "@/service/competition/CompRoundDataService.js"
 import MatchdayDataService from "@/service/competition/MatchdayDataService.js";
 
 
-
 export default {
   name: 'CompFamily',
   components: {
