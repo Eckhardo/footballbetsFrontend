@@ -11,8 +11,8 @@ const users = ref([
 
 // Dataset B: Products
 const products = ref([
-  { id: 1, title: 'Wireless Mouse', price: '$29.99' },
-  { id: 2, title: 'Mechanical Keyboard', price: '$89.99' }
+  { id: 1, title: 'Wireless Mouse', price: '$29.99', xy:'banane', zz: 'orange' },
+  { id: 2, title: 'Mechanical Keyboard', price: '$89.99', xy:'banane', zz: 'orange' }
 ])
 
 // Business Logic Methods
@@ -45,8 +45,10 @@ const handleProductDelete = (id) => {
       <!-- Custom Template for Products utilizing Scoped Slots -->
       <template #default="{ item }">
         <div class="product-info">
-          <span>{{ item.title }}</span>
+          <span>{{ item.title }}&nbsp;</span>
           <span class="price-tag">{{ item.price }}</span>
+          <span>{{ item.xy }}</span>
+          <span>{{ item.zz }}</span>
         </div>
       </template>
     </BaseList>

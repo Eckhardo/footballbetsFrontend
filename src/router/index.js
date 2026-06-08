@@ -96,9 +96,14 @@ const routes = [
                 component: () => import('@/views/admin/community/communities/Communities.vue')
             },
             {
+                path: 'tipper', // Matches "/community"
+                name: 'tipper',
+                component: () => import('@/views/admin/community/tipper/Tippers.vue'),
+            },
+            {
                 path: 'tests', // Matches "/community"
                 name: 'tests',
-                component: () => import('@/views/admin/community/baseViews/ExampleList.vue')
+                component: () => import('@/views/admin/community/reusableListExample/ExampleList.vue')
             },
         ]
     }

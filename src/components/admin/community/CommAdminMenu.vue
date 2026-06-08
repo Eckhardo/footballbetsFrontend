@@ -4,7 +4,7 @@
       <ul>
         <li><router-link to="/community">Communities</router-link></li>
         <li><router-link to="/community/tests">Tests</router-link></li>
-        <li><router-link to="/commMembs">CommMemb</router-link></li>
+        <li><router-link to="/community/tipper">Tipper</router-link></li>
         <li><router-link to="/compMembs">CompMemb</router-link></li>
         <li><router-link to="/tippModi">TippModus</router-link></li>
       </ul>
