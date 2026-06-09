@@ -77,7 +77,7 @@ const handleCreate = (payload) => {
 
 const handleEdit = (payload) => {
   console.log("handleEdit", JSON.stringify(payload));
-  editingItem.value = {...payload.community};
+  editingItem.value = {...payload.item};
   isVisible.value = payload.isVisible;
 }
 
