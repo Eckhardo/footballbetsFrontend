@@ -50,20 +50,19 @@ const handleSave = async (payload) => {
       setError(saveMessage(err));
     }
   } else {
-    {
-      try {
-        const response = await TipperDataService.create(payload);
-        if (response.status === 201) {
-          await fetchTippers();
-          setMessage("Eintrag gespeichert");
-
-        }
-      } catch (err) {
-        console.error("ERROR create item");
-        setError(saveMessage(err));
+    try {
+      const response = await TipperDataService.create(payload);
+      if (response.status === 201) {
+        await fetchTippers();
+        setMessage("Eintrag gespeichert");
 
       }
+    } catch (err) {
+      console.error("ERROR create item");
+      setError(saveMessage(err));
+
     }
+
   }
   editingItem.value = null;
 }
@@ -92,7 +91,7 @@ const confirmDelete = async (item) => {
 
   try {
     console.log("confirmDelete", JSON.stringify(item));
-    const response= await TipperDataService.delete(item.id);
+    const response = await TipperDataService.delete(item.id);
     if (response.status === 204) {
       await fetchTippers();
       setMessage("Eintrag gelöscht");

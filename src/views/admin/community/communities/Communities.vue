@@ -4,7 +4,7 @@
     <CommForm v-if="isVisible" v-bind:item="editingItem" @save-item="handleSave"/>
 
     <!--  List for Read/Delete/Edit -->
-    <CommList v-if="! isVisible" v-bind:communities="communities" @create-item="handleCreate"
+    <CommList v-if="! isVisible" v-bind:items="communities" @create-item="handleCreate"
               @edit-item="handleEdit"
               @delete-item="handleDelete"/>
   </div>
@@ -35,8 +35,6 @@ const {loggedIn} = storeToRefs(umsInfoStore)
 
 
 const handleSave = async (payload) => {
-  console.log("handleSave", JSON.stringify(payload));
-
   isVisible.value = false;
   if (payload.id) {
     try {
@@ -50,20 +48,19 @@ const handleSave = async (payload) => {
       setError(saveMessage(err));
     }
   } else {
-    {
-      try {
-        const response = await CommunityDataService.create(payload);
-        if (response.status === 201) {
-          await fetchCommunities();
-          setMessage("Eintrag gespeichert");
 
-        }
-      } catch (err) {
-        console.error("ERROR create item");
-        setError(saveMessage(err));
+    try {
+      const response = await CommunityDataService.create(payload);
+      if (response.status === 201) {
+        await fetchCommunities();
+        setMessage("Eintrag gespeichert");
 
       }
+    } catch (err) {
+      console.error("ERROR create item");
+      setError(saveMessage(err));
     }
+
   }
   editingItem.value = null;
 }
@@ -77,7 +74,7 @@ const handleCreate = (payload) => {
 
 const handleEdit = (payload) => {
   console.log("handleEdit", JSON.stringify(payload));
-  editingItem.value = {...payload.community};
+  editingItem.value = {...payload.item};
   isVisible.value = payload.isVisible;
 }
 
@@ -92,7 +89,7 @@ const confirmDelete = async (item) => {
 
   try {
     console.log("confirmDelete", JSON.stringify(item));
-   const response= await CommunityDataService.delete(item.id);
+    const response = await CommunityDataService.delete(item.id);
     if (response.status === 204) {
       await fetchCommunities();
       setMessage("Eintrag gelöscht");

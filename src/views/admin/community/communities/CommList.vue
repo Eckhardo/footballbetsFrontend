@@ -16,13 +16,13 @@
         </tr>
         </thead>
         <tbody>
-        <tr v-for="(community) in communities" :key="community.id">
-          <td>{{ community.name }}</td>
-          <td>{{ community.description }}</td>
+        <tr v-for="(item) in items" :key="item.id">
+          <td>{{ item.name }}</td>
+          <td>{{ item.description }}</td>
           <td>
-            <button class="btn btn-warning btn-sm me-2" @click="editItem(community)">Ändern
+            <button class="btn btn-warning btn-sm me-2" @click="editItem(item)">Ändern
             </button>
-            <button class="btn btn-danger btn-sm" @click="deleteItem( community)">Löschen</button>
+            <button class="btn btn-danger btn-sm" @click="deleteItem( item)">Löschen</button>
           </td>
         </tr>
         </tbody>
@@ -48,13 +48,13 @@ const emit = defineEmits(['edit-item', 'create-item', 'delete-item']);
 // Funktionen zum Auslösen der Emits
 const createItem = () => {
   emit('create-item', {
-    community: null,
+    item: null,
     isVisible: true
   })
 }
 const editItem = (item) => {
   emit('edit-item', {
-    community: item,
+    item: item,
     isVisible: true
   })
 }

@@ -103,7 +103,7 @@ const routes = [
             {
                 path: 'tests', // Matches "/community"
                 name: 'tests',
-                component: () => import('@/views/admin/community/reusableListExample/ExampleList.vue')
+                component: () => import('../views/admin/community/wizard/CreateNewCommunityWizard.vue')
             },
         ]
     }
