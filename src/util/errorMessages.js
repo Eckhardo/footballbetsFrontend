@@ -13,13 +13,11 @@ const saveMessage = (error) => {
 
         data.errorMessage = problem.title;
         data.errorDetails = problem.detail;
-        console.log("typeof: data.errorDetails", typeof problem.detail);
-        console.log("saveMessage: data.errorDetails", JSON.stringify( data.errorDetails));
         data.message = problem.message;
 
 
     }
-    console.log("saveMessage:return {}", JSON.stringify(data));
+
     return data;
 }
 export {saveMessage}

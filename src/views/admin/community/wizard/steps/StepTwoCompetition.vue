@@ -17,9 +17,7 @@ const handleCompChange= (event) =>{
         <label class="form-label  fw-bold" for="name"> Wettbewerb</label>
         <select id="compId" class="form-select   w-auto border border-3 "  v-model="model.competition"
                 @change="handleCompChange" >
-          <option disabled :value="null" hidden  >Please select one</option>
-
-          <option v-for="(competition,index) in model.competitions" :value="competition" :key="competition.id">
+          <option v-for="(competition) in model.competitions" :value="competition" :key="competition.id">
             {{competition.name}}
           </option>
         </select>

@@ -12,12 +12,12 @@ const model = defineModel({type: Object, required: true});
       <div class="col-auto">
         <label class="form-label  fw-bold" for="name"> Name</label>
         <input id="name" v-model="model.name" type="text" class="form-control  w-auto border border-3 "
-               placeholder="John Doe"/>
+               placeholder="Ebi Test" minlength="5"/>
       </div>
       <div class="col-auto">
         <label class="form-label  fw-bold" for="email">Beschreibung</label>
         <input id="description" v-model="model.description" type="text" class="form-control  w-auto border border-3 "
-               placeholder="john@example.com"/>
+               placeholder="Beschreibung" required/>
       </div>
     </div>
   </div>
