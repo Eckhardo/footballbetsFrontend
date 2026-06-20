@@ -48,11 +48,10 @@ export default {
   },
 
   computed: {
-    ...mapState(useUmsInfoStore, {username: 'username', loggedIn: 'loggedIn', compId: 'defaultCompetitionId'}),
-  },
+    ...mapState(useUmsInfoStore, ['umsInfo']) },
   mounted() {
     console.log("mounted: set compId from pinia to local writable id");
-    this.selectedCompId = this.compId;
+    this.selectedCompId = this.umsInfo.defaultCompetitionId;
     this.retrieveData();
     this.retrieveRounds();
   },
@@ -89,10 +88,12 @@ export default {
     },
 
     async retrieveData() {
+      console.log("retrieveData: ");
+
       try {
         const response = await CompDataService.getAll();
         this.competitions = response.data;
-        await this.updateSelectedCompetition()
+        await this.updateSelectedCompetition();
 
       } catch (error) {
         console.error("ERROR comp{}", error);

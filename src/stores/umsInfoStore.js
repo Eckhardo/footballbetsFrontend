@@ -28,7 +28,11 @@ export const useUmsInfoStore = defineStore('umsInfoStore', {
         compAdmin:(state)=> state.umsInfo.compAdmin,
         defaultCommunityId:(state)=> state.umsInfo.defaultCommunityId,
         defaultCompetitionId:(state)=> state.umsInfo.defaultCompetitionId,
-        defaultCountry:(state)=> state.umsInfo.defaultCountry
+        defaultCountry:(state)=> state.umsInfo.defaultCountry,
+        adminCommunities:(state)=> state.umsInfo.adminCommunities,
+        adminCompetitions:(state)=> state.umsInfo.adminCompetitions,
+        tipperCommunities:(state)=> state.umsInfo.tipperCommunities,
+
     },
     actions: {
         // You can also update the entire object or nested properties
@@ -36,7 +40,6 @@ export const useUmsInfoStore = defineStore('umsInfoStore', {
              console.log("FillUmsInfoStore", JSON.stringify(data));
             // Simulate API or processing logic
             this.umsInfo= data
-            console.log("filled:", JSON.stringify(this.umsInfo));
         },
         addTipperComm(id) {
             this.umsInfo.tipperCommunities().push(id)

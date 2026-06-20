@@ -1,5 +1,5 @@
 <template>
-  <div v-if="loggedIn" class="container mt-5">
+  <div v-if="umsInfo.loggedIn" class="container mt-5">
     <ShowMessage v-bind:message="message" v-bind:showMessage="showMessage"/>
     <!-- Global Error Message -->
     <ShowError v-bind:show-alert="showAlert"
@@ -47,7 +47,7 @@ export default {
   },
   mounted() {
     console.log("mounted: set compId from pinia to local writable id");
-    this.selectedCompId = this.compId;
+    this.selectedCompId = this.umsInfo.defaultCompetitionId;
     this.retrieveData();
 
     this.retrieveCompetitions();
@@ -55,7 +55,7 @@ export default {
   },
 
   computed: {
-    ...mapState(useUmsInfoStore, {username: 'username', loggedIn: 'loggedIn', compId: 'defaultCompetitionId'}),
+    ...mapState(useUmsInfoStore, ['umsInfo'])
   },
   data() {
     return {

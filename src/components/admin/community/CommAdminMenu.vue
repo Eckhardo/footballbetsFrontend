@@ -1,7 +1,8 @@
 <template>
   <aside class="side-menu">
     <nav>
-      <ul>
+      <ul v-if="isVisible">
+
         <li><router-link to="/community">Communities</router-link></li>
         <li><router-link to="/community/tests">Tests</router-link></li>
         <li><router-link to="/community/tipper">Tipper</router-link></li>
@@ -20,11 +21,21 @@ import {useUmsInfoStore} from "@/stores/umsInfoStore.js";
 export default {
   name: 'CommAdminMenu',
   data() {
-    return {}
+    return {
+       isUsed:false
+    }
   },
   computed: {
-    ...mapState(useUmsInfoStore, {username: 'username', loggedIn: 'loggedIn', compAdmin: 'compAdmin'}),
+    // mapState mappt das 'todos'-Array direkt in diese Komponente
+    ...mapState(useUmsInfoStore, ['umsInfo'])
+
   },
+  methods:{
+    isVisible(){
+      console.log("my ums:::",this.umsInfo);
+      return this.umsInfo.adminCommunities.includes(this.umsInfo.defaultCommunityId);
+    }
+  }
 };
 </script>
 

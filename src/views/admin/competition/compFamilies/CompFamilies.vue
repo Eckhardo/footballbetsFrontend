@@ -1,5 +1,5 @@
 <template>
-  <div v-if="loggedIn" class="container mt-5">
+  <div v-if="umsInfo.loggedIn" class="container mt-5">
     <ShowMessage v-bind:message="message" v-bind:showMessage="showMessage"/>
     <ShowError v-bind:show-alert="showAlert"
                v-bind:message="message"
@@ -41,7 +41,7 @@ export default {
   },
 
   computed: {
-    ...mapState(useUmsInfoStore, ['username', 'loggedIn']),
+    ...mapState(useUmsInfoStore, ['umsInfo'])
   },
   data() {
     return {

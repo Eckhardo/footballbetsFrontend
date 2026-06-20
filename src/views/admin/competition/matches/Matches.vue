@@ -64,7 +64,7 @@ export default {
   },
 
   computed: {
-    ...mapState(useUmsInfoStore, {username: 'username', loggedIn: 'loggedIn', compId: 'defaultCompetitionId'}),
+    ...mapState(useUmsInfoStore, { compId: 'defaultCompetitionId'}),
   },
   mounted() {
     this.selectedCompId = this.compId;

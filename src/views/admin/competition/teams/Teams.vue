@@ -66,7 +66,7 @@ export default {
   },
 
   computed: {
-    ...mapState(useUmsInfoStore, {username: 'username', loggedIn: 'loggedIn',country:'defaultCountry', compId: 'defaultCompetitionId'}),
+    ...mapState(useUmsInfoStore, {country:'defaultCountry', compId: 'defaultCompetitionId'}),
   },
   methods: {
     async retrieveTeams() {

@@ -61,14 +61,14 @@ export default {
   },
 
   computed: {
-    ...mapState(useUmsInfoStore, {username: 'username', loggedIn: 'loggedIn', compId: 'defaultCompetitionId'}),
+    ...mapState(useUmsInfoStore, ['umsInfo'])
   },
   // Best practice: Clear timer if component is destroyed
   beforeUnmount() {
     if (this.timer) clearTimeout(this.timer);
   },
   mounted() {
-    this.selectedCompId = this.compId;
+    this.selectedCompId = this.umsInfo.defaultCompetitionId;
     this.retrieveData();
   },
   data() {

@@ -91,6 +91,7 @@ export default {
   },
   methods: {
     ...mapActions(useUmsInfoStore, ['setCompId']),
+
     changeDefaultCompetition(id) {
       this.umsInfoStore.setCompId(id) // Calls the store action
       this.message = "Einträge wurden gespeichert."
