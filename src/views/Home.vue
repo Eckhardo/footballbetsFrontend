@@ -1,6 +1,6 @@
 <!-- UserProfile.vue -->
 <template>
-  <div>
+  <div v-if="umsInfo.loggedIn">
     <h2>Welcome, {{ username }}</h2>
   </div>
 </template>
@@ -17,7 +17,7 @@ export default {
   },
   computed: {
 
-    ...mapState(useUmsInfoStore, ['username']),
+    ...mapState(useUmsInfoStore, ['umsInfo']),
   },
   methods: {
     // mapActions maps store actions to local component methods

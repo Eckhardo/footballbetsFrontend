@@ -1,13 +1,9 @@
 <template>
   <aside class="side-menu">
     <nav>
-      <ul v-if="isVisible && umsInfo.commAdmin">
-
-        <li><router-link to="/community">Communities</router-link></li>
-        <li><router-link to="/community/tipper">Tipper</router-link></li>
-        <li><router-link to="/compMembs">CompMemb</router-link></li>
-        <li><router-link to="/tippModi">TippModus</router-link></li>
-      </ul>
+      <ul >
+        <li><router-link to="/community/tests">Tippgemeinschaft anlegen</router-link></li>
+            </ul>
 
     </nav>
   </aside>
@@ -21,7 +17,7 @@ export default {
   name: 'CommAdminMenu',
   data() {
     return {
-       isUsed:false
+      isUsed:false
     }
   },
   computed: {
@@ -33,7 +29,7 @@ export default {
     isVisible(){
       console.log("my ums:::",this.umsInfo);
 
-      return this.umsInfo.adminCommunities.includes(this.umsInfo.defaultCommunityId);
+      return this.umsInfo.tipperCommunities.includes(this.umsInfo.defaultCommunityId);
     }
   }
 };

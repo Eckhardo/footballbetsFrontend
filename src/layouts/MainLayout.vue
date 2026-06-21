@@ -1,9 +1,10 @@
 <template>
   <div class="main-layout">
     <AppHeader/>
+
     <CompAdminMenu/>
     <CommAdminMenu/>
-
+    <TipperMenu/>
     <main class="main-content">
 
       <div class="button-container  mt-3 mx-1">
@@ -32,11 +33,13 @@ import CompAdminMenu from '../components/admin/competition/CompAdminMenu.vue';
 import CommAdminMenu from "../components/admin/community/CommAdminMenu.vue";
 import {mapState} from "pinia";
 import {useUmsInfoStore} from "@/stores/umsInfoStore.js";
+import TipperMenu from "../components/tipper/TipperMenu.vue";
 
 
 export default {
   name: 'MainLayout',
   components: {
+    TipperMenu,
     AppHeader, CompAdminMenu,CommAdminMenu
   },
 
