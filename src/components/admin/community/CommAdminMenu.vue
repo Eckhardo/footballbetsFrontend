@@ -1,5 +1,5 @@
 <template>
-  <aside class="side-menu">
+  <aside class="side-menu" id="community" >
     <nav>
       <ul v-if="isVisible && umsInfo.commAdmin">
 
@@ -44,12 +44,12 @@ export default {
   background-color: #f4f4f4;
   width: 200px; /* Fixed width for sidebar */
   position: fixed;
-  top: 450px; /* Below the header */
+  top: 400px; /* Below the header */
   left: 0;
   bottom: 0;
   overflow-y: auto;
   padding-top: 0;
-  z-index: 9;
+  z-index: 2;
 }
 ul {
   list-style-type: none;
