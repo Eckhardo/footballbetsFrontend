@@ -36,11 +36,11 @@ export default {
     CompTeamForm,
     PickList
   },
+
   mounted() {
-
     this.retrieveCompTeams();
-
   },
+
   data() {
     return {
       comp: Object,

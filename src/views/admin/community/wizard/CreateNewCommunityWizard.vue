@@ -5,27 +5,34 @@ import {storeToRefs} from "pinia";
 import {useUmsInfoStore} from "@/stores/umsInfoStore.js";
 import StepOneCommunity from './steps/StepOneCommunity.vue';
 import StepTwoCompetition from './steps/StepTwoCompetition.vue';
+import StepThreeTippers from './steps/StepThreeTippers.vue';
 import LastStepConfirmation from './steps/LastStepConfirmation.vue';
-import CompDataService from "@/service/competition/CompDataService.js";
 
 import {useError} from '@/composables/useError';
 import {useMessage} from '@/composables/useMessage';
 import {saveMessage} from "@/util/errorMessages.js";
-import CommunityDataService from "../../../../service/community/CommunityDataService.js";
+
+import CompDataService from "@/service/competition/CompDataService.js";
+import TipperDataService from "@/service/community/TipperDataService.js";
+import CommunityWizardDataService from "@/service/community/CommunityWizardDataService";
 
 const {setMessage} = useMessage();
 const {setError} = useError();
 // Reactive states
 // Instantiate the global store
 const umsInfoStore = useUmsInfoStore();
-const {loggedIn} = storeToRefs(umsInfoStore);
+const {username} = storeToRefs(umsInfoStore);
 const MIN_LENGTH = 5;
 // 1. Centralized Form State
 const formData = ref({
   name: '',
   description: '',
   competitions: [],
-  competition: null
+  competition: null,
+  tippers:[
+      [],
+    []
+  ]
 })
 
 // 2. Step Navigation Control
@@ -52,9 +59,10 @@ const steps = [
 
   {title: 'Tippgemeinschaft', component: StepOneCommunity},
   {title: 'Select Wettbewerb', component: StepTwoCompetition},
-  {title: 'Confirmation', component: LastStepConfirmation}
+  {title: 'Tippers', component: StepThreeTippers},
+  {title: 'Confirmation', component: LastStepConfirmation},
+
 ]
-console.log("init steps:", currentStepIndex.value);
 const currentStep = computed(() => steps[currentStepIndex.value]);
 const isFirstStep = computed(() => currentStepIndex.value === 0);
 const isLastStep = computed(() => currentStepIndex.value === steps.length - 1);
@@ -62,7 +70,6 @@ const isLastStep = computed(() => currentStepIndex.value === steps.length - 1);
 // 3. Navigation Methods
 const nextStep = () => {
   let errorMessage = validateCurrentStep();
-  console.log("next step:errorMessage", errorMessage);
   if (errorMessage) {
     const error = {
       response: {
@@ -87,7 +94,6 @@ const prevStep = () => {
 }
 // 3. Validation logic for the current step
 const validateCurrentStep = () => {
-  console.log("name length", formData.value.name.length);
   if (currentStepIndex.value === 0) {
     if (!formData.value.name) return ' Name is required.';
     if (formData.value.name.length < 5) return ' Name must be at least 5 characters.';
@@ -111,14 +117,18 @@ const submitForm = async () => {
     setError(saveMessage(error));
     return;
   }
+  console.log("formData.value: ", formData.value);
+  const myTippers = formData.value.tippers[1];
 
-  const {name, description} = formData.value;
-  const commForm = {name, description};
-  console.log('commForm:', JSON.stringify(commForm));
+  const tipperIds= myTippers.map(tipper => tipper.id);
+  const {name, description,competition} = formData.value;
+  const tipperUserName=username || 'Eckhardo';
+  const commForm = {commName:name, commDescription: description, compId:competition.id, compName: competition.name, tipperUserName:username.value, tipperIds};
+
 
 
   try {
-    const response = await CommunityDataService.create(commForm);
+    const response = await CommunityWizardDataService.create(commForm);
     if (response.status === 201) {
 
       setMessage("Eintrag gespeichert");
@@ -129,6 +139,11 @@ const submitForm = async () => {
     setError(saveMessage(err));
   }
 }
+/**
+ * fetch competitions
+ *
+ * @returns {Promise<void>}
+ */
 const fetchCompetitions = async () => {
   try {
     const response = await CompDataService.getAll();
@@ -142,9 +157,29 @@ const fetchCompetitions = async () => {
     setError(saveMessage(err));
   }
 }
+/**
+ *
+ * @returns {Promise<void>}
+ */
+ const fetchTippers =async ()=> {
+   try {
+     const response = await TipperDataService.getAll();
+     console.log("tipper ", JSON.stringify(response.data));
+     formData.value.tippers[0] = response.data;
 
+   } catch (err) {
+     console.error("ERROR retrieve tippers", JSON.stringify(err));
+     setError(saveMessage(err));
+   }
+
+}
+
+/**
+ *  mount mandatory data calls
+ */
 onMounted(() => {
   fetchCompetitions();
+  fetchTippers();
 })
 </script>
 

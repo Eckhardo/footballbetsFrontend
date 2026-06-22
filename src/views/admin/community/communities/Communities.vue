@@ -1,6 +1,6 @@
 <template>
 
-  {{adminCommunities}}
+
   <div v-if="loggedIn" class="container mt-5">
     <!--  Form for Create/Update -->
     <CommForm v-if="isVisible" v-bind:item="editingItem" @save-item="handleSave"/>
@@ -33,7 +33,7 @@ const {setError} = useError();
 // Reactive states
 // Instantiate the global store
 const umsInfoStore = useUmsInfoStore();
-const {loggedIn, adminCommunities} = storeToRefs(umsInfoStore)
+const {loggedIn} = storeToRefs(umsInfoStore)
 
 
 const handleSave = async (payload) => {

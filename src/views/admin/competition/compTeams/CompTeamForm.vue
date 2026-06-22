@@ -2,7 +2,7 @@
   <div>
     <div class="col-md-9 ">
       <div class="card">
-        <div class="card-body" style="background-color:#89b4e6" >
+        <div class="card-body" style="background-color:#89b4e6">
 
           <PickList v-model="myCompTeams" dataKey="id" breakpoint="1000px" listStyle="height:700px" :pt="{
                        sourceControls: { style: 'display: none' },
@@ -13,12 +13,12 @@
 
           }"
           >
-            <template #sourceheader><b  style=" padding-left:10px;">Verfügbar:</b></template>
-            <template #targetheader><b style=" padding-left:10px;" >Ausgewählt:</b></template>
+            <template #sourceheader><b style=" padding-left:10px;">Verfügbar:</b></template>
+            <template #targetheader><b style=" padding-left:10px;">Ausgewählt:</b></template>
             <template #item="slotProps">
               <div class=" p-1 align-items-center gap-3">
 
-                  <span style=" padding-left:10px;" class="font-bold">{{ slotProps.item.teamAcronym }}</span>
+                <span style=" padding-left:10px;" class="font-bold">{{ slotProps.item.teamAcronym }}</span>
 
               </div>
             </template>
