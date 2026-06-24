@@ -11,7 +11,7 @@ class CommunityWizardDataService {
     }
 
     create(data) {
-        console.log("create new CommunityWizard");
+        console.log("create new CommunityWizard", JSON.stringify(data));
         return http.post("/commWizard", data);
     }
 

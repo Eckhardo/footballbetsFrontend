@@ -105,6 +105,12 @@ const routes = [
                 name: 'tests',
                 component: () => import('../views/admin/community/wizard/CreateNewCommunityWizard.vue')
             },
+            {
+                path: '/commMemb/:id', // :id ist ein dynamischer Parameter
+                name: 'CommMemb',
+                component: () => import('../views/admin/community/commMemb/CommMemb.vue')
+
+            }
         ]
     }
 ];

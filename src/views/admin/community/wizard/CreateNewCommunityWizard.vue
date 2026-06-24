@@ -1,6 +1,9 @@
 <!-- CreateNewCommunityWizard.vue -->
 <script setup>
-import {ref, toRefs, computed, onMounted} from 'vue';
+import {ref,  computed, onMounted} from 'vue';
+import { useRouter } from 'vue-router';
+const router = useRouter();
+
 import {storeToRefs} from "pinia";
 import {useUmsInfoStore} from "@/stores/umsInfoStore.js";
 import StepOneCommunity from './steps/StepOneCommunity.vue';
@@ -117,25 +120,30 @@ const submitForm = async () => {
     setError(saveMessage(error));
     return;
   }
-  console.log("formData.value: ", formData.value);
-  const myTippers = formData.value.tippers[1];
 
+  const myTippers = formData.value.tippers[1];
   const tipperIds= myTippers.map(tipper => tipper.id);
   const {name, description,competition} = formData.value;
-  const tipperUserName=username || 'Eckhardo';
-  const commForm = {commName:name, commDescription: description, compId:competition.id, compName: competition.name, tipperUserName:username.value, tipperIds};
-
-
-
+  const tipperUserName= 'Eckhardo';
+  const commForm = {commName:name, commDescription: description, compId:competition.id, compName: competition.name, tipperUserName, tipperIds};
+  console.log("commForm: ", JSON.stringify(commForm));
   try {
     const response = await CommunityWizardDataService.create(commForm);
     if (response.status === 201) {
-
       setMessage("Eintrag gespeichert");
+      console.info("data:", JSON.stringify(response.data));
+
+      const itemId = response.data.id;
+      console.info("id: ",itemId);
+      // Navigation zu einer Route mit Namen und Parametern
+      router.push({
+        name: 'CommMemb',
+        params: { id:itemId }
+      })
 
     }
   } catch (err) {
-    console.error("ERROR create item");
+    console.error("ERROR create item:", JSON.stringify(err));
     setError(saveMessage(err));
   }
 }
@@ -187,6 +195,7 @@ onMounted(() => {
   <div class="wizard-container">
     <!-- Progress Indicator Header -->
     <header class="wizard-header">
+      {{username}}
       <div
           v-for="(step, index) in steps"
           :key="index"
