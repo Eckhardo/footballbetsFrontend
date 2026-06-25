@@ -14,13 +14,14 @@ import LastStepConfirmation from './steps/LastStepConfirmation.vue';
 import {useError} from '@/composables/useError';
 import {useMessage} from '@/composables/useMessage';
 import {saveMessage} from "@/util/errorMessages.js";
+const {setMessage} = useMessage();
+const {setError} = useError();
 
 import CompDataService from "@/service/competition/CompDataService.js";
 import TipperDataService from "@/service/community/TipperDataService.js";
 import CommunityWizardDataService from "@/service/community/CommunityWizardDataService";
 
-const {setMessage} = useMessage();
-const {setError} = useError();
+
 // Reactive states
 // Instantiate the global store
 const umsInfoStore = useUmsInfoStore();
@@ -53,18 +54,12 @@ const commNameError = computed(() => {
 
   return '' // No errors
 })
-
-
 const isFormInvalid = computed(() => commNameError.value !== '');
-
-
 const steps = [
-
   {title: 'Tippgemeinschaft', component: StepOneCommunity},
   {title: 'Select Wettbewerb', component: StepTwoCompetition},
   {title: 'Tippers', component: StepThreeTippers},
   {title: 'Confirmation', component: LastStepConfirmation},
-
 ]
 const currentStep = computed(() => steps[currentStepIndex.value]);
 const isFirstStep = computed(() => currentStepIndex.value === 0);
@@ -124,21 +119,23 @@ const submitForm = async () => {
   const myTippers = formData.value.tippers[1];
   const tipperIds= myTippers.map(tipper => tipper.id);
   const {name, description,competition} = formData.value;
-  const tipperUserName= 'Eckhardo';
+  const tipperUserName= username.value;
   const commForm = {commName:name, commDescription: description, compId:competition.id, compName: competition.name, tipperUserName, tipperIds};
   console.log("commForm: ", JSON.stringify(commForm));
   try {
     const response = await CommunityWizardDataService.create(commForm);
     if (response.status === 201) {
-      setMessage("Eintrag gespeichert");
       console.info("data:", JSON.stringify(response.data));
 
-      const itemId = response.data.id;
-      console.info("id: ",itemId);
+      const commId = response.data.id;
+      console.info("id: ",commId);
       // Navigation zu einer Route mit Namen und Parametern
       router.push({
         name: 'CommMemb',
-        params: { id:itemId }
+        params: {
+          commId:commId,
+          compId:competition.id
+        }
       })
 
     }

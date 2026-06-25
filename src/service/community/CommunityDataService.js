@@ -6,8 +6,8 @@ class CommunityDataService {
         return http.get("/communities");
     }
 
-    get(id) {
-        return http.get(`/communities/${id}`);
+    get(commId) {
+        return http.get(`/communities/${commId}`);
     }
 
     create(data) {
@@ -23,10 +23,6 @@ class CommunityDataService {
     delete(id) {
         console.log("Delete Community id", id);
         return http.delete(`/communities/${id}`);
-    }
-
-    findByName(name) {
-        return http.get(`/communities?name=${name}`);
     }
 }
 export default new CommunityDataService();
