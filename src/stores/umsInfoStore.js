@@ -48,6 +48,10 @@ export const useUmsInfoStore = defineStore('umsInfoStore', {
             console.log("SetCompId", id);
             this.umsInfo.defaultCompetitionId=id;
         },
+        setCommId(id) {
+            console.log("SetCommId", id);
+            this.umsInfo.defaultCommunityId=id;
+        },
         setDefaultCountry(country) {
             console.log("set country", country);
             this.umsInfo.defaultCountry=country;

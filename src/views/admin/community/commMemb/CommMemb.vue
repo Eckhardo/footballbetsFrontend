@@ -1,5 +1,5 @@
 <template>
-  <div class="target">
+  <div v-if="loggedIn" class="target">
     <h1>Ziel-Komponente geladen!</h1>
     <p>Übergebene Comm Id: <strong>{{ commId }}</strong></p>
     <p>Übergebene Comp Id: <strong>{{ compId }}</strong></p>
@@ -10,21 +10,25 @@
 <script setup>
 import {useRoute} from 'vue-router';
 import {computed, onMounted, ref} from 'vue';
-import CommunityDataService from "../../../../service/community/CommunityDataService";
+import {storeToRefs} from "pinia";
+import {useUmsInfoStore} from "@/stores/umsInfoStore.js";
+const umsInfoStore = useUmsInfoStore();
+const {defaultCommunityId, defaultCompetitionId, loggedIn} = storeToRefs(umsInfoStore);
+
+import CommunityDataService from "@/service/community/CommunityDataService";
+import CommMembDataService from "@/service/community/CommMembDataService";
 
 import {useError} from '@/composables/useError';
 import {useMessage} from '@/composables/useMessage';
 import {saveMessage} from "@/util/errorMessages.js";
-import CommMembDataService from "../../../../service/community/CommMembDataService";
-
 const {setMessage} = useMessage();
 const {setError} = useError();
 // Routen-Informationen holen
 const route = useRoute();
 
 // Zugriff auf den Parameter ':id' aus dem Pfad (/target/123)
-const commId = computed(() => route.params.commId);
-const compId = computed(() => route.params.compId);
+const commId = computed(() => route.params.commId || defaultCommunityId);
+const compId = computed(() => route.params.compId || defaultCompetitionId);
 const formData = ref(
     {
       community: null,
@@ -34,11 +38,11 @@ const formData = ref(
 )
 
 const retrieveCommunity = async () => {
-  console.info("retrieveCommunity()", commId);
+  console.info("retrieveCommunity with id", commId);
   try {
-    const response = await CommunityDataService.get(commId.value);
+    const response = await CommunityDataService.get(commId);
     if (response.status === 200) {
-      console.log(response.status);
+      console.log("response.status:", response.status);
       setMessage("Abfrage erfolgreich");
       formData.value.community = response.data;
       await retrieveTippers();

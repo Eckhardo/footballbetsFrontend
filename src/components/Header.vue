@@ -29,16 +29,7 @@ export default {
   },
   computed: {
     ...mapState(useUmsInfoStore, {username: 'username', loggedIn: 'loggedIn', compId: 'defaultCompetitionId'}),
-  },
-  methods: {
-    showCompFamily() {
-      this.$router.push({name: 'CompFamily'});
-
-    },
-    login() {
-      this.$router.push({name: 'Login', params: {openDialog: true}});
-    },
-  },
+  }
 };
 </script>
 

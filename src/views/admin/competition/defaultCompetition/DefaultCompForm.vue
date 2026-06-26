@@ -1,7 +1,7 @@
 <template>
 
   <!-- Global Error Message -->
- <ShowMessage v-bind:message="message" v-bind:showMessage="showMessage"/>
+  <ShowMessage v-bind:message="message" v-bind:showMessage="showMessage"/>
   <div class="card mb-4 " v-if="loggedIn">
     <div class="card-header  fs-5 ">
       Standards setzen
@@ -86,7 +86,7 @@ export default {
       message: null,
       showAlert: false,
       isProcessing: false,// For validation errors (often in 'properties' or 'errors')
-         showMessage: false,
+      showMessage: false,
     };
   },
   methods: {
@@ -112,14 +112,14 @@ export default {
     async retrieveCompFamily(famId) {
       console.log("retrieveCompFamily");
       try {
-        const response = await FamilyDataService.get( famId);
+        const response = await FamilyDataService.get(famId);
         if (response.status === 200) {
           this.selectedCompFamily = response.data;
           this.form.familyId = this.selectedCompFamily.id;
           this.form.familyName = this.selectedCompFamily.name;
           console.log("retrieved CompFamily:", JSON.stringify(this.selectedCompFamily));
-          for(const comp of this.competitions) {
-            if(comp.familyId ===  this.form.familyId ){
+          for (const comp of this.competitions) {
+            if (comp.familyId === this.form.familyId) {
               this.selectedCompetition = comp;
 
             }

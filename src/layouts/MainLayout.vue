@@ -9,7 +9,7 @@
 
       <div class="button-container  mt-3 mx-1">
 
-        <div class="center-group">
+        <div v-if="loggedIn" class="center-group">
 
           <button @click="showCompFamily" class="btn btn-warning">
             Wettbewerb

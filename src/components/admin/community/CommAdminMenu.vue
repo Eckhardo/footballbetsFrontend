@@ -1,12 +1,20 @@
 <template>
-  <aside class="side-menu" id="community" >
+  <aside class="side-menu" id="community">
     <nav>
       <ul v-if="isVisible && umsInfo.commAdmin">
 
-        <li><router-link to="/community">Communities</router-link></li>
-        <li><router-link to="/community/tipper">Tipper</router-link></li>
-        <li><router-link to="/compMembs">CompMemb</router-link></li>
-        <li><router-link to="/tippModi">TippModus</router-link></li>
+        <li>
+          <router-link to="/community">Communities</router-link>
+        </li>
+        <li>
+          <router-link to="/community/tipper">Tipper</router-link>
+        </li>
+        <li>
+          <router-link to="/compMembs">CompMemb</router-link>
+        </li>
+        <li>
+          <router-link to="/tippModi">TippModus</router-link>
+        </li>
       </ul>
 
     </nav>
@@ -21,7 +29,7 @@ export default {
   name: 'CommAdminMenu',
   data() {
     return {
-       isUsed:false
+      isUsed: false
     }
   },
   computed: {
@@ -29,9 +37,9 @@ export default {
     ...mapState(useUmsInfoStore, ['umsInfo'])
 
   },
-  methods:{
-    isVisible(){
-      console.log("my ums:::",this.umsInfo);
+  methods: {
+    isVisible() {
+      console.log("my ums:::", this.umsInfo);
 
       return this.umsInfo.adminCommunities.includes(this.umsInfo.defaultCommunityId);
     }
@@ -51,19 +59,23 @@ export default {
   padding-top: 0;
   z-index: 2;
 }
+
 ul {
   list-style-type: none;
   padding: 0;
 }
+
 li a {
   display: block;
   padding: 5px;
   text-decoration: none;
   color: #333;
 }
+
 li a.router-link-active {
   background-color: #ddd;
 }
+
 a {
   color: blue;
   text-decoration: none;
@@ -72,12 +84,12 @@ a {
 
 /* Farbe beim Hover */
 a:hover {
-  color:  #89b4e6;
+  color: #89b4e6;
 }
 
 /* Farbe für den aktuell aktiven Link (automatisch von Vue Router) */
 .router-link-active {
   font-weight: bold;
-  color:#5a0ce8;
+  color: #5a0ce8;
 }
 </style>

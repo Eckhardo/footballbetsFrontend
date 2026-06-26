@@ -25,7 +25,7 @@ import CommunityWizardDataService from "@/service/community/CommunityWizardDataS
 // Reactive states
 // Instantiate the global store
 const umsInfoStore = useUmsInfoStore();
-const {username} = storeToRefs(umsInfoStore);
+const {username, loggedIn} = storeToRefs(umsInfoStore);
 const MIN_LENGTH = 5;
 // 1. Centralized Form State
 const formData = ref({
@@ -131,7 +131,7 @@ const submitForm = async () => {
       console.info("id: ",commId);
       // Navigation zu einer Route mit Namen und Parametern
       router.push({
-        name: 'CommMemb',
+        name: 'CommMembWizard',
         params: {
           commId:commId,
           compId:competition.id
@@ -189,7 +189,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="wizard-container">
+  <div  v-if="loggedIn"  class="wizard-container">
     <!-- Progress Indicator Header -->
     <header class="wizard-header">
       {{username}}

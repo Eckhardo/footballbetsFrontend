@@ -1,9 +1,12 @@
 <template>
-  <aside class="side-menu" id="tipper">
-    <nav>
-      <ul >
-        <li><router-link to="/community/tests">Tippgemeinschaft anlegen</router-link></li>
-            </ul>
+  <aside class="side-menu" id="tipper" >
+    <nav >
+      <ul  v-if="isVisible && umsInfo.loggedIn" >
+        <li><router-link to="/community/wizard">Tippgemeinschaft anlegen</router-link></li>
+        <li><router-link to="/community/commMemb">Tippgemeinschaft</router-link></li>
+        <li><router-link to="/defaultCommForm">Standards setzen</router-link></li>
+
+      </ul>
 
     </nav>
   </aside>

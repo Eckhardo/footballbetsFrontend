@@ -91,26 +91,38 @@ const routes = [
         component: MainLayout,
         children: [
             {
-                path: '', // Matches "/community"
+                path: '',
                 name: 'communities',
                 component: () => import('@/views/admin/community/communities/Communities.vue')
             },
             {
-                path: 'tipper', // Matches "/community"
+                path: 'tipper',
                 name: 'tipper',
                 component: () => import('@/views/admin/community/tipper/Tippers.vue'),
             },
             {
-                path: 'tests', // Matches "/community"
-                name: 'tests',
-                component: () => import('../views/admin/community/wizard/CreateNewCommunityWizard.vue')
+                path: 'wizard',
+                name: 'wizard',
+                component: () => import('@/views/admin/community/wizard/CreateNewCommunityWizard.vue')
             },
             {
-                path: '/commMemb/:commId/:compId', // :id ist ein dynamischer Parameter
+                path: 'commMemb',
                 name: 'CommMemb',
-                component: () => import('../views/admin/community/commMemb/CommMemb.vue')
+                component: () => import('@/views/admin/community/commMemb/CommMemb.vue')
 
-            }
+            },
+            {
+                path: 'commMembWizard/:commId/:compId', // :id ist ein dynamischer Parameter
+                name: 'CommMembWizard',
+                component: () => import('@/views/admin/community/commMemb/CommMemb.vue')
+
+            },
+            {
+                path: '/defaultCommForm',
+                name: 'DefaultCommForm',
+                component: () => import('@/views/admin/community/defaultCommunity/DefaultCommForm.vue')
+            },
+
         ]
     }
 ];

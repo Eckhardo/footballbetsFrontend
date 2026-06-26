@@ -5,11 +5,6 @@ class TipperDataService {
         console.log("Getting all tippers");
         return http.get("/tipper");
     }
-
-    get(id) {
-        return http.get(`/tipper/${id}`);
-    }
-
     create(data) {
         console.log("create new tipper", JSON.stringify(data));
         return http.post("/tipper", data);
@@ -25,8 +20,9 @@ class TipperDataService {
         return http.delete(`/tipper/${id}`);
     }
 
-    findByName(name) {
-        return http.get(`/tipper?name=${name}`);
+    findByName(username) {
+        console.log("findByName", username);
+        return http.get(`/tipper/${username}`);
     }
 }
 export default new TipperDataService();

@@ -31,7 +31,7 @@ const {setError} = useError();
 // Reactive states
 // Instantiate the global store
 const umsInfoStore = useUmsInfoStore();
-const {loggedIn} = storeToRefs(umsInfoStore)
+const {loggedIn} = storeToRefs(umsInfoStore);
 
 
 const handleSave = async (payload) => {
