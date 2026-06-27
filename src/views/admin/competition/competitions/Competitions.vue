@@ -204,10 +204,10 @@ export default {
 
       this.showMessage = true;
 
-      // Hide after 5000ms (5 seconds)
+      // Hide after 3000ms (5 seconds)
       this.timer = setTimeout(() => {
         this.showMessage = false;
-      }, 5000);
+      }, 3000);
     },
     triggerCompAlert() {
       // Clear any existing timer to reset the duration if clicked again
@@ -215,10 +215,10 @@ export default {
 
       this.showAlert = true;
 
-      // Hide after 5000ms (5 seconds)
+      // Hide after 3000ms (5 seconds)
       this.timer = setTimeout(() => {
         this.showAlert = false;
-      }, 5000);
+      }, 3000);
     },
 // Best practice: Clear timer if component is destroyed
     beforeUnmount() {

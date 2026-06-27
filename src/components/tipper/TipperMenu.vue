@@ -3,7 +3,7 @@
     <nav >
       <ul  v-if="isVisible && umsInfo.loggedIn" >
         <li><router-link to="/community/wizard">Tippgemeinschaft anlegen</router-link></li>
-        <li><router-link to="/community/commMemb">Tippgemeinschaft</router-link></li>
+        <li><router-link to="/community/commMemb">Meine Tippgemeinschaften</router-link></li>
         <li><router-link to="/defaultCommForm">Standards setzen</router-link></li>
 
       </ul>

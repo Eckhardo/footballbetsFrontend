@@ -10,7 +10,7 @@ const handleCompChange= (event) =>{
 </script>
 
 <template>
-  <div class="step-content">
+  <div class="card-body">
     <h3>Step 2: Wettbewerb</h3>
     <div class="row g-4 mb-3">
       <div class="col-auto">

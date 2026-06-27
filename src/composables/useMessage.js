@@ -7,7 +7,7 @@ let timeoutId = null;
 
 export function useMessage() {
 
-    const setMessage = (myMessage, duration = 5000) => {
+    const setMessage = (myMessage, duration = 3000) => {
         // Vorherige Timeouts löschen
         if (timeoutId) clearTimeout(timeoutId);
         message.value = myMessage;

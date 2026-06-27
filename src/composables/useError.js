@@ -7,7 +7,7 @@ let timeoutId = null;
 
 export function useError() {
 
-    const setError = (error, duration = 5000) => {
+    const setError = (error, duration = 3000) => {
         // Vorherige Timeouts löschen
         if (timeoutId) clearTimeout(timeoutId);
         console.log("setError: ", JSON.stringify(error));

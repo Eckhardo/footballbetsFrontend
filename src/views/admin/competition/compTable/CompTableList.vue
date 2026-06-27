@@ -304,10 +304,10 @@ export default {
 
       this.showAlert = true;
 
-      // Hide after 5000ms (5 seconds)
+      // Hide after 3000ms (5 seconds)
       this.timer = setTimeout(() => {
         this.showAlert = false;
-      }, 5000);
+      }, 3000);
     },
 
   }

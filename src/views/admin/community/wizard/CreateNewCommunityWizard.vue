@@ -9,6 +9,7 @@ import {useUmsInfoStore} from "@/stores/umsInfoStore.js";
 import StepOneCommunity from './steps/StepOneCommunity.vue';
 import StepTwoCompetition from './steps/StepTwoCompetition.vue';
 import StepThreeTippers from './steps/StepThreeTippers.vue';
+import StepFourTippModus from "./steps/StepFourTippModus.vue";
 import LastStepConfirmation from './steps/LastStepConfirmation.vue';
 
 import {useError} from '@/composables/useError';
@@ -20,6 +21,8 @@ const {setError} = useError();
 import CompDataService from "@/service/competition/CompDataService.js";
 import TipperDataService from "@/service/community/TipperDataService.js";
 import CommunityWizardDataService from "@/service/community/CommunityWizardDataService";
+import TippModusDataService from "@/service/community/TippModusDataService";
+
 
 
 // Reactive states
@@ -33,6 +36,8 @@ const formData = ref({
   description: '',
   competitions: [],
   competition: null,
+  tippModi:[],
+  selectedTippModi:[],
   tippers:[
       [],
     []
@@ -59,6 +64,7 @@ const steps = [
   {title: 'Tippgemeinschaft', component: StepOneCommunity},
   {title: 'Select Wettbewerb', component: StepTwoCompetition},
   {title: 'Tippers', component: StepThreeTippers},
+  {title: 'TippModusTypes', component: StepFourTippModus},
   {title: 'Confirmation', component: LastStepConfirmation},
 ]
 const currentStep = computed(() => steps[currentStepIndex.value]);
@@ -101,6 +107,14 @@ const validateCurrentStep = () => {
     if (!formData.value.competition) return 'Competition is required.';
 
   }
+  if (currentStepIndex.value === 2) {
+    if (!formData.value.tippers[1].length>0) return 'Tipper is required.';
+
+  }
+  if (currentStepIndex.value === 3) {
+    if (!formData.value.selectedTippModi.length>0) return 'TippModus is required.';
+
+  }
   return null; // Null means no errors
 };
 const submitForm = async () => {
@@ -115,12 +129,13 @@ const submitForm = async () => {
     setError(saveMessage(error));
     return;
   }
-
+  const myModi = formData.value.selectedTippModi;
+  const tippModi= myModi.map(modus => modus.type);
   const myTippers = formData.value.tippers[1];
   const tipperIds= myTippers.map(tipper => tipper.id);
   const {name, description,competition} = formData.value;
   const tipperUserName= username.value;
-  const commForm = {commName:name, commDescription: description, compId:competition.id, compName: competition.name, tipperUserName, tipperIds};
+  const commForm = {commName:name, commDescription: description, compId:competition.id, compName: competition.name, tipperUserName, tipperIds,tippModi};
   console.log("commForm: ", JSON.stringify(commForm));
   try {
     const response = await CommunityWizardDataService.create(commForm);
@@ -178,6 +193,17 @@ const fetchCompetitions = async () => {
    }
 
 }
+const fetchTippModi =async ()=> {
+  try {
+    const response = await TippModusDataService.getModi();
+    console.log("tippModi ", JSON.stringify(response.data));
+    formData.value.tippModi = response.data;
+
+  } catch (err) {
+    console.error("ERROR retrieve tippModi", JSON.stringify(err));
+    setError(saveMessage(err));
+  }
+}
 
 /**
  *  mount mandatory data calls
@@ -185,6 +211,7 @@ const fetchCompetitions = async () => {
 onMounted(() => {
   fetchCompetitions();
   fetchTippers();
+  fetchTippModi();
 })
 </script>
 

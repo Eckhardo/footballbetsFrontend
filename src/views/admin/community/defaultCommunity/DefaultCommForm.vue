@@ -1,13 +1,13 @@
 <template>
-  <div class="card mb-4 ">
+  <div  class="card mb-4 ">
     <div class="card-header  fs-5 ">
-      Standards setzen {{ username }}
+      Tippgemeinschaft als Standard setzen
     </div>
     <div class="card-body ">
       <form @submit.prevent="handleSubmit">
         <div class="mb-3  p-3 border rounded" v-if="formData.communities!=null">
           <div>
-            <label for="compId" class="form-label  fw-bold">Wähle die Tippgemeinschaft:</label>
+            <label for="compId" class="form-label  fw-bold">Tippgemeinschaften:</label>
             <!-- Use Bootstrap's form-select class for styling -->
             <select id="compId" class="form-select  w-auto border border-3 " v-model="formData.community"
                     @change="handleCommunityChange" required>
@@ -18,7 +18,7 @@
           </div>
         </div>
         <button type="submit" class="btn btn-primary">
-          Standards setzen
+          Standard speichern
         </button>
       </form>
     </div>
@@ -85,8 +85,6 @@ const handleSubmit = async () => {
     console.error("ERROR update item", err);
     setError(saveMessage(err));
   }
-
-  formData.value.community = null;
 }
 onMounted(() => {
   retrieveCommunities();

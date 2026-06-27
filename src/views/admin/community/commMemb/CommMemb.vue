@@ -1,10 +1,26 @@
 <template>
-  <div v-if="loggedIn" class="target">
-    <h1>Ziel-Komponente geladen!</h1>
-    <p>Übergebene Comm Id: <strong>{{ commId }}</strong></p>
-    <p>Übergebene Comp Id: <strong>{{ compId }}</strong></p>
-    <p>Community: <strong>{{ formData.community }}</strong></p>
-    <p>Tippers: <strong>{{ formData.tippers }}</strong></p>
+  <div class="card">
+    <div class="card-header">
+     <h4 style="text-align: center"><span v-if="formData.community !==null">Tippgemeinschaft {{formData.community.name}}</span>  </h4>
+    </div>
+    <div class="card-body">
+       <h5>Mitglieder:</h5>
+      <table class="table table-striped table-hover">
+        <thead>
+        <tr>
+          <th>Benutzername</th>
+          <th>Email</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="(tipper) in formData.tippers" :key="tipper.id">
+          <td>{{ tipper.username }}</td>
+          <td>{{ tipper.email }}</td>
+        </tr>
+        </tbody>
+      </table>
+
+    </div>
   </div>
 </template>
 <script setup>
@@ -27,8 +43,8 @@ const {setError} = useError();
 const route = useRoute();
 
 // Zugriff auf den Parameter ':id' aus dem Pfad (/target/123)
-const commId = computed(() => route.params.commId || defaultCommunityId);
-const compId = computed(() => route.params.compId || defaultCompetitionId);
+const commId = computed(() => route.params.commId || defaultCommunityId.value);
+const compId = computed(() => route.params.compId || defaultCompetitionId.value);
 const formData = ref(
     {
       community: null,
@@ -38,12 +54,9 @@ const formData = ref(
 )
 
 const retrieveCommunity = async () => {
-  console.info("retrieveCommunity with id", commId);
   try {
-    const response = await CommunityDataService.get(commId);
+    const response = await CommunityDataService.get(commId.value);
     if (response.status === 200) {
-      console.log("response.status:", response.status);
-      setMessage("Abfrage erfolgreich");
       formData.value.community = response.data;
       await retrieveTippers();
     }
@@ -66,7 +79,6 @@ const retrieveTippers = async () => {
     setError(saveMessage(e));
   }
 }
-
 
 onMounted(() => {
   console.info("onMounted()");

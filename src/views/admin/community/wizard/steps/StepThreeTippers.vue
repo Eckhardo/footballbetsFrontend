@@ -12,7 +12,7 @@ const handleCompChange = (event) => {
 </script>
 
 <template>
-  <div class="step-content">
+  <div class="card-body">
     <h3>Step 3: Tipp-Mitglieder</h3>
     <div class="row g-4 mb-3">
       <PickList v-model="model.tippers" dataKey="id" breakpoint="1000px" listStyle="height:700px"

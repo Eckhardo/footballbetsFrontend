@@ -15,7 +15,9 @@ const model = defineModel({type: Object, required: true});
       <p><strong>Teilnehmer:</strong>  <span v-for="(item, index) in model.tippers[1]" :key="index">
     {{ item.username }}<span v-if="index < model.tippers[1].length - 1">, </span>
   </span>   </p>
-
+      <p><strong>TippModi:</strong>  <span v-for="(item, index) in model.selectedTippModi" :key="index">
+    {{ item.type }}<span v-if="index < model.selectedTippModi.length - 1">, </span>
+  </span>   </p>
     </div>
   </div>
 </template>
