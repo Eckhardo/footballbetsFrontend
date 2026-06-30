@@ -6,12 +6,12 @@ const model = defineModel({ type: Object, required: true });
 const editItem= (item) =>{
 
   console.log('add:', JSON.stringify(item));
-model.value.selectedTippModi.push(item);
+model.value.selectedTippModus.push(item);
 }
 const deleteItem= (item) =>{
 
   console.log('delete:',JSON.stringify(item));
-  model.value.selectedTippModi.pop(item);
+  model.value.selectedTippModus.pop(item);
 }
 </script>
 
@@ -21,13 +21,20 @@ const deleteItem= (item) =>{
     <table class="table table-striped table-hover">
       <thead>
       <tr>
+        <th>Auswahl</th>
         <th>Name</th>
         <th>Beschreibung</th>
-        <th>Aktionen</th>
+
       </tr>
       </thead>
       <tbody>
       <tr v-for="(item) in model.tippModi" :key="item.id">
+        <td>   <input
+            type="radio"
+            name="table-selection"
+            :value="item"
+            v-model="model.selectedTippModus"
+        /></td>
         <td>{{ item.name }}</td>
         <td style="
       width: 50ch;
@@ -35,10 +42,6 @@ const deleteItem= (item) =>{
       word-wrap: break-word;
       word-break: break-all;
       overflow-wrap: break-word;">{{ item.description }}</td>
-        <td>
-          <button class="btn btn-warning btn-sm me-2" @click="editItem(item)">Hinzufügen</button>
-          <button class="btn btn-danger btn-sm" @click="deleteItem( item)">Löschen </button>
-          </td>
       </tr>
       </tbody>
     </table>

@@ -37,7 +37,7 @@ const formData = ref({
   competitions: [],
   competition: null,
   tippModi:[],
-  selectedTippModi:[],
+  selectedTippModus:null,
   tippers:[
       [],
     []
@@ -112,7 +112,7 @@ const validateCurrentStep = () => {
 
   }
   if (currentStepIndex.value === 3) {
-    if (!formData.value.selectedTippModi.length>0) return 'TippModus is required.';
+    if (formData.value.selectedTippModus=== null ) return 'TippModus is required.';
 
   }
   return null; // Null means no errors
@@ -129,27 +129,27 @@ const submitForm = async () => {
     setError(saveMessage(error));
     return;
   }
-  const myModi = formData.value.selectedTippModi;
-  const tippModi= myModi.map(modus => modus.type);
+  const tippModus= formData.value.selectedTippModus.type;
+
   const myTippers = formData.value.tippers[1];
   const tipperIds= myTippers.map(tipper => tipper.id);
   const {name, description,competition} = formData.value;
   const tipperUserName= username.value;
-  const commForm = {commName:name, commDescription: description, compId:competition.id, compName: competition.name, tipperUserName, tipperIds,tippModi};
+  const commForm = {commName:name, commDescription: description, compId:competition.id, compName: competition.name, tipperUserName, tipperIds,tippModus};
   console.log("commForm: ", JSON.stringify(commForm));
   try {
     const response = await CommunityWizardDataService.create(commForm);
     if (response.status === 201) {
       console.info("data:", JSON.stringify(response.data));
 
-      const commId = response.data.id;
-      console.info("id: ",commId);
+      const commMemb = response.data;
+      console.info("commMemb: ",commMemb);
       // Navigation zu einer Route mit Namen und Parametern
       router.push({
-        name: 'CommMembWizard',
+        name: 'CommMemb',
         params: {
-          commId:commId,
-          compId:competition.id
+          commId:commMemb.commId,
+          compId:commMemb.compId
         }
       })
 
@@ -167,8 +167,7 @@ const submitForm = async () => {
 const fetchCompetitions = async () => {
   try {
     const response = await CompDataService.getAll();
-    console.log("data ", JSON.stringify(response.data));
-    formData.value.competitions = response.data;
+     formData.value.competitions = response.data;
     if (formData.value.competitions.length !== 0) {
       formData.value.competition = formData.value.competitions[0];
     }
@@ -184,21 +183,16 @@ const fetchCompetitions = async () => {
  const fetchTippers =async ()=> {
    try {
      const response = await TipperDataService.getAll();
-     console.log("tipper ", JSON.stringify(response.data));
-     formData.value.tippers[0] = response.data;
-
+      formData.value.tippers[0] = response.data;
    } catch (err) {
      console.error("ERROR retrieve tippers", JSON.stringify(err));
      setError(saveMessage(err));
    }
-
 }
 const fetchTippModi =async ()=> {
   try {
     const response = await TippModusDataService.getModi();
-    console.log("tippModi ", JSON.stringify(response.data));
     formData.value.tippModi = response.data;
-
   } catch (err) {
     console.error("ERROR retrieve tippModi", JSON.stringify(err));
     setError(saveMessage(err));

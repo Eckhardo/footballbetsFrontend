@@ -72,7 +72,7 @@ export default {
         const response = await AuthService.login(this.form);
         this.umsInfo = response.data;
         await this.umsInfoStore.fillUmsInfoStore(this.umsInfo);
-        this.$router.push({name: 'CompFamily'});
+        this.$router.push({name: 'SelectComm'});
         // On success:
         this.showLogin = false;
         //   this.$router.push({name: 'CompFamily'});

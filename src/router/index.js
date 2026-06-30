@@ -14,15 +14,68 @@ import DefaultCompForm from "@/views/admin/competition/defaultCompetition/Defaul
 import CompTableList from "@/views/admin/competition/compTable/CompTableList.vue";
 
 const routes = [
+
     {
         path: '/',
         component: MainLayout,
         children: [
             {
                 path: '',
-                name: 'Home',
-                component: Home,
+                name: 'SelectComm',
+                component: () => import('@/views/SelectCommunity.vue')
+
             },
+
+            {
+                path: '/:commName',
+                name: 'TestComm',
+                component: () => import('@/views/admin/community/commMemb/TestComm.vue'),
+                // Passes the parameter as a prop to the component
+                props: true,
+            },
+
+            {
+                path: 'communities',
+                name: 'communities',
+                component: () => import('@/views/admin/community/communities/Communities.vue')
+            },
+            {
+                path: 'tipper',
+                name: 'tipper',
+                component: () => import('@/views/admin/community/tipper/Tippers.vue'),
+            },
+            {
+                path: 'wizard',
+                name: 'wizard',
+                component: () => import('@/views/admin/community/wizard/CreateNewCommunityWizard.vue')
+            },
+            {
+                path: 'communityMembership',
+                name: 'CommunityMembership',
+                component: () => import('@/views/admin/community/commMemb/CommMemb.vue')
+
+            },
+            {
+                path: 'commMemb/:commId/:compId', // :id ist ein dynamischer Parameter
+                name: 'CommMemb',
+                component: () => import('@/views/admin/community/commMemb/CommMemb.vue')
+
+            },
+            {
+                path: '/tippspielplan',
+                name: 'Tippspielplan',
+                component: () => import('@/views/admin/tipper/Spielplan.vue')
+            },
+
+
+
+
+        ]
+    },
+    {
+        path: '/comp',
+        component: MainLayout,
+        children: [
             {
                 path: '/defaultCompForm',
                 name: 'DefaultCompForm',
@@ -86,45 +139,6 @@ const routes = [
         ],
     },
 
-    {
-        path: '/community',
-        component: MainLayout,
-        children: [
-            {
-                path: '',
-                name: 'communities',
-                component: () => import('@/views/admin/community/communities/Communities.vue')
-            },
-            {
-                path: 'tipper',
-                name: 'tipper',
-                component: () => import('@/views/admin/community/tipper/Tippers.vue'),
-            },
-            {
-                path: 'wizard',
-                name: 'wizard',
-                component: () => import('@/views/admin/community/wizard/CreateNewCommunityWizard.vue')
-            },
-            {
-                path: 'commMemb',
-                name: 'CommMemb',
-                component: () => import('@/views/admin/community/commMemb/CommMemb.vue')
-
-            },
-            {
-                path: 'commMembWizard/:commId/:compId', // :id ist ein dynamischer Parameter
-                name: 'CommMembWizard',
-                component: () => import('@/views/admin/community/commMemb/CommMemb.vue')
-
-            },
-            {
-                path: '/defaultCommForm',
-                name: 'DefaultCommForm',
-                component: () => import('@/views/admin/community/defaultCommunity/DefaultCommForm.vue')
-            },
-
-        ]
-    }
 ];
 
 const router = createRouter({

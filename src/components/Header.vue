@@ -4,7 +4,7 @@
      Herzlich Willkommen {{ username }}
 
       <div class="center-group">
-        <h5>SportBets App</h5>
+        <h5>Eckhards SportBets Application</h5>
       </div>
     </div>
     <div v-if="username ===null" class="button-container  mx-1 pt-2 ">

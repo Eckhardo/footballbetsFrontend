@@ -105,11 +105,8 @@ const confirmDelete = async (item) => {
 const fetchCommunities = async () => {
   try {
     const response = await CommunityDataService.getAll();
-    console.log("data ", JSON.stringify(response.data));
     communities.value = response.data;
     isVisible.value = false;
-    console.log("isVisible.value ", isVisible.value);
-
   } catch (err) {
     console.error("ERROR retrieve communities", JSON.stringify(err));
     setError(saveMessage(err));

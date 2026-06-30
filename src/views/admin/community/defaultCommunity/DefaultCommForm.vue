@@ -54,8 +54,7 @@ const retrieveCommunities = async () => {
   try {
     const response = await CommMembDataService.getCommunities(username.value);
     if (response.status === 200) {
-      setMessage("Abfrage erfolgreich");
-      formData.value.communities = response.data;
+       formData.value.communities = response.data;
       if (formData.value.communities.length > 0) {
         formData.value.community = formData.value.communities[0];
       }

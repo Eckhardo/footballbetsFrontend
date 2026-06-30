@@ -2,12 +2,12 @@
   <aside class="side-menu" id="tipper" >
     <nav >
       <ul  v-if="isVisible && umsInfo.loggedIn" >
-        <li><router-link to="/community/wizard">Tippgemeinschaft anlegen</router-link></li>
-        <li><router-link to="/community/commMemb">Meine Tippgemeinschaften</router-link></li>
-        <li><router-link to="/defaultCommForm">Standards setzen</router-link></li>
+        <li><router-link to="/wizard">Tippgemeinschaft anlegen</router-link></li>
+        <li><router-link to="/communityMembership">Tippgemeinschaft</router-link></li>
+        <li><router-link to="/tippspielplan">Spielplan</router-link></li>
+        <hr style="border: none; border-top: 2px dotted black; width: 180px;">
 
       </ul>
-
     </nav>
   </aside>
 </template>
@@ -43,12 +43,13 @@ export default {
   background-color: #f4f4f4;
   width: 200px; /* Fixed width for sidebar */
   position: fixed;
-  top: 555px; /* Below the header */
+  top: 55px; /* Below the header */
+
   left: 0;
   bottom: 0;
   overflow-y: auto;
   padding-top: 0;
-  z-index: 3;
+  z-index: 1;
 }
 ul {
   list-style-type: none;

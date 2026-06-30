@@ -1,10 +1,13 @@
 <template>
   <div class="card">
     <div class="card-header">
-     <h4 style="text-align: center"><span v-if="formData.community !==null">Tippgemeinschaft {{formData.community.name}}</span>  </h4>
+      <h4 style="text-align: center"><span
+          v-if="formData.community !==null">Tippgemeinschaft {{ formData.community.name }}</span></h4>
+      <h4 style="text-align: center"><span
+          v-if="formData.competition !==null">Gebuchter Wettbewerb: {{ formData.competition.name }}</span></h4>
     </div>
     <div class="card-body">
-       <h5>Mitglieder:</h5>
+      <h5>Mitglieder:</h5>
       <table class="table table-striped table-hover">
         <thead>
         <tr>
@@ -28,15 +31,19 @@ import {useRoute} from 'vue-router';
 import {computed, onMounted, ref} from 'vue';
 import {storeToRefs} from "pinia";
 import {useUmsInfoStore} from "@/stores/umsInfoStore.js";
+
 const umsInfoStore = useUmsInfoStore();
 const {defaultCommunityId, defaultCompetitionId, loggedIn} = storeToRefs(umsInfoStore);
 
 import CommunityDataService from "@/service/community/CommunityDataService";
 import CommMembDataService from "@/service/community/CommMembDataService";
-
+import CompMembDataService from "@/service/community/CompMembDataService.js";
 import {useError} from '@/composables/useError';
 import {useMessage} from '@/composables/useMessage';
 import {saveMessage} from "@/util/errorMessages.js";
+import CompDataService from "../../../../service/competition/CompDataService.js";
+
+
 const {setMessage} = useMessage();
 const {setError} = useError();
 // Routen-Informationen holen
@@ -48,17 +55,32 @@ const compId = computed(() => route.params.compId || defaultCompetitionId.value)
 const formData = ref(
     {
       community: null,
-      competitions: [],
+      competition: null,
       tippers: []
     }
 )
 
+const retrieveCompetition = async () => {
+  console.info("retrieveCompetition()", compId.value);
+  try {
+    const response = await CompDataService.get(compId.value);
+    if (response.status === 200) {
+      formData.value.competition = response.data;
+
+    }
+  } catch (e) {
+    console.error(e);
+    setError(saveMessage(e));
+  }
+}
+
 const retrieveCommunity = async () => {
+  console.info("retrieveCommunity()", commId.value);
   try {
     const response = await CommunityDataService.get(commId.value);
     if (response.status === 200) {
       formData.value.community = response.data;
-      await retrieveTippers();
+
     }
   } catch (e) {
     console.error(e);
@@ -67,11 +89,10 @@ const retrieveCommunity = async () => {
 }
 
 const retrieveTippers = async () => {
-  console.info("retrieveTippers()", commId);
+  console.info("retrieveTippers()", commId.value);
   try {
     const response = await CommMembDataService.getTippers(commId.value);
     if (response.status === 200) {
-      setMessage("Abfrage erfolgreich");
       formData.value.tippers = response.data;
     }
   } catch (e) {
@@ -81,9 +102,9 @@ const retrieveTippers = async () => {
 }
 
 onMounted(() => {
-  console.info("onMounted()");
+  retrieveCompetition();
   retrieveCommunity();
-
+  retrieveTippers();
 
 })
 </script>

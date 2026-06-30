@@ -1,10 +1,11 @@
 <template>
   <div class="main-layout">
-    <AppHeader/>
 
+    <AppHeader/>
+    <TipperMenu/>
     <CompAdminMenu/>
     <CommAdminMenu/>
-    <TipperMenu/>
+
     <main class="main-content">
 
       <div class="button-container  mt-3 mx-1">

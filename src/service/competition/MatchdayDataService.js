@@ -25,6 +25,7 @@ class MatchdayDataService {
         return http.delete(`/matchdays/${id}`);
     }
     getMatchdaysByCompId(compId) {
+        console.log("Getting all matchdays by compId", compId);
         return http.get(`/competitions/${compId}/matchdays`);
     }
 
