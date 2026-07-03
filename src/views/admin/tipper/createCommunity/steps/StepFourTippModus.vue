@@ -1,23 +1,14 @@
-<!-- steps/StepThreeTippers.vue -->
-<!-- steps/StepTwoCompetition.vue -->
+<!-- steps/StepFourTippModus.vue -->
+
 <script setup>
 import {defineModel} from 'vue';
 const model = defineModel({ type: Object, required: true });
-const editItem= (item) =>{
 
-  console.log('add:', JSON.stringify(item));
-model.value.selectedTippModus.push(item);
-}
-const deleteItem= (item) =>{
-
-  console.log('delete:',JSON.stringify(item));
-  model.value.selectedTippModus.pop(item);
-}
 </script>
 
 <template>
   <div class="card-body">
-    <h5>Step 4: TippModi</h5>
+    <h5>Step 4: TippModus</h5>
     <table class="table table-striped table-hover">
       <thead>
       <tr>

@@ -1,7 +1,8 @@
 <!-- CreateNewCommunityWizard.vue -->
 <script setup>
-import {ref,  computed, onMounted} from 'vue';
-import { useRouter } from 'vue-router';
+import {ref, computed, onMounted} from 'vue';
+import {useRouter} from 'vue-router';
+
 const router = useRouter();
 
 import {storeToRefs} from "pinia";
@@ -12,23 +13,24 @@ import StepThreeTippers from './steps/StepThreeTippers.vue';
 import StepFourTippModus from "./steps/StepFourTippModus.vue";
 import LastStepConfirmation from './steps/LastStepConfirmation.vue';
 
-import {useError} from '@/composables/useError';
-import {useMessage} from '@/composables/useMessage';
+import {useError} from '@/composables/useError.js';
+import {useMessage} from '@/composables/useMessage.js';
 import {saveMessage} from "@/util/errorMessages.js";
+
 const {setMessage} = useMessage();
 const {setError} = useError();
 
-import CompDataService from "@/service/competition/CompDataService.js";
-import TipperDataService from "@/service/community/TipperDataService.js";
-import CommunityWizardDataService from "@/service/community/CommunityWizardDataService";
-import TippModusDataService from "@/service/community/TippModusDataService";
-
+import CompDataService from "../../../../service/competition/CompDataService.js";
+import TipperDataService from "../../../../service/community/TipperDataService.js";
+import CommunityWizardDataService from "../../../../service/community/CommunityWizardDataService.js";
+import TippModusDataService from "../../../../service/community/TippModusDataService.js";
+import StepFiveConfigureTippModi from "./steps/StepFiveConfigureTippModi.vue";
 
 
 // Reactive states
 // Instantiate the global store
 const umsInfoStore = useUmsInfoStore();
-const {username, loggedIn} = storeToRefs(umsInfoStore);
+const {username, loggedIn,defaultCommunityId} = storeToRefs(umsInfoStore);
 const MIN_LENGTH = 5;
 // 1. Centralized Form State
 const formData = ref({
@@ -36,10 +38,10 @@ const formData = ref({
   description: '',
   competitions: [],
   competition: null,
-  tippModi:[],
-  selectedTippModus:null,
-  tippers:[
-      [],
+  tippModi: [],
+  selectedTippModus: null,
+  tippers: [
+    [],
     []
   ]
 })
@@ -62,9 +64,10 @@ const commNameError = computed(() => {
 const isFormInvalid = computed(() => commNameError.value !== '');
 const steps = [
   {title: 'Tippgemeinschaft', component: StepOneCommunity},
-  {title: 'Select Wettbewerb', component: StepTwoCompetition},
-  {title: 'Tippers', component: StepThreeTippers},
-  {title: 'TippModusTypes', component: StepFourTippModus},
+  {title: 'Wettbewerb', component: StepTwoCompetition},
+  {title: 'Tipper', component: StepThreeTippers},
+  {title: 'TippModus 1', component: StepFourTippModus},
+  {title: 'TippModus 2', component: StepFiveConfigureTippModi},
   {title: 'Confirmation', component: LastStepConfirmation},
 ]
 const currentStep = computed(() => steps[currentStepIndex.value]);
@@ -103,39 +106,41 @@ const validateCurrentStep = () => {
     if (formData.value.name.length < 5) return ' Name must be at least 5 characters.';
     if (!formData.value.description) return 'Description is required.';
   }
-  if (currentStepIndex.value === 1) {
+  else if (currentStepIndex.value === 1) {
     if (!formData.value.competition) return 'Competition is required.';
-
   }
-  if (currentStepIndex.value === 2) {
-    if (!formData.value.tippers[1].length>0) return 'Tipper is required.';
-
+  else if (currentStepIndex.value === 2) {
+    if (!formData.value.tippers[1].length > 0) return 'Tipper is required.';
   }
-  if (currentStepIndex.value === 3) {
-    if (formData.value.selectedTippModus=== null ) return 'TippModus is required.';
-
+  else if (currentStepIndex.value === 3) {
+    if (formData.value.selectedTippModus === null) return 'TippModus is required.';
   }
   return null; // Null means no errors
 };
+
+
 const submitForm = async () => {
   if (isFormInvalid.value) {
     const error = {
-      response: {
-        data: {
-          detail: commNameError.value
-        }
-      }
+      response: {data: {detail: commNameError.value}}
     }
     setError(saveMessage(error));
     return;
   }
-  const tippModus= formData.value.selectedTippModus.type;
-
+  const tippModus = formData.value.selectedTippModus.type;
   const myTippers = formData.value.tippers[1];
-  const tipperIds= myTippers.map(tipper => tipper.id);
-  const {name, description,competition} = formData.value;
-  const tipperUserName= username.value;
-  const commForm = {commName:name, commDescription: description, compId:competition.id, compName: competition.name, tipperUserName, tipperIds,tippModus};
+  const tipperIds = myTippers.map(tipper => tipper.id);
+  const {name, description, competition} = formData.value;
+  const tipperUserName = username.value;
+  const commForm = {
+    commName: name,
+    commDescription: description,
+    compId: competition.id,
+    compName: competition.name,
+    tipperUserName,
+    tipperIds,
+    tippModus
+  };
   console.log("commForm: ", JSON.stringify(commForm));
   try {
     const response = await CommunityWizardDataService.create(commForm);
@@ -143,13 +148,13 @@ const submitForm = async () => {
       console.info("data:", JSON.stringify(response.data));
 
       const commMemb = response.data;
-      console.info("commMemb: ",commMemb);
+      console.info("commMemb: ", commMemb);
       // Navigation zu einer Route mit Namen und Parametern
       router.push({
         name: 'CommMemb',
         params: {
-          commId:commMemb.commId,
-          compId:commMemb.compId
+          commId: commMemb.commId,
+          compId: commMemb.compId
         }
       })
 
@@ -167,7 +172,7 @@ const submitForm = async () => {
 const fetchCompetitions = async () => {
   try {
     const response = await CompDataService.getAll();
-     formData.value.competitions = response.data;
+    formData.value.competitions = response.data;
     if (formData.value.competitions.length !== 0) {
       formData.value.competition = formData.value.competitions[0];
     }
@@ -180,18 +185,18 @@ const fetchCompetitions = async () => {
  *
  * @returns {Promise<void>}
  */
- const fetchTippers =async ()=> {
-   try {
-     const response = await TipperDataService.getAll();
-      formData.value.tippers[0] = response.data;
-   } catch (err) {
-     console.error("ERROR retrieve tippers", JSON.stringify(err));
-     setError(saveMessage(err));
-   }
-}
-const fetchTippModi =async ()=> {
+const fetchTippers = async () => {
   try {
-    const response = await TippModusDataService.getModi();
+    const response = await TipperDataService.getAll();
+    formData.value.tippers[0] = response.data;
+  } catch (err) {
+    console.error("ERROR retrieve tippers", JSON.stringify(err));
+    setError(saveMessage(err));
+  }
+}
+const fetchTippModi = async () => {
+  try {
+    const response = await TippModusDataService.getModi(defaultCommunityId.value);
     formData.value.tippModi = response.data;
   } catch (err) {
     console.error("ERROR retrieve tippModi", JSON.stringify(err));
@@ -210,10 +215,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <div  v-if="loggedIn"  class="wizard-container">
+  <div v-if="loggedIn" class="wizard-container">
     <!-- Progress Indicator Header -->
     <header class="wizard-header">
-      {{username}}
       <div
           v-for="(step, index) in steps"
           :key="index"

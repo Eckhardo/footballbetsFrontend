@@ -71,7 +71,7 @@
 <script setup>
 import {ref, computed, onMounted, watch} from 'vue';
 import axios from 'axios';
-import MatchdayDataService from "@/service/competition/MatchdayDataService.js";
+import MatchdayDataService from "../../../../service/competition/MatchdayDataService.js";
 
 // --- Reaktive Zustände (State) ---
 const matches = ref([]);
@@ -82,14 +82,14 @@ const currentMatchdayNumber = ref(1);
 const currentMatchdayId = ref(1);
 const loading = ref(false);
 import {storeToRefs} from "pinia";
-import {useUmsInfoStore} from "@/stores/umsInfoStore.js";
+import {useUmsInfoStore} from "../../../../stores/umsInfoStore.js";
 
 const umsInfoStore = useUmsInfoStore();
 const {defaultCompetitionId} = storeToRefs(umsInfoStore);
-import {useError} from '@/composables/useError';
-import {useMessage} from '@/composables/useMessage';
-import {saveMessage} from "@/util/errorMessages.js";
-import MatchDataService from "../../../service/competition/MatchDataService.js";
+import {useError} from '../../../../composables/useError.js';
+import {useMessage} from '../../../../composables/useMessage.js';
+import {saveMessage} from "../../../../util/errorMessages.js";
+import MatchDataService from "../../../../service/competition/MatchDataService.js";
 
 const {setMessage} = useMessage();
 const {setError} = useError();
@@ -145,7 +145,7 @@ const fetchMatchesForMatchday = async () => {
     setMessage("Spieltag " + currentMatchdayNumber.value + " geladen");
   } catch (err) {
     console.error(err);
- //   setError(saveMessage(err));
+    //   setError(saveMessage(err));
   } finally {
     loading.value = false;
 

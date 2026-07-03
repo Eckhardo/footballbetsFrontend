@@ -2,7 +2,7 @@
 
 import {defineProps, onMounted, ref} from 'vue';
 import {storeToRefs} from "pinia";
-import {useUmsInfoStore} from "@/stores/umsInfoStore.js";
+import {useUmsInfoStore} from "../../../stores/umsInfoStore.js";
 
 const umsInfoStore = useUmsInfoStore();
 const {defaultCompetitionId, loggedIn} = storeToRefs(umsInfoStore);

@@ -2,7 +2,7 @@
   <ul v-if="loggedIn">Meine Tipprunden
     <!-- v-for durchläuft das Array; :key ist zwingend erforderlich -->
     <li v-for="item in formData.itemList" :key="item.id">
-      <router-link :to="{ name: 'TestComm', params: { commName: item.name } }">
+      <router-link :to="{ name: 'SelectedCommIntro', params: { commName: item.name } }">
         Enter {{ item.name }}
       </router-link>
     </li>

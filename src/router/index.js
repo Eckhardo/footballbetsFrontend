@@ -28,8 +28,8 @@ const routes = [
 
             {
                 path: '/:commName',
-                name: 'TestComm',
-                component: () => import('@/views/admin/community/commMemb/TestComm.vue'),
+                name: 'SelectedCommIntro',
+                component: () => import('../views/admin/tipper/SelectedCommIntro.vue'),
                 // Passes the parameter as a prop to the component
                 props: true,
             },
@@ -45,9 +45,9 @@ const routes = [
                 component: () => import('@/views/admin/community/tipper/Tippers.vue'),
             },
             {
-                path: 'wizard',
-                name: 'wizard',
-                component: () => import('@/views/admin/community/wizard/CreateNewCommunityWizard.vue')
+                path: 'createCommunity',
+                name: 'CreateCommunity',
+                component: () => import('@/views/admin/tipper/createCommunity/CreateNewCommunityWizard.vue')
             },
             {
                 path: 'communityMembership',
