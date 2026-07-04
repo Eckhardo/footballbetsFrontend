@@ -34,11 +34,12 @@ const {username, loggedIn,defaultCommunityId} = storeToRefs(umsInfoStore);
 const MIN_LENGTH = 5;
 // 1. Centralized Form State
 const formData = ref({
-  name: '',
-  description: '',
+  name: 'Ebi Test',
+  description: 'Test description',
   competitions: [],
   competition: null,
   tippModi: [],
+  selectedTippModi: [],
   selectedTippModus: null,
   tippers: [
     [],
@@ -115,6 +116,9 @@ const validateCurrentStep = () => {
   else if (currentStepIndex.value === 3) {
     if (formData.value.selectedTippModus === null) return 'TippModus is required.';
   }
+  else if (currentStepIndex.value === 3) {
+    if (formData.value.selectedTippModi.length <0) return 'TippModus is required.';
+  }
   return null; // Null means no errors
 };
 
@@ -127,7 +131,6 @@ const submitForm = async () => {
     setError(saveMessage(error));
     return;
   }
-  const tippModus = formData.value.selectedTippModus.type;
   const myTippers = formData.value.tippers[1];
   const tipperIds = myTippers.map(tipper => tipper.id);
   const {name, description, competition} = formData.value;
@@ -139,7 +142,7 @@ const submitForm = async () => {
     compName: competition.name,
     tipperUserName,
     tipperIds,
-    tippModus
+    tippModi:formData.value.selectedTippModi
   };
   console.log("commForm: ", JSON.stringify(commForm));
   try {
