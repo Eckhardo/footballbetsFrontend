@@ -9,6 +9,7 @@ const handleSubmit = () => {
   const copy = { ...model.value.selectedTippModus };
   console.log('add modus:', JSON.stringify(copy));
   model.value.selectedTippModi.push(copy);
+  model.value.selectedTippModus.name='';
 }
 const deleteItem = (item) => {
   const copy = { ...item };

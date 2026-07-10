@@ -19,7 +19,7 @@ const model = defineModel({ type: Object, required: true });
       </tr>
       </thead>
       <tbody>
-      <tr v-for="(item) in model.tippModi" :key="item.id">
+      <tr v-for="(item) in model.tippModusTypes" :key="item.id">
         <td>   <input
             type="radio"
             name="table-selection"

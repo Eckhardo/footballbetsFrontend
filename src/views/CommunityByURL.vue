@@ -13,30 +13,34 @@
 <script setup>
 
 import {onMounted, ref} from 'vue';
+import {useRoute} from 'vue-router';
 import {storeToRefs} from "pinia";
 import {useUmsInfoStore} from "@/stores/umsInfoStore.js";
 import {useError} from '@/composables/useError';
 import {useMessage} from '@/composables/useMessage';
 import {saveMessage} from "@/util/errorMessages.js";
-
 import CommMembDataService from "@/service/community/CommMembDataService.js";
+// Routen-Informationen holen
+const route = useRoute();
 
+// 2. Access the current path string (e.g., "/Bulitipper")
+const currentPath = route.path;
 const {setMessage} = useMessage();
 const {setError} = useError();
 // Reactive states
 // Instantiate the global store
 const umsInfoStore = useUmsInfoStore();
-const {loggedIn, username} = storeToRefs(umsInfoStore);
+const {loggedIn} = storeToRefs(umsInfoStore);
 const {setCommId} = umsInfoStore;
 const formData = ref({
   itemList: [],
   selectedItem: null
 
 });
-const retrieveCommunities = async () => {
-  console.info("retrieveCommunities()", username.value);
+const retrieveCommunity = async () => {
+  console.info("retrieveCommunity() by path: ",currentPath);
   try {
-    const response = await CommMembDataService.getCommunities(username.value);
+    const response = await CommMembDataService.getCommunit(currentPath);
     if (response.status === 200) {
       console.log(":", response.status);
       formData.value.itemList = response.data;
@@ -60,7 +64,7 @@ const handleSubmit = async () => {
   }
 }
 onMounted(() => {
-  retrieveCommunities();
+  retrieveCommunity();
 })
 </script>
 

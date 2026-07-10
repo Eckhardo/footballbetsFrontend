@@ -34,8 +34,7 @@ import {useMessage} from '@/composables/useMessage';
 import {saveMessage} from "@/util/errorMessages.js";
 
 import CommMembDataService from "@/service/community/CommMembDataService.js";
-import CommunityDataService from "../../../../service/community/CommunityDataService.js";
-import TipperDataService from "../../../../service/community/TipperDataService.js";
+import TipperDataService from "@/service/community/TipperDataService.js";
 
 const {setMessage} = useMessage();
 const {setError} = useError();

@@ -38,7 +38,7 @@ const formData = ref({
   description: 'Test description',
   competitions: [],
   competition: null,
-  tippModi: [],
+  tippModusTypes: [],
   selectedTippModi: [],
   selectedTippModus: null,
   tippers: [
@@ -135,7 +135,7 @@ const submitForm = async () => {
   const tipperIds = myTippers.map(tipper => tipper.id);
   const {name, description, competition} = formData.value;
   const tipperUserName = username.value;
-  const commForm = {
+  const submitForm = {
     commName: name,
     commDescription: description,
     compId: competition.id,
@@ -144,14 +144,14 @@ const submitForm = async () => {
     tipperIds,
     tippModi:formData.value.selectedTippModi
   };
-  console.log("commForm: ", JSON.stringify(commForm));
+  console.log("commForm: ", JSON.stringify(submitForm));
   try {
-    const response = await CommunityWizardDataService.create(commForm);
+    const response = await CommunityWizardDataService.create(submitForm);
     if (response.status === 201) {
       console.info("data:", JSON.stringify(response.data));
 
       const commMemb = response.data;
-      console.info("commMemb: ", commMemb);
+      console.info("selectedCommunity: ", commMemb);
       // Navigation zu einer Route mit Namen und Parametern
       router.push({
         name: 'CommMemb',
@@ -199,8 +199,12 @@ const fetchTippers = async () => {
 }
 const fetchTippModi = async () => {
   try {
-    const response = await TippModusDataService.getModi(defaultCommunityId.value);
-    formData.value.tippModi = response.data;
+    const response = await TippModusDataService.getModiTypes(defaultCommunityId.value);
+    formData.value.tippModusTypes = response.data;
+
+    for(const modus of formData.value.tippModusTypes) {
+      console.log(JSON.stringify(modus));
+    }
   } catch (err) {
     console.error("ERROR retrieve tippModi", JSON.stringify(err));
     setError(saveMessage(err));

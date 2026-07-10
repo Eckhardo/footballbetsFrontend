@@ -15,6 +15,8 @@
             <label for="password" class="form-label">Password: &nbsp; &nbsp;</label>
             <input id="password" class="form-control   w-auto border border-3 " v-model="form.password" type="password" required placeholder="Enter password"/>
           </div>
+          <p><strong>Direct Path:</strong> {{ $route.path }}</p>
+          <p><strong>Computed Path:</strong> {{ currentPath }}</p>
 
           <div class="actions">
             <button class="btn btn-primary" type="button" @click="showLogin = false">Cancel</button>
@@ -49,7 +51,6 @@ export default {
   data() {
 
     return {
-
       showLogin: this.openDialog,
       loading: false,
       errorMessage: '',
@@ -59,6 +60,12 @@ export default {
       },
 
     };
+  },
+  computed: {
+    // Best practice: Use a computed property for reactive updates
+    currentPath() {
+      return this.$route.path;
+    }
   },
   // Define logic and API interactions
   methods: {
@@ -72,7 +79,8 @@ export default {
         const response = await AuthService.login(this.form);
         this.umsInfo = response.data;
         await this.umsInfoStore.fillUmsInfoStore(this.umsInfo);
-        this.$router.push({name: 'SelectComm'});
+        console.log("currentPath::",currentPath);
+        this.$router.push({ path: currentPath });
         // On success:
         this.showLogin = false;
         //   this.$router.push({name: 'CompFamily'});

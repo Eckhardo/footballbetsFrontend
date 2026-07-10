@@ -16,7 +16,7 @@ const model = defineModel({type: Object, required: true});
     {{ item.username }}<span v-if="index < model.tippers[1].length - 1">, </span></span></p>
       <p><strong>TippModi:</strong> <span v-for="(item, index) in model.selectedTippModi" :key="index">
     {{ item.name }}<span v-if="index < model.selectedTippModi.length - 1">, </span></span></p>
-
+      <p><strong>TippModi:</strong> {{ model.selectedTippModi }}</p>
     </div>
   </div>
 </template>

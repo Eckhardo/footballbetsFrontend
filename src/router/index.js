@@ -21,19 +21,22 @@ const routes = [
         children: [
             {
                 path: '',
-                name: 'SelectComm',
-                component: () => import('@/views/SelectCommunity.vue')
+                name: 'Home',
+                component: () => import('@/views/Home.vue')
 
             },
-
             {
                 path: '/:commName',
-                name: 'SelectedCommIntro',
-                component: () => import('../views/admin/tipper/SelectedCommIntro.vue'),
-                // Passes the parameter as a prop to the component
+                name: 'SelectedCommMemb',
+                component: () => import('../views/admin/tipper/selectedCommunity/CommMemb.vue'),
                 props: true,
             },
-
+            {
+                path: '/:commName/login/:openDialog',
+                name: 'Login',
+                component: Login,
+                props: true
+            },
             {
                 path: 'communities',
                 name: 'communities',
@@ -49,16 +52,11 @@ const routes = [
                 name: 'CreateCommunity',
                 component: () => import('@/views/admin/tipper/createCommunity/CreateNewCommunityWizard.vue')
             },
-            {
-                path: 'communityMembership',
-                name: 'CommunityMembership',
-                component: () => import('@/views/admin/community/commMemb/CommMemb.vue')
 
-            },
             {
-                path: 'commMemb/:commId/:compId', // :id ist ein dynamischer Parameter
+                path: 'selectedCommunity/:commId/:compId', // :id ist ein dynamischer Parameter
                 name: 'CommMemb',
-                component: () => import('@/views/admin/community/commMemb/CommMemb.vue')
+                component: () => import('../views/admin/tipper/selectedCommunity/CommMemb.vue')
 
             },
             {
@@ -129,12 +127,7 @@ const routes = [
                 name: 'Teams',
                 component: Teams,
             },
-            {
-                path: 'login/:openDialog',
-                name: 'Login',
-                component: Login,
-                props: true
-            },
+
 
         ],
     },

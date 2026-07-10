@@ -1,12 +1,11 @@
 <template>
   <aside class="side-menu" id="tipper" >
     <nav >
-      <ul  v-if="isVisible && umsInfo.loggedIn" >
+      <ul >
         <li><router-link to="/createCommunity">Tippgemeinschaft anlegen</router-link></li>
-        <li><router-link to="/communityMembership">Tippgemeinschaft</router-link></li>
-        <li><router-link to="/tippspielplan">Spielplan</router-link></li>
+        <li  v-if="isVisible && umsInfo.loggedIn" ><router-link to="/communityMembership">Tippgemeinschaft</router-link></li>
+        <li  v-if="isVisible && umsInfo.loggedIn" ><router-link to="/tippspielplan">Spielplan</router-link></li>
         <hr style="border: none; border-top: 2px dotted black; width: 180px;">
-
       </ul>
     </nav>
   </aside>

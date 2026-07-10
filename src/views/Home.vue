@@ -1,7 +1,9 @@
 <!-- UserProfile.vue -->
 <template>
-  <div v-if="umsInfo.loggedIn">
-    <h2>Welcome, {{ username }}</h2>
+  <div>
+    <h2>Tippspiele zur Bundesliga, WM, EM und mehr</h2>
+
+    <p>Starte jetzt Dein kostenloses Tippspiel mit Freunden oder Kollegen.</p>
   </div>
 </template>
 
