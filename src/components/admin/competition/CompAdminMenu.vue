@@ -3,7 +3,7 @@
     <nav>
       <ul v-if="compAdmin">
 
-        <li><router-link to="/comp//defaultCompForm">Standards setzen</router-link></li>
+        <li><router-link to="/comp/defaultCompForm">Standards setzen</router-link></li>
         <li><router-link to="/comp/compFamilies">Sport-Events</router-link></li>
         <li><router-link to="/comp/comps">Wettbewerbe</router-link></li>
         <li><router-link to="/comp/compRounds">Runden</router-link></li>

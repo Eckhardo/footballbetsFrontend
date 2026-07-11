@@ -72,7 +72,7 @@ const routes = [
         component: MainLayout,
         children: [
             {
-                path: '/defaultCompForm',
+                path: 'defaultCompForm',
                 name: 'DefaultCompForm',
              component: ()    => import('@/views/admin/competition/defaultCompetition/DefaultCompForm.vue')
             },

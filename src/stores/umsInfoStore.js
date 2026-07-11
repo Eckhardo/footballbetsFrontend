@@ -14,7 +14,9 @@ export const useUmsInfoStore = defineStore('umsInfoStore', {
                 compAdmin: false,
                 adminCompetitions: Array,
                 adminCommunities:Array,
-                tipperCommunities:Array
+                tipperCommunities:Array,
+                path:String,
+                invalidPath:false
        }
         }
 
@@ -32,6 +34,8 @@ export const useUmsInfoStore = defineStore('umsInfoStore', {
         adminCommunities:(state)=> state.umsInfo.adminCommunities,
         adminCompetitions:(state)=> state.umsInfo.adminCompetitions,
         tipperCommunities:(state)=> state.umsInfo.tipperCommunities,
+        path:(state)=> state.umsInfo.path,
+        invalidPath:(state)=> state.umsInfo.invalidPath,
 
     },
     actions: {
@@ -55,6 +59,14 @@ export const useUmsInfoStore = defineStore('umsInfoStore', {
         setDefaultCountry(country) {
             console.log("set country", country);
             this.umsInfo.defaultCountry=country;
+        },
+        setPath(path) {
+            console.log("setPath", path);
+            this.umsInfo.path=path;
+        },
+        setInvalidPath(bool) {
+            console.log("setInvalidPath", bool);
+            this.umsInfo.invalidPath=bool;
         },
     },
 });

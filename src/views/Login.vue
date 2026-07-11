@@ -15,9 +15,6 @@
             <label for="password" class="form-label">Password: &nbsp; &nbsp;</label>
             <input id="password" class="form-control   w-auto border border-3 " v-model="form.password" type="password" required placeholder="Enter password"/>
           </div>
-          <p><strong>Direct Path:</strong> {{ $route.path }}</p>
-          <p><strong>Computed Path:</strong> {{ currentPath }}</p>
-
           <div class="actions">
             <button class="btn btn-primary" type="button" @click="showLogin = false">Cancel</button>
             <button class="btn btn-primary" type="submit" :disabled="loading">
@@ -44,8 +41,8 @@ export default {
     openDialog: String,
   },
   setup() {
-    const umsInfoStore = useUmsInfoStore()
-    return {umsInfoStore}
+    const umsInfoStore = useUmsInfoStore();
+    return {umsInfoStore};
   },
   // Define reactive state
   data() {
@@ -61,29 +58,24 @@ export default {
 
     };
   },
-  computed: {
-    // Best practice: Use a computed property for reactive updates
-    currentPath() {
-      return this.$route.path;
-    }
-  },
+
   // Define logic and API interactions
   methods: {
-    ...mapActions(useUmsInfoStore, ['fillUmsInfoStore']),
 
     async handleLogin() {
       this.loading = true;
       this.errorMessage = '';
-
       try {
         const response = await AuthService.login(this.form);
         this.umsInfo = response.data;
+        console.log(" this.umsInfo::", this.umsInfo);
+        this.username = response.data.username;
+        this.umsInfo.path=this.umsInfoStore.path;
         await this.umsInfoStore.fillUmsInfoStore(this.umsInfo);
-        console.log("currentPath::",currentPath);
-        this.$router.push({ path: currentPath });
+        console.log("path::",this.umsInfoStore.path);
+        this.$router.push({ name: 'SelectedCommMemb', params: { commName:this.umsInfo.path } })
         // On success:
         this.showLogin = false;
-        //   this.$router.push({name: 'CompFamily'});
       } catch (err) {
         this.errorMessage = 'Invalid credentials. Please try again.';
       } finally {

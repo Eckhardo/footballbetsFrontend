@@ -71,19 +71,17 @@ import {useRoute, useRouter} from 'vue-router';
 import {computed, onMounted, defineProps, ref} from 'vue';
 import {storeToRefs} from "pinia";
 import {useUmsInfoStore} from "@/stores/umsInfoStore.js";
-
-const umsInfoStore = useUmsInfoStore();
-const {defaultCommunityId, defaultCompetitionId, loggedIn} = storeToRefs(umsInfoStore);
-
 import CommunityDataService from "@/service/community/CommunityDataService.js";
 import CommMembDataService from "@/service/community/CommMembDataService.js";
 import {useError} from '@/composables/useError.js';
 import {useMessage} from '@/composables/useMessage.js';
 import {saveMessage} from "@/util/errorMessages.js";
-import CompDataService from "@/service/competition/CompDataService.js";
 import TippModusDataService from "@/service/community/TippModusDataService.js";
-// 2. Access the current path string (e.g., "/Bulitipper")
+import CompMembDataService from "@/service/competition/CompMembDataService.js";
 
+// 2. Access the current path string (e.g., "/Bulitipper")
+const umsInfoStore = useUmsInfoStore();
+const {defaultCommunityId, defaultCompetitionId, loggedIn} = storeToRefs(umsInfoStore);
 const props = defineProps({
   commName: {
     type: String,
@@ -92,18 +90,12 @@ const props = defineProps({
 })
 
 let errorMessage = `<p>Die Tipprunde mit dem Kurznamen <b>${props.commName}</b> wurde nicht gefunden</p>
-
 <p>Das kann folgende Ursachen haben:</p>
-
 Der Link zur Tipprunde wurde falsch eingetippt. Bitte überprüfen Sie die Schreibweise.`;
 const {setMessage} = useMessage();
 const {setError} = useError();
-// Routen-Informationen holen
 
 
-// Zugriff auf den Parameter ':id' aus dem Pfad (/target/123)
-const commId = computed(() => route.params.commId || defaultCommunityId.value);
-const compId = computed(() => route.params.compId || defaultCompetitionId.value);
 const formData = ref(
     {
       community: null,
@@ -115,10 +107,10 @@ const formData = ref(
 )
 
 const retrieveCompetition = async () => {
-  formData.value.communityNotFound=false;
-  console.info("retrieveCompetition()", compId.value);
+
+  console.info("retrieveCompetition()",formData.value.community.id);
   try {
-    const response = await CompDataService.get(compId.value);
+    const response = await CompMembDataService.findCurrentCompetition(formData.value.community.id);
     if (response.status === 200) {
       formData.value.competition = response.data;
     }
@@ -135,8 +127,13 @@ const retrieveCommunity = async () => {
     const response = await CommunityDataService.getByName(props.commName);
     if (response.status === 200) {
       formData.value.community = response.data;
+      console.info(" formData.value.community::", formData.value.community.id);
+      umsInfoStore.setPath(props.commName);
+      umsInfoStore.setInvalidPath(false);
     } else {
-      formData.value.communityNotFound=true;
+      formData.value.communityNotFound = true;
+      umsInfoStore.setPath(null);
+      umsInfoStore.setInvalidPath(true);
     }
   } catch (e) {
     console.error(e);
@@ -146,9 +143,9 @@ const retrieveCommunity = async () => {
 }
 
 const retrieveTippers = async () => {
-  console.info("retrieveTippers()", commId.value);
+  console.info("retrieveTippers()", formData.value.community.id);
   try {
-    const response = await CommMembDataService.getTippers(commId.value);
+    const response = await CommMembDataService.getTippers(formData.value.community.id);
     if (response.status === 200) {
       formData.value.tippers = response.data;
     }
@@ -158,9 +155,9 @@ const retrieveTippers = async () => {
   }
 }
 const retrieveTippModi = async () => {
-  console.info("retrieveTippModi()", commId.value);
+  console.info("retrieveTippModi()", formData.value.community.id);
   try {
-    const response = await TippModusDataService.getModiForCommunity(commId.value);
+    const response = await TippModusDataService.getModiForCommunity(formData.value.community.id);
     if (response.status === 200) {
       formData.value.tippModusTypes = response.data;
     }
@@ -169,13 +166,13 @@ const retrieveTippModi = async () => {
     setError(saveMessage(e));
   }
 }
-onMounted(() => {
+onMounted(async () => {
   console.log("onMounted()");
-  retrieveCommunity();
+  await retrieveCommunity();
   if (loggedIn.value) {
-    retrieveCompetition();
-    retrieveTippModi();
-    retrieveTippers();
+    await retrieveCompetition();
+    await retrieveTippModi();
+    await retrieveTippers();
   }
 
 })
