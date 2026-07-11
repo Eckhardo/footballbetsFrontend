@@ -1,5 +1,9 @@
 <template>
-  <p>Static Path: {{ currentPath }}</p>
+  <p>Name der Tippgemeinschaft:{{ props.commName }}</p>
+
+  <div style="color: #5a0ce8" v-html=" errorMessage" v-if="formData.communityNotFound===true">
+  </div>
+  <div v-else>{{ formData.community }}</div>
   <div v-if="loggedIn" class="card">
     <div class="card-header">
       <h4 style="text-align: center"><span
@@ -34,9 +38,9 @@
           <th>Typ</th>
           <th>Name</th>
           <th>Deadline</th>
-          <th >Tendenz Punkte</th>
+          <th>Tendenz Punkte</th>
           <th>Bonus Punkte</th>
-          <th >Gesamte Punkte</th>
+          <th>Gesamte Punkte</th>
           <th>Aktion</th>
         </tr>
         </thead>
@@ -52,7 +56,9 @@
           <td v-if="item.type==='PointTipp'">{{ item.totalPoints }}</td>
           <td v-else>n/a</td>
 
-          <td><button class="btn btn-danger btn-sm" @click="deleteItem( item)">Löschen</button></td>
+          <td>
+            <button class="btn btn-danger btn-sm" @click="deleteItem( item)">Löschen</button>
+          </td>
         </tr>
         </tbody>
       </table>
@@ -61,8 +67,8 @@
   </div>
 </template>
 <script setup>
-import {useRoute} from 'vue-router';
-import {computed, onMounted, ref} from 'vue';
+import {useRoute, useRouter} from 'vue-router';
+import {computed, onMounted, defineProps, ref} from 'vue';
 import {storeToRefs} from "pinia";
 import {useUmsInfoStore} from "@/stores/umsInfoStore.js";
 
@@ -76,15 +82,25 @@ import {useMessage} from '@/composables/useMessage.js';
 import {saveMessage} from "@/util/errorMessages.js";
 import CompDataService from "@/service/competition/CompDataService.js";
 import TippModusDataService from "@/service/community/TippModusDataService.js";
+// 2. Access the current path string (e.g., "/Bulitipper")
 
+const props = defineProps({
+  commName: {
+    type: String,
+    required: true
+  }
+})
 
+let errorMessage = `<p>Die Tipprunde mit dem Kurznamen <b>${props.commName}</b> wurde nicht gefunden</p>
+
+<p>Das kann folgende Ursachen haben:</p>
+
+Der Link zur Tipprunde wurde falsch eingetippt. Bitte überprüfen Sie die Schreibweise.`;
 const {setMessage} = useMessage();
 const {setError} = useError();
 // Routen-Informationen holen
-const route = useRoute();
 
-// 2. Access the current path string (e.g., "/Bulitipper")
-const currentPath = route.path;
+
 // Zugriff auf den Parameter ':id' aus dem Pfad (/target/123)
 const commId = computed(() => route.params.commId || defaultCommunityId.value);
 const compId = computed(() => route.params.compId || defaultCompetitionId.value);
@@ -93,17 +109,18 @@ const formData = ref(
       community: null,
       competition: null,
       tippers: [],
-      tippModusTypes:[]
+      tippModusTypes: [],
+      communityNotFound: false
     }
 )
 
 const retrieveCompetition = async () => {
+  formData.value.communityNotFound=false;
   console.info("retrieveCompetition()", compId.value);
   try {
     const response = await CompDataService.get(compId.value);
     if (response.status === 200) {
       formData.value.competition = response.data;
-
     }
   } catch (e) {
     console.error(e);
@@ -112,16 +129,19 @@ const retrieveCompetition = async () => {
 }
 
 const retrieveCommunity = async () => {
-  console.info("retrieveCommunity()", commId.value);
+  console.info("retrieveCommunity()", props.commName);
+
   try {
-    const response = await CommunityDataService.get(commId.value);
+    const response = await CommunityDataService.getByName(props.commName);
     if (response.status === 200) {
       formData.value.community = response.data;
-
+    } else {
+      formData.value.communityNotFound=true;
     }
   } catch (e) {
     console.error(e);
     setError(saveMessage(e));
+
   }
 }
 
@@ -151,9 +171,9 @@ const retrieveTippModi = async () => {
 }
 onMounted(() => {
   console.log("onMounted()");
+  retrieveCommunity();
   if (loggedIn.value) {
     retrieveCompetition();
-    retrieveCommunity();
     retrieveTippModi();
     retrieveTippers();
   }

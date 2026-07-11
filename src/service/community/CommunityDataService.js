@@ -24,5 +24,10 @@ class CommunityDataService {
         console.log("Delete Community id", id);
         return http.delete(`/communities/${id}`);
     }
+
+    async getByName(name) {
+        console.log("getByName", name);
+        return http.get(`/communities/search?name=${name}`);
+    }
 }
 export default new CommunityDataService();

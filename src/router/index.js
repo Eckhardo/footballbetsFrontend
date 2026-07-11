@@ -1,16 +1,13 @@
 import {createRouter, createWebHistory} from 'vue-router';
 import MainLayout from '../layouts/MainLayout.vue';
-import Home from '@/views/Home.vue';
+
 import Login from "@/views/Login.vue";
-import Competitions from "@/views/admin/competition/competitions/Competitions.vue";
-import CompFamilies from "@/views/admin/competition/compFamilies/CompFamilies.vue";
 import CompRounds from "@/views/admin/competition/compRounds/CompRounds.vue";
 import Matchdays from "@/views/admin/competition/matchdays/Matchdays.vue";
-import CompFamily from "@/views/admin/competition/compFamilies/CompFamily.vue";
+
 import Teams from "@/views/admin/competition/teams/Teams.vue";
-import CompTeams from "@/views/admin/competition/compTeams/CompTeams.vue";
 import Matches from "@/views/admin/competition/matches/Matches.vue";
-import DefaultCompForm from "@/views/admin/competition/defaultCompetition/DefaultCompForm.vue";
+
 import CompTableList from "@/views/admin/competition/compTable/CompTableList.vue";
 
 const routes = [
@@ -28,13 +25,13 @@ const routes = [
             {
                 path: '/:commName',
                 name: 'SelectedCommMemb',
-                component: () => import('../views/admin/tipper/selectedCommunity/CommMemb.vue'),
+                component: () => import('../views/admin/tipper/selectedCommunity/SelectedCommMemb.vue'),
                 props: true,
             },
             {
                 path: '/:commName/login/:openDialog',
                 name: 'Login',
-                component: Login,
+                component: ()    => import('@/views/Login.vue'),
                 props: true
             },
             {
@@ -56,7 +53,7 @@ const routes = [
             {
                 path: 'selectedCommunity/:commId/:compId', // :id ist ein dynamischer Parameter
                 name: 'CommMemb',
-                component: () => import('../views/admin/tipper/selectedCommunity/CommMemb.vue')
+                component: () => import('../views/admin/tipper/selectedCommunity/SelectedCommMemb.vue')
 
             },
             {
@@ -77,27 +74,30 @@ const routes = [
             {
                 path: '/defaultCompForm',
                 name: 'DefaultCompForm',
-                component: DefaultCompForm,
+             component: ()    => import('@/views/admin/competition/defaultCompetition/DefaultCompForm.vue')
             },
             {
                 path: 'compFamily',
                 name: 'CompFamily',
-                component: CompFamily,
+                component: ()    => import('@/views/admin/competition/compFamilies/CompFamily.vue')
             },
             {
                 path: 'compFamilies',
                 name: 'CompFamilies',
-                component: CompFamilies,
+                component: ()    => import('@/views/admin/competition/compFamilies/CompFamilies.vue')
+
             },
             {
                 path: 'comps',
                 name: 'Comps',
-                component: Competitions,
+                component: ()    => import('@/views/admin/competition/competitions/Competitions.vue')
+
             },
             {
                 path: 'compTeams',
                 name: 'CompTeams',
-                component: CompTeams,
+                component: ()    => import('@/views/admin/competition/compTeams/CompTeams.vue')
+
             },
             {
                 path: 'compTableList',
