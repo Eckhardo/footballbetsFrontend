@@ -59,7 +59,7 @@ export default {
 
     },
     login() {
-      this.$router.push({name: 'Login', params: {openDialog: true}});
+      this.$router.push({name: 'Login', params: {commName:"info",openDialog: true}});
     },
   },
 };

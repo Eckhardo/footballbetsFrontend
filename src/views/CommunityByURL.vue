@@ -1,9 +1,9 @@
 <template>
-  <ul v-if="loggedIn">Meine Tipprunden
+  <ul v-if="loggedIn">Wähle Tipprunde:
     <!-- v-for durchläuft das Array; :key ist zwingend erforderlich -->
     <li v-for="item in formData.itemList" :key="item.id">
-      <router-link :to="{ name: 'SelectedCommIntro', params: { commName: item.name } }">
-        Enter {{ item.name }}
+      <router-link :to="{ name: 'SelectedCommMemb', params: { commName: item.name } }">
+       {{ item.name }}
       </router-link>
     </li>
   </ul>
@@ -30,7 +30,7 @@ const {setError} = useError();
 // Reactive states
 // Instantiate the global store
 const umsInfoStore = useUmsInfoStore();
-const {loggedIn} = storeToRefs(umsInfoStore);
+const {loggedIn,username} = storeToRefs(umsInfoStore);
 const {setCommId} = umsInfoStore;
 const formData = ref({
   itemList: [],
@@ -38,9 +38,9 @@ const formData = ref({
 
 });
 const retrieveCommunity = async () => {
-  console.info("retrieveCommunity() by path: ",currentPath);
+  console.info("retrieveCommunity() by username: ",username.value);
   try {
-    const response = await CommMembDataService.getCommunit(currentPath);
+    const response = await CommMembDataService.getCommunities(username.value);
     if (response.status === 200) {
       console.log(":", response.status);
       formData.value.itemList = response.data;

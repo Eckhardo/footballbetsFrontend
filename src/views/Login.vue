@@ -71,9 +71,18 @@ export default {
         console.log(" this.umsInfo::", this.umsInfo);
         this.username = response.data.username;
         this.umsInfo.path=this.umsInfoStore.path;
+        this.umsInfo.invalidPath=this.umsInfoStore.invalidPath;
         await this.umsInfoStore.fillUmsInfoStore(this.umsInfo);
         console.log("path::",this.umsInfoStore.path);
-        this.$router.push({ name: 'SelectedCommMemb', params: { commName:this.umsInfo.path } })
+        console.log("invalidPath::",this.umsInfoStore.invalidPath);
+        if(this.umsInfoStore.invalidPath || this.umsInfoStore.path==="info" ) {
+          this.$router.push({ name: 'CommunityByURL' })
+
+        }
+        else{
+          this.$router.push({ name: 'SelectedCommMemb', params: { commName:this.umsInfo.path } })
+        }
+
         // On success:
         this.showLogin = false;
       } catch (err) {

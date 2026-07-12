@@ -28,6 +28,7 @@ const routes = [
                 component: () => import('../views/admin/tipper/selectedCommunity/SelectedCommMemb.vue'),
                 props: true,
             },
+
             {
                 path: '/:commName/login/:openDialog',
                 name: 'Login',
@@ -51,9 +52,9 @@ const routes = [
             },
 
             {
-                path: 'selectedCommunity/:commId/:compId', // :id ist ein dynamischer Parameter
-                name: 'CommMemb',
-                component: () => import('../views/admin/tipper/selectedCommunity/SelectedCommMemb.vue')
+                path: 'selectCommunity',
+                name: 'CommunityByURL',
+                component: () => import('../views/CommunityByURL.vue')
 
             },
             {

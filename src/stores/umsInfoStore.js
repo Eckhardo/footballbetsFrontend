@@ -8,65 +8,67 @@ export const useUmsInfoStore = defineStore('umsInfoStore', {
                 username: null,
                 loggedIn: false,
                 defaultCountry: null,
-                defaultCommunityId:String,
+                defaultCommunityId: String,
                 defaultCompetitionId: String,
                 commAdmin: false,
                 compAdmin: false,
                 adminCompetitions: Array,
-                adminCommunities:Array,
-                tipperCommunities:Array,
-                path:String,
-                invalidPath:false
-       }
+                adminCommunities: Array,
+                tipperCommunities: Array,
+                path: "info",
+                invalidPath: false
+            }
         }
 
+
     ),
+    persist: true,
     getters: {
 
         // Getters can access the state and return computed values
-        username: (state) =>state.umsInfo.username,
-        loggedIn: (state) =>state.umsInfo.loggedIn,
-        commAdmin:(state)=> state.umsInfo.commAdmin,
-        compAdmin:(state)=> state.umsInfo.compAdmin,
-        defaultCommunityId:(state)=> state.umsInfo.defaultCommunityId,
-        defaultCompetitionId:(state)=> state.umsInfo.defaultCompetitionId,
-        defaultCountry:(state)=> state.umsInfo.defaultCountry,
-        adminCommunities:(state)=> state.umsInfo.adminCommunities,
-        adminCompetitions:(state)=> state.umsInfo.adminCompetitions,
-        tipperCommunities:(state)=> state.umsInfo.tipperCommunities,
-        path:(state)=> state.umsInfo.path,
-        invalidPath:(state)=> state.umsInfo.invalidPath,
+        username: (state) => state.umsInfo.username,
+        loggedIn: (state) => state.umsInfo.loggedIn,
+        commAdmin: (state) => state.umsInfo.commAdmin,
+        compAdmin: (state) => state.umsInfo.compAdmin,
+        defaultCommunityId: (state) => state.umsInfo.defaultCommunityId,
+        defaultCompetitionId: (state) => state.umsInfo.defaultCompetitionId,
+        defaultCountry: (state) => state.umsInfo.defaultCountry,
+        adminCommunities: (state) => state.umsInfo.adminCommunities,
+        adminCompetitions: (state) => state.umsInfo.adminCompetitions,
+        tipperCommunities: (state) => state.umsInfo.tipperCommunities,
+        path: (state) => state.umsInfo.path,
+        invalidPath: (state) => state.umsInfo.invalidPath,
 
     },
     actions: {
         // You can also update the entire object or nested properties
         async fillUmsInfoStore(data) {
-             console.log("FillUmsInfoStore", JSON.stringify(data));
+            console.log("FillUmsInfoStore", JSON.stringify(data));
             // Simulate API or processing logic
-            this.umsInfo= data
+            this.umsInfo = data
         },
         addTipperComm(id) {
             this.umsInfo.tipperCommunities().push(id)
         },
         setCompId(id) {
             console.log("SetCompId", id);
-            this.umsInfo.defaultCompetitionId=id;
+            this.umsInfo.defaultCompetitionId = id;
         },
         setCommId(id) {
             console.log("SetCommId", id);
-            this.umsInfo.defaultCommunityId=id;
+            this.umsInfo.defaultCommunityId = id;
         },
         setDefaultCountry(country) {
             console.log("set country", country);
-            this.umsInfo.defaultCountry=country;
+            this.umsInfo.defaultCountry = country;
         },
         setPath(path) {
             console.log("setPath", path);
-            this.umsInfo.path=path;
+            this.umsInfo.path = path;
         },
         setInvalidPath(bool) {
             console.log("setInvalidPath", bool);
-            this.umsInfo.invalidPath=bool;
+            this.umsInfo.invalidPath = bool;
         },
     },
 });
