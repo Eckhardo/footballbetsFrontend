@@ -36,6 +36,11 @@ const routes = [
                 props: true
             },
             {
+                path: 'logout',
+                name: 'Logout',
+                component: ()    => import('@/views/Logout.vue')
+            },
+            {
                 path: 'communities',
                 name: 'communities',
                 component: () => import('@/views/admin/community/communities/Communities.vue')

@@ -9,16 +9,16 @@
     <main class="main-content">
 
       <div class="button-container  mt-3 mx-1">
-
         <div v-if="loggedIn" class="center-group">
-
-          <button @click="showCompFamily" class="btn btn-warning">
-            Wettbewerb
+          <button @click="logout" class="btn btn-warning">
+            Logout
           </button>
         </div>
-        <button @click="login" class="right-btn btn btn-warning ">
-          Login
-        </button>
+        <div v-if="!loggedIn" class="center-group">
+          <button @click="login" class="right-btn btn btn-warning ">
+            Login
+          </button>
+        </div>
       </div>
 
       <!-- The content of the current route  will be rendered here -->
@@ -41,25 +41,23 @@ export default {
   name: 'MainLayout',
   components: {
     TipperMenu,
-    AppHeader, CompAdminMenu,CommAdminMenu
+    AppHeader, CompAdminMenu, CommAdminMenu
   },
 
   data() {
-    return {
-
-    }
+    return {}
   },
   computed: {
     ...mapState(useUmsInfoStore, {username: 'username', loggedIn: 'loggedIn', compId: 'defaultCompetitionId'}),
   },
   methods: {
 
-    showCompFamily() {
-      this.$router.push({name: 'CompFamily'});
+    logout() {
+      this.$router.push({name: 'Logout'});
 
     },
     login() {
-      this.$router.push({name: 'Login', params: {commName:"info",openDialog: true}});
+      this.$router.push({name: 'Login', params: {commName: "info", openDialog: true}});
     },
   },
 };
