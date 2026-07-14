@@ -16,7 +16,7 @@
             <input id="password" class="form-control   w-auto border border-3 " v-model="form.password" type="password" required placeholder="Enter password"/>
           </div>
           <div class="actions">
-            <button class="btn btn-primary" type="button" @click="showLogin = false">Cancel</button>
+            <button class="btn btn-primary" type="button" @click="cancel">Cancel</button>
             <button class="btn btn-primary" type="submit" :disabled="loading">
               {{ loading ? 'Logging in...' : 'Login' }}
             </button>
@@ -73,11 +73,8 @@ export default {
         this.umsInfo.path=this.umsInfoStore.path;
         this.umsInfo.invalidPath=this.umsInfoStore.invalidPath;
         await this.umsInfoStore.fillUmsInfoStore(this.umsInfo);
-        console.log("path::",this.umsInfoStore.path);
-        console.log("invalidPath::",this.umsInfoStore.invalidPath);
         if(this.umsInfoStore.invalidPath || this.umsInfoStore.path==="info" ) {
           this.$router.push({ name: 'CommunityByURL' })
-
         }
         else{
           this.$router.push({ name: 'SelectedCommMemb', params: { commName:this.umsInfo.path } })
@@ -90,9 +87,13 @@ export default {
       } finally {
         this.loading = false;
       }
+    },
+    cancel(){
+      this.showLogin = false;
+      this.$router.push({name: 'Home'});
     }
   }
-};
+}
 </script>
 
 <style scoped>

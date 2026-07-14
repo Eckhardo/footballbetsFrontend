@@ -17,16 +17,16 @@ export default {
   // Define logic and API interactions
   methods: {
 
-    async handleLogout() {
-      console.log("logout");
+     handleLogout() {
       this.umsInfo = this.umsInfoStore;
-      this.clearUmsInfo(this.umsInfo);
-      await this.umsInfoStore.fillUmsInfoStore(this.umsInfo);
-
+      this.message = ` Der Benutzer <b> ${this.umsInfo.username}</b> wird abgemeldet`;
       setTimeout(() => {
-        this.message = ` <b> ${this.umsInfo.username}</b> abgemeldet`;
-      }, 2000)
-      this.$router.push({name: 'Home'})
+        this.clearUmsInfo(this.umsInfo);
+        this.umsInfoStore.fillUmsInfoStore(this.umsInfo);
+        this.message="";
+        this.$router.push({name: 'Home'});
+      }, 4000)
+
     },
     clearUmsInfo() {
       this.umsInfo = {};

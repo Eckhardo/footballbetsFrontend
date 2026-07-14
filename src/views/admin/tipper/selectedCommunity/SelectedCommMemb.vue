@@ -1,5 +1,4 @@
 <template>
-  <p>Name der Tippgemeinschaft:{{ props.commName }}</p>
 
   <div style="color: #5a0ce8" v-html=" errorMessage" v-if="formData.communityNotFound===true">
   </div>
@@ -92,7 +91,6 @@ const props = defineProps({
 let errorMessage = `<p>Die Tipprunde mit dem Kurznamen <b>${props.commName}</b> wurde nicht gefunden</p>
 <p>Das kann folgende Ursachen haben:</p>
 Der Link zur Tipprunde wurde falsch eingetippt. Bitte überprüfen Sie die Schreibweise.`;
-const {setMessage} = useMessage();
 const {setError} = useError();
 
 
