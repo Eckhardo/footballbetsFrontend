@@ -1,8 +1,8 @@
 import http from "../http-common.js";
 
 class TippModusDataService {
-    getModiTypes(id) {
-        return http.get(`/tippModus/types/${id}`);
+    getModiTypes() {
+        return http.get(`/tippModus/types`);
     }
     getModiForCommunity(communityId) {
         return http.get(`/tippModus/community/${communityId}`);

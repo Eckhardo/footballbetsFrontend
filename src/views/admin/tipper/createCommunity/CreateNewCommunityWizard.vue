@@ -11,6 +11,7 @@ import StepOneCommunity from './steps/StepOneCommunity.vue';
 import StepTwoCompetition from './steps/StepTwoCompetition.vue';
 import StepThreeTippers from './steps/StepThreeTippers.vue';
 import StepFourTippModus from "./steps/StepFourTippModus.vue";
+import StepFiveConfigureTippModi from "./steps/StepFiveConfigureTippModi.vue";
 import LastStepConfirmation from './steps/LastStepConfirmation.vue';
 
 import {useError} from '@/composables/useError.js';
@@ -20,17 +21,16 @@ import {saveMessage} from "@/util/errorMessages.js";
 const {setMessage} = useMessage();
 const {setError} = useError();
 
-import CompDataService from "../../../../service/competition/CompDataService.js";
-import TipperDataService from "../../../../service/community/TipperDataService.js";
-import CommunityWizardDataService from "../../../../service/community/CommunityWizardDataService.js";
-import TippModusDataService from "../../../../service/community/TippModusDataService.js";
-import StepFiveConfigureTippModi from "./steps/StepFiveConfigureTippModi.vue";
+import CompDataService from "@/service/competition/CompDataService.js";
+import TipperDataService from "@/service/community/TipperDataService.js";
+import CommunityWizardDataService from "@/service/community/CommunityWizardDataService.js";
+import TippModusDataService from "@/service/community/TippModusDataService.js";
+
 
 
 // Reactive states
 // Instantiate the global store
-const umsInfoStore = useUmsInfoStore();
-const {username, loggedIn,defaultCommunityId} = storeToRefs(umsInfoStore);
+const {username, loggedIn} = storeToRefs(useUmsInfoStore());
 const MIN_LENGTH = 5;
 // 1. Centralized Form State
 const formData = ref({
@@ -199,7 +199,7 @@ const fetchTippers = async () => {
 }
 const fetchTippModi = async () => {
   try {
-    const response = await TippModusDataService.getModiTypes(defaultCommunityId.value);
+    const response = await TippModusDataService.getModiTypes();
     formData.value.tippModusTypes = response.data;
 
     for(const modus of formData.value.tippModusTypes) {

@@ -14,16 +14,26 @@ import {mapState} from 'pinia';
 export default {
   name: 'Home',
   setup() {
-    const umsInfoStore = useUmsInfoStore()
-    return {umsInfoStore}
+
+    const umsInfoStore = useUmsInfoStore();
+    umsInfoStore.f
+    return {umsInfoStore};
   },
   mounted() {
     console.log("Home mounted.");
+    this.clearUmsInfo(this.umsInfo);
+    this.umsInfoStore.fillUmsInfoStore(this.umsInfo);
   },
 
   methods: {
     // mapActions maps store actions to local component methods
-
+    clearUmsInfo() {
+      this.umsInfo = {};
+      this.umsInfo.username = "";
+      this.umsInfo.loggedIn = false;
+      this.umsInfo.path = "info";
+      this.umsInfo.invalidPath =false;
+    }
 
   },
   // You can also access the store directly in any method

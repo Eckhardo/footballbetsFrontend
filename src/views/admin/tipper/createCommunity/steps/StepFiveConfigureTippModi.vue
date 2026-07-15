@@ -1,23 +1,5 @@
 <!-- steps/StepFourTippModus.vue -->
 
-<script setup>
-import {defineModel, defineEmits} from 'vue';
-
-const model = defineModel({type: Object, required: true});
-
-const handleSubmit = () => {
-  const copy = { ...model.value.selectedTippModus };
-  console.log('add modus:', JSON.stringify(copy));
-  model.value.selectedTippModi.push(copy);
-  model.value.selectedTippModus.name='';
-}
-const deleteItem = (item) => {
-  const copy = { ...item };
-  console.log('add modus:', JSON.stringify(copy));
-  model.value.selectedTippModi.pop(copy);
-}
-</script>
-
 <template>
   <div v-if="model.selectedTippModi.length>0" class="card-body">
 
@@ -42,7 +24,10 @@ const deleteItem = (item) => {
         <td v-if="item.type==='ResultTipp'">{{ item.tendencyPoints }}</td>
         <td v-if="item.type==='ResultTipp'">{{ item.bonusPoints }}</td>
         <td v-if="item.type==='PointTipp'">{{ item.totalPoints }}</td>
-        <td><button class="btn btn-danger btn-sm" @click="deleteItem( item)">Löschen</button></td>
+        <td>
+          <button :disabled="isListEmpty" class="btn btn-warning btn-sm me-2" @click="changeItem( item)">Ändern</button>
+          <button :disabled="isListEmpty" class="btn btn-danger btn-sm" @click="deleteItem( item)">Löschen</button>
+        </td>
       </tr>
       </tbody>
     </table>
@@ -50,13 +35,13 @@ const deleteItem = (item) => {
   <div class="card-body">
     <h5>Step 5: TippModus konfigurieren</h5>
     <div class="card-body">
-      <form @submit.prevent="handleSubmit">
+      <form @submit.prevent>
         <div class="row g-4 mb-3">
           <div class="col-auto">
             <label for="name" class="form-label  fw-bold">Type</label>
             <input type="text" class="form-control  w-auto border border-3 " id="name"
                    v-model="model.selectedTippModus.type"
-                   required>
+                   readonly>
           </div>
           <div class="col-auto">
             <label for="name" class="form-label  fw-bold">Name</label>
@@ -87,12 +72,65 @@ const deleteItem = (item) => {
           </div>
         </div>
 
-        <div class="mb-3  p-3 ">
-          <button type="submit" class="btn btn-primary">
+        <div v-if="isUpdate===false" class="mb-3  p-3 ">
+          <button type="button" class="btn btn-primary" @click="handleAdd">
             TippModus hinzufügen
+          </button>
+        </div>
+        <div v-else class="mb-3  p-3 ">
+          <button type="button" class="btn btn-primary"  @click="handleUpdate">
+            TippModus ändern
           </button>
         </div>
       </form>
     </div>
   </div>
 </template>
+
+<script setup>
+import {ref,defineModel,computed} from 'vue';
+
+const model = defineModel({type: Object, required: true});
+const isUpdate=ref(false);
+
+const handleAdd = () => {
+  const copy = {...model.value.selectedTippModus};
+  console.log('add modus:', JSON.stringify(copy));
+  model.value.selectedTippModi.push(copy);
+  model.value.selectedTippModus.name = '';
+}
+const handleUpdate = () => {
+  const copy = {...model.value.selectedTippModus};
+  console.log('add modus:', JSON.stringify(copy));
+  let name = copy.name;
+
+  let index = model.value.selectedTippModi.findIndex(modus => modus.name === name);
+  if (index !== -1) {
+    model.value.selectedTippModi.splice(index, 1);
+  }
+  model.value.selectedTippModi.push(copy);
+  isUpdate.value = false;
+
+  model.value.selectedTippModus.name = '';
+}
+const deleteItem = (item) => {
+  const copy = {...item};
+  console.log('delete modus:', JSON.stringify(copy));
+  let name = copy.name;
+
+  let index = model.value.selectedTippModi.findIndex(modus => modus.name === name);
+  if (index !== -1) {
+    model.value.selectedTippModi.splice(index, 1);
+  }
+}
+const changeItem = (item) => {
+  console.log('change modus:', JSON.stringify(item));
+  const copy = {...item};
+  let name = copy.name;
+  const selectedModus = model.value.selectedTippModi.find(modus => modus.name === name);
+  model.value.selectedTippModus =selectedModus;
+  isUpdate.value = true;
+}
+
+const isListEmpty = computed(() => model.value.selectedTippModi.length === 0)
+</script>
