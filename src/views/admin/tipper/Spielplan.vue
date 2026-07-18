@@ -195,10 +195,11 @@ onMounted(() => {
 
 <style scoped>
 .datatable-container {
-  font-family: sans-serif;
-  margin: 20px auto;
-  max-width: 1000px;
-  position: relative;
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
 }
 
 .custom-table {

@@ -1,9 +1,7 @@
 <template>
-
-  <div style="color: #5a0ce8" v-html=" errorMessage" v-if="formData.communityNotFound===true">
-  </div>
-  <div v-else>{{ formData.community }}</div>
-  <div v-if="loggedIn" class="card">
+{{formData.communityNotFound}}
+  <div style="color: #5a0ce8" v-html=" errorMessage" v-if="formData.communityNotFound===true"></div>
+  <div v-if="loggedIn" class="bets-container">
     <div class="card-header">
       <h4 style="text-align: center"><span
           v-if="formData.community !==null">Tippgemeinschaft {{ formData.community.name }}</span></h4>
@@ -80,7 +78,7 @@ import CompMembDataService from "@/service/competition/CompMembDataService.js";
 
 // 2. Access the current path string (e.g., "/Bulitipper")
 const umsInfoStore = useUmsInfoStore();
-const {defaultCommunityId, defaultCompetitionId, loggedIn} = storeToRefs(umsInfoStore);
+const { loggedIn} = storeToRefs(umsInfoStore);
 const props = defineProps({
   commName: {
     type: String,
@@ -168,6 +166,7 @@ onMounted(async () => {
   console.log("onMounted()");
   await retrieveCommunity();
   if (loggedIn.value) {
+    formData.value.communityNotFound = false;
     await retrieveCompetition();
     await retrieveTippModi();
     await retrieveTippers();
@@ -177,5 +176,12 @@ onMounted(async () => {
 </script>
 
 <style scoped>
+.bets-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
 
 </style>
