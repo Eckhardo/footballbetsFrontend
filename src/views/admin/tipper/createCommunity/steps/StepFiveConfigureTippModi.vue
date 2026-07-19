@@ -47,7 +47,7 @@
             <label for="name" class="form-label  fw-bold">Name</label>
             <input type="text" class="form-control  w-auto border border-3 " id="name"
                    v-model="model.selectedTippModus.name"
-                   required>
+                   :required>
           </div>
           <div class="col-auto">
             <label for="description" class="form-label  fw-bold">Deadline (Minuten vor Spielbeginn)</label>

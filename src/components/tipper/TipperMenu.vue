@@ -1,10 +1,16 @@
 <template>
-  <aside class="side-menu" id="tipper" >
-    <nav >
-      <ul >
-        <li><router-link to="/createCommunity">Tippgemeinschaft anlegen</router-link></li>
-        <li  v-if="isVisible && umsInfo.loggedIn" ><router-link to="/communityMembership">Tippgemeinschaft</router-link></li>
-        <li  v-if="isVisible && umsInfo.loggedIn" ><router-link to="/tippspielplan">Spielplan</router-link></li>
+  <aside class="side-menu" id="tipper">
+    <nav>
+      <ul>
+        <li v-if="umsInfoStore.loggedIn">
+          <router-link to="/createCommunity">Tippgemeinschaft anlegen</router-link>
+        </li>
+        <li v-if="isVisible && umsInfoStore.loggedIn && umsInfoStore.path!=='info'">
+          <router-link :to="{ name: 'SelectedCommMemb', params: { commName:getPath} }">Tippgemeinschaft</router-link>
+        </li>
+        <li v-if="isVisible && umsInfoStore.loggedIn && umsInfoStore.path!=='info'">
+          <router-link to="/tippspielplan">Spielplan</router-link>
+        </li>
         <hr style="border: none; border-top: 2px dotted black; width: 180px;">
       </ul>
     </nav>
@@ -17,20 +23,27 @@ import {useUmsInfoStore} from "@/stores/umsInfoStore.js";
 
 export default {
   name: 'CommAdminMenu',
+  setup() {
+    const umsInfoStore = useUmsInfoStore();
+    return {umsInfoStore};
+  },
   data() {
     return {
-      isUsed:false
+      isUsed: false,
+      path: null
     }
   },
   computed: {
-    // mapState mappt das 'todos'-Array direkt in diese Komponente
-    ...mapState(useUmsInfoStore, ['umsInfo'])
-
+    getPath() {
+      console.log("my ums:::", this.umsInfoStore);
+      const path = this.umsInfoStore.path === null ? 'info' : this.umsInfoStore.path;
+      console.log("my ^path:::", path);
+      return path;
+    }
   },
-  methods:{
-    isVisible(){
-      console.log("my ums:::",this.umsInfo);
 
+  methods: {
+    isVisible() {
       return this.umsInfo.tipperCommunities.includes(this.umsInfo.defaultCommunityId);
     }
   }
@@ -50,19 +63,23 @@ export default {
   padding-top: 0;
   z-index: 1;
 }
+
 ul {
   list-style-type: none;
   padding: 0;
 }
+
 li a {
   display: block;
   padding: 5px;
   text-decoration: none;
   color: #333;
 }
+
 li a.router-link-active {
   background-color: #ddd;
 }
+
 a {
   color: blue;
   text-decoration: none;
@@ -71,12 +88,12 @@ a {
 
 /* Farbe beim Hover */
 a:hover {
-  color:  #89b4e6;
+  color: #89b4e6;
 }
 
 /* Farbe für den aktuell aktiven Link (automatisch von Vue Router) */
 .router-link-active {
   font-weight: bold;
-  color:#5a0ce8;
+  color: #5a0ce8;
 }
 </style>

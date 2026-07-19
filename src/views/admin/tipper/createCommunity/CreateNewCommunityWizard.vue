@@ -201,10 +201,6 @@ const fetchTippModi = async () => {
   try {
     const response = await TippModusDataService.getModiTypes();
     formData.value.tippModusTypes = response.data;
-
-    for(const modus of formData.value.tippModusTypes) {
-      console.log(JSON.stringify(modus));
-    }
   } catch (err) {
     console.error("ERROR retrieve tippModi", JSON.stringify(err));
     setError(saveMessage(err));

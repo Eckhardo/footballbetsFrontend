@@ -81,7 +81,7 @@ export default {
 .button-container {
   display: grid;
   grid-template-columns: 1fr auto 1fr; /* Left (empty), Center, Right */
-  align-items: center;
+  align-items: end;
   width: 100%;
   background-color: #dddddd;
   z-index: 1000;

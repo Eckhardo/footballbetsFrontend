@@ -1,6 +1,6 @@
 <!-- UserProfile.vue -->
 <template>
-  <div>
+  <div class="home-container">
     <h2>Tippspiele zur Bundesliga, WM, EM und mehr</h2>
 
     <p>Starte jetzt Dein kostenloses Tippspiel mit Freunden oder Kollegen.</p>
@@ -41,6 +41,13 @@ export default {
 };
 </script>
 <style scoped>
+.home-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
 .dropdown2 {
   position: relative;
   display: inline-block;

@@ -118,7 +118,6 @@ const retrieveCompetition = async () => {
 
 const retrieveCommunity = async () => {
   console.info("retrieveCommunity()", props.commName);
-
   try {
     const response = await CommunityDataService.getByName(props.commName);
     if (response.status === 200) {
