@@ -15,10 +15,8 @@ import StepFiveConfigureTippModi from "./steps/StepFiveConfigureTippModi.vue";
 import LastStepConfirmation from './steps/LastStepConfirmation.vue';
 
 import {useError} from '@/composables/useError.js';
-import {useMessage} from '@/composables/useMessage.js';
 import {saveMessage} from "@/util/errorMessages.js";
 
-const {setMessage} = useMessage();
 const {setError} = useError();
 
 import CompDataService from "@/service/competition/CompDataService.js";
@@ -28,9 +26,12 @@ import TippModusDataService from "@/service/community/TippModusDataService.js";
 
 
 
+
 // Reactive states
 // Instantiate the global store
-const {username, loggedIn} = storeToRefs(useUmsInfoStore());
+// Instantiate the store
+const umsInfoStore = useUmsInfoStore();
+const {username, loggedIn} = storeToRefs(umsInfoStore);
 const MIN_LENGTH = 5;
 // 1. Centralized Form State
 const formData = ref({
@@ -38,7 +39,7 @@ const formData = ref({
   description: 'Test description',
   competitions: [],
   competition: null,
-  tippModusTypes: [],
+  tippModi: [],
   selectedTippModi: [],
   selectedTippModus: null,
   tippers: [
@@ -117,8 +118,9 @@ const validateCurrentStep = () => {
     if (formData.value.selectedTippModus === null) return 'TippModus is required.';
   }
   else if (currentStepIndex.value === 3) {
-    if (formData.value.selectedTippModi.length <0) return 'TippModus is required.';
+    if ( formData.value.selectedTippModi.length <0) return 'TippModus is required.';
   }
+
   return null; // Null means no errors
 };
 
@@ -152,9 +154,11 @@ const submitForm = async () => {
 
       const commMemb = response.data;
       console.info("selectedCommunity: ", commMemb);
+      umsInfoStore.setCompId(commMemb.compId);
+      umsInfoStore.setCommId(commMemb.commId);
       // Navigation zu einer Route mit Namen und Parametern
       router.push({
-        name: 'CommMemb',
+        path: commMemb.commName,
         params: {
           commId: commMemb.commId,
           compId: commMemb.compId
@@ -163,7 +167,7 @@ const submitForm = async () => {
 
     }
   } catch (err) {
-    console.error("ERROR create item:", JSON.stringify(err));
+    console.error("ERROR create wizard:", JSON.stringify(err));
     setError(saveMessage(err));
   }
 }
@@ -200,7 +204,7 @@ const fetchTippers = async () => {
 const fetchTippModi = async () => {
   try {
     const response = await TippModusDataService.getModiTypes();
-    formData.value.tippModusTypes = response.data;
+    formData.value.tippModi = response.data;
   } catch (err) {
     console.error("ERROR retrieve tippModi", JSON.stringify(err));
     setError(saveMessage(err));

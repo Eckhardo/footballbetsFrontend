@@ -23,8 +23,6 @@ import CommMembDataService from "@/service/community/CommMembDataService.js";
 // Routen-Informationen holen
 const route = useRoute();
 
-// 2. Access the current path string (e.g., "/Bulitipper")
-const currentPath = route.path;
 const {setMessage} = useMessage();
 const {setError} = useError();
 // Reactive states

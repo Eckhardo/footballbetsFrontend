@@ -34,7 +34,7 @@
   </div>
   <div class="card-body">
     <h5>Step 5: TippModus konfigurieren</h5>
-    <div class="card-body">
+
       <form @submit.prevent>
         <div class="row g-4 mb-3">
           <div class="col-auto">
@@ -45,29 +45,29 @@
           </div>
           <div class="col-auto">
             <label for="name" class="form-label  fw-bold">Name</label>
-            <input type="text" class="form-control  w-auto border border-3 " id="name"
-                   v-model="model.selectedTippModus.name"
-                   :required>
+            <input type="text" required class="form-control  w-auto border border-3 " id="name"
+                   v-model="model.selectedTippModus.name" placeholder="MyName"
+            >
           </div>
           <div class="col-auto">
-            <label for="description" class="form-label  fw-bold">Deadline (Minuten vor Spielbeginn)</label>
-            <input type="number" class="form-control  w-auto border border-3 " id="description"
+            <label for="deadline" class="form-label  fw-bold">Deadline (Minuten vor Spielbeginn)</label>
+            <input type="number" class="form-control  w-auto border border-3 " id="deadline"
                    v-model="model.selectedTippModus.deadline" min="0">
           </div>
           <div v-if="model.selectedTippModus.type==='ResultTipp'" class="col-auto">
-            <label for="description" class="form-label  fw-bold">Tendenz Punkte</label>
-            <input type="number" class="form-control  w-auto border border-3 " id="description"
+            <label for="tendencyPoints" class="form-label  fw-bold">Tendenz Punkte</label>
+            <input type="number" class="form-control  w-auto border border-3 " id="tendencyPoints"
                    v-model="model.selectedTippModus.tendencyPoints" min="1">
           </div>
           <div v-if="model.selectedTippModus.type==='ResultTipp'" class="col-auto">
-            <label for="description" class="form-label  fw-bold">Bonus Punkte</label>
-            <input type="number" class="form-control  w-auto border border-3 " id="description"
+            <label for="bonusPoints" class="form-label  fw-bold">Bonus Punkte</label>
+            <input type="number" class="form-control  w-auto border border-3 " id="bonusPoints"
                    v-model="model.selectedTippModus.bonusPoints" min="0">
           </div>
 
           <div v-if="model.selectedTippModus.type==='PointTipp'" class="col-auto">
-            <label for="description" class="form-label  fw-bold">Gesamte Punkte</label>
-            <input type="number" class="form-control  w-auto border border-3 " id="description"
+            <label for="totalPoints" class="form-label  fw-bold">Gesamte Punkte</label>
+            <input type="number" class="form-control  w-auto border border-3 " id="totalPoints"
                    v-model="model.selectedTippModus.totalPoints" min="1">
           </div>
         </div>
@@ -78,32 +78,47 @@
           </button>
         </div>
         <div v-else class="mb-3  p-3 ">
-          <button type="button" class="btn btn-primary"  @click="handleUpdate">
+          <button type="button" class="btn btn-primary" @click="handleUpdate">
             TippModus ändern
           </button>
         </div>
       </form>
     </div>
-  </div>
+
 </template>
 
 <script setup>
-import {ref,defineModel,computed} from 'vue';
+import {computed, defineModel, ref} from 'vue';
+import {useError} from '@/composables/useError.js';
+import {saveMessage} from "@/util/errorMessages.js";
 
 const model = defineModel({type: Object, required: true});
-const isUpdate=ref(false);
+const isUpdate = ref(false);
+const {setError} = useError();
+
 
 const handleAdd = () => {
   const copy = {...model.value.selectedTippModus};
-  console.log('add modus:', JSON.stringify(copy));
+  if (!copy.name) {
+    handleError('Name is required');
+    return;
+  }
+  if(isDuplicate(copy.name)) {
+    handleError('Name is not unique');
+    return;
+  }
   model.value.selectedTippModi.push(copy);
   model.value.selectedTippModus.name = '';
 }
+
 const handleUpdate = () => {
   const copy = {...model.value.selectedTippModus};
-  console.log('add modus:', JSON.stringify(copy));
   let name = copy.name;
 
+  if (!name) {
+    handleError('Name is required');
+    return;
+  }
   let index = model.value.selectedTippModi.findIndex(modus => modus.name === name);
   if (index !== -1) {
     model.value.selectedTippModi.splice(index, 1);
@@ -115,8 +130,7 @@ const handleUpdate = () => {
 }
 const deleteItem = (item) => {
   const copy = {...item};
-  console.log('delete modus:', JSON.stringify(copy));
-  let name = copy.name;
+   let name = copy.name;
 
   let index = model.value.selectedTippModi.findIndex(modus => modus.name === name);
   if (index !== -1) {
@@ -124,13 +138,33 @@ const deleteItem = (item) => {
   }
 }
 const changeItem = (item) => {
-  console.log('change modus:', JSON.stringify(item));
   const copy = {...item};
   let name = copy.name;
-  const selectedModus = model.value.selectedTippModi.find(modus => modus.name === name);
-  model.value.selectedTippModus =selectedModus;
+  model.value.selectedTippModus = model.value.selectedTippModi.find(modus => modus.name === name);
   isUpdate.value = true;
 }
 
-const isListEmpty = computed(() => model.value.selectedTippModi.length === 0)
+const isListEmpty = computed(() => model.value.selectedTippModi.length === 0);
+
+
+const handleError= (message)=> {
+  const error = {
+    response: {
+      data: {
+        detail: message
+      }
+    }
+  }
+  setError(saveMessage(error));
+}
+
+const  isDuplicate=(name)=> {
+  for (const modus in  model.value.selectedTippModi) {
+    if (modus.name === name) {
+      return true;
+    }
+  }
+  return false;
+}
+
 </script>

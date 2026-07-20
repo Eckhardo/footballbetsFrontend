@@ -9,11 +9,13 @@
 
           <div class="mb-3  p-3 border rounded">
             <label for="name" class="form-label fw-bold">Username</label>
-            <input id="userName"  class="form-control   w-auto border border-3 " v-model="form.userName" type="text" required placeholder="Enter User Name">
+            <input id="userName" class="form-control   w-auto border border-3 " v-model="form.userName" type="text"
+                   required placeholder="Enter User Name">
           </div>
           <div class="mb-3  p-3 border rounded">
             <label for="password" class="form-label">Password: &nbsp; &nbsp;</label>
-            <input id="password" class="form-control   w-auto border border-3 " v-model="form.password" type="password" required placeholder="Enter password"/>
+            <input id="password" class="form-control   w-auto border border-3 " v-model="form.password" type="password"
+                   required placeholder="Enter password"/>
           </div>
           <div class="actions">
             <button class="btn btn-primary" type="button" @click="cancel">Cancel</button>
@@ -70,25 +72,30 @@ export default {
         this.umsInfo = response.data;
         console.log(" this.umsInfo::", this.umsInfo);
         this.username = response.data.username;
-        this.umsInfo.path=this.umsInfoStore.path;
-        this.umsInfo.invalidPath=this.umsInfoStore.invalidPath;
+        this.umsInfo.path = this.umsInfoStore.path;
+        this.umsInfo.invalidPath = this.umsInfoStore.invalidPath;
         await this.umsInfoStore.fillUmsInfoStore(this.umsInfo);
-        if(this.umsInfoStore.invalidPath || this.umsInfoStore.path==="info" ) {
-          this.$router.push({ name: 'CommunityByURL' })
-        }
-        else{
-          this.$router.push({ name: 'SelectedCommMemb', params: { commName:this.umsInfo.path } })
+        if (this.umsInfoStore.invalidPath || this.umsInfoStore.path === "info") {
+          this.$router.push({name: 'CommunityByURL'})
+        } else {
+          this.$router.push({name: 'SelectedCommMemb', params: {commName: this.umsInfo.path}})
         }
 
         // On success:
         this.showLogin = false;
       } catch (err) {
-        this.errorMessage = 'Invalid credentials. Please try again.';
+        console.error(err.message);
+        if (err.status === 401) {
+          this.errorMessage = "Invalid username or password";
+        } else {
+          this.errorMessage = err.message;
+        }
+
       } finally {
         this.loading = false;
       }
     },
-    cancel(){
+    cancel() {
       this.showLogin = false;
       this.$router.push({name: 'Home'});
     }

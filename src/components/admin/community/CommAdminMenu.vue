@@ -32,8 +32,6 @@ export default {
   },
   methods: {
     isVisible() {
-      console.log("my ums:::", this.umsInfo);
-
       return this.umsInfo.adminCommunities.includes(this.umsInfo.defaultCommunityId);
     }
   }

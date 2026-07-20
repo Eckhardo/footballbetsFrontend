@@ -22,7 +22,8 @@
       </div>
 
       <!-- The content of the current route  will be rendered here -->
-      <router-view/>
+      <!-- Vue 3 Router View with fullPath key mapping -->
+      <router-view :key="$route.fullPath" />
 
     </main>
   </div>

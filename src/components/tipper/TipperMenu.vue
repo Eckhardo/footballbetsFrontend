@@ -35,7 +35,7 @@ export default {
   },
   computed: {
     getPath() {
-      console.log("my ums:::", this.umsInfoStore);
+
       const path = this.umsInfoStore.path === null ? 'info' : this.umsInfoStore.path;
       console.log("my ^path:::", path);
       return path;

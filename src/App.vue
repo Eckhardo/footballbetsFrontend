@@ -3,7 +3,8 @@
   <GlobalMessage />
   <GlobalErrorMessage />
 
-  <router-view></router-view>
+  <!-- Vue 3 Router View with fullPath key mapping -->
+  <router-view :key="$route.fullPath" />
 
 
 </template>
