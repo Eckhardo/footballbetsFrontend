@@ -68,7 +68,11 @@ const routes = [
                 component: () => import('@/views/admin/tipper/Spielplan.vue')
             },
 
-
+            {
+                path: 'tippModi',
+                name: 'TippModi',
+                component: () => import('@/views/admin/tipper/TippModi.vue')
+            },
 
 
         ]

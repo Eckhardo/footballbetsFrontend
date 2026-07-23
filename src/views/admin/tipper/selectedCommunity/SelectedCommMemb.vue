@@ -1,5 +1,4 @@
 <template>
-  {{ formData.communityNotFound }}
   <div style="color: #5a0ce8" v-html=" errorMessage" v-if="formData.communityNotFound===true"></div>
   <div v-if="loggedIn" class="bets-container">
     <div class="card-header">
@@ -38,30 +37,17 @@
             <th v-if="formData.tippModusType==='ResultTipp'">Tendenz Punkte</th>
             <th v-if="formData.tippModusType==='ResultTipp'">Bonus Punkte</th>
             <th v-if="formData.tippModusType==='PointTipp'">Gesamte Punkte</th>
-            <th>Aktion</th>
           </tr>
           </thead>
           <tbody>
 
           <tr v-for="(item) in formData.tippModi" :key="item.id">
-            <td>
-              <input type="text" class="form-control  w-auto border border-3 " id="name"
-                     v-model="item.type"
-                     readonly>
-            </td>
-            <td><input type="text" required class="form-control  w-auto border border-3 " id="name"
-                       v-model="item.name"
-            ></td>
-            <td><input type="number" class="form-control  w-auto border border-3 " id="deadline"
-                       v-model="item.deadline" min="0"></td>
+            <td>{{ item.type }}</td>
+            <td>{{ item.name }}</td>
+            <td>{{ item.deadline }}</td>
             <td v-if="item.type==='ResultTipp'">{{ item.tendencyPoints }}</td>
-
             <td v-if="item.type==='ResultTipp'">{{ item.bonusPoints }}</td>
-
             <td v-if="item.type==='PointTipp'">{{ item.totalPoints }}</td>
-            <td>
-              <button class="btn btn-warning btn-sm me-2" @click="changeItem( item)">Ändern</button>
-            </td>
           </tr>
           </tbody>
         </table>
@@ -75,11 +61,10 @@ import {storeToRefs} from "pinia";
 import {useUmsInfoStore} from "@/stores/umsInfoStore.js";
 import CommunityDataService from "@/service/community/CommunityDataService.js";
 import CommMembDataService from "@/service/community/CommMembDataService.js";
-import {useError} from '@/composables/useError.js';
-import {saveMessage} from "@/util/errorMessages.js";
 import TippModusDataService from "@/service/community/TippModusDataService.js";
 import CompMembDataService from "@/service/competition/CompMembDataService.js";
-
+import {useError} from '@/composables/useError.js';
+import {saveMessage} from "@/util/errorMessages.js";
 // 2. Access the current path string (e.g., "/Bulitipper")
 const umsInfoStore = useUmsInfoStore();
 const {loggedIn} = storeToRefs(umsInfoStore);
@@ -154,12 +139,17 @@ const retrieveTippers = async () => {
     setError(saveMessage(e));
   }
 }
+
+
 const retrieveTippModi = async () => {
   console.info("retrieveTippModi()", formData.value.community.id);
   try {
     const response = await TippModusDataService.getModiForCommunity(formData.value.community.id);
     if (response.status === 200) {
       formData.value.tippModi = response.data;
+      response.data.forEach(modus =>{
+        console.log(JSON.stringify(modus));
+      })
       if (formData.value.tippModi.length > 0) {
         formData.value.tippModusType = formData.value.tippModi[0].type;
       }

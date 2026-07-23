@@ -11,6 +11,9 @@
         <li v-if="isVisible && umsInfoStore.loggedIn && umsInfoStore.path!=='info'">
           <router-link to="/tippspielplan">Spielplan</router-link>
         </li>
+        <li v-if="isVisible && umsInfoStore.loggedIn && umsInfoStore.path!=='info'">
+          <router-link to="/tippModi">TippModi</router-link>
+        </li>
         <hr style="border: none; border-top: 2px dotted black; width: 180px;">
       </ul>
     </nav>

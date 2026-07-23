@@ -6,7 +6,7 @@
         <li><router-link to="/communities">Communities</router-link></li>
         <li><router-link to="/tipper">Tipper</router-link></li>
         <li><router-link to="/compMembs">CompMemb</router-link></li>
-        <li><router-link to="/tippModi">TippModus</router-link></li>
+
         <hr style="border: none; border-top: 2px dotted black; width: 180px;">
       </ul>
 
