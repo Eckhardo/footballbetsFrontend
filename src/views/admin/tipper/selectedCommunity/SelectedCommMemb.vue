@@ -61,7 +61,7 @@ import {storeToRefs} from "pinia";
 import {useUmsInfoStore} from "@/stores/umsInfoStore.js";
 import CommunityDataService from "@/service/community/CommunityDataService.js";
 import CommMembDataService from "@/service/community/CommMembDataService.js";
-import TippModusDataService from "@/service/community/TippModusDataService.js";
+import TippModusDataService from "../../../../service/tipps/TippModusDataService.js";
 import CompMembDataService from "@/service/competition/CompMembDataService.js";
 import {useError} from '@/composables/useError.js';
 import {saveMessage} from "@/util/errorMessages.js";

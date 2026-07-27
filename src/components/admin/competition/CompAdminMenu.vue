@@ -38,7 +38,7 @@ export default {
   background-color: #f4f4f4;
   width: 200px; /* Fixed width for sidebar */
   position: fixed;
-  top: 350px; /* Below the header */
+  top: 380px; /* Below the header */
   left: 0;
   bottom: 0;
   overflow-y: auto;

@@ -93,7 +93,7 @@ import {useError} from '@/composables/useError.js';
 import {saveMessage} from "@/util/errorMessages.js";
 import {useUmsInfoStore} from "@/stores/umsInfoStore.js";
 import CommunityDataService from "@/service/community/CommunityDataService.js";
-import TippModusDataService from "@/service/community/TippModusDataService.js";
+import TippModusDataService from "../../../service/tipps/TippModusDataService.js";
 import TipperDataService from "../../../service/community/TipperDataService.js";
 import {useMessage} from "../../../composables/useMessage.js";
 

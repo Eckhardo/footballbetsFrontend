@@ -15,12 +15,11 @@ class CompMembDataService {
     }
 
 
-    findCompetitions(commId) {
-        return http.get(`/compMembs/${commId}/competitions`);
-    }
-
     findCurrentCompetition(commId) {
         return http.get(`/compMembs/${commId}/competition`);
+    }
+    findOne(commId,compId) {
+        return http.get(`/compMembs/${commId}/compMemb/${compId}`);
     }
 
 

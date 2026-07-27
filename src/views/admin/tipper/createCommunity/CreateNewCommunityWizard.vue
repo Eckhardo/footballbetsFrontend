@@ -22,7 +22,7 @@ const {setError} = useError();
 import CompDataService from "@/service/competition/CompDataService.js";
 import TipperDataService from "@/service/community/TipperDataService.js";
 import CommunityWizardDataService from "@/service/community/CommunityWizardDataService.js";
-import TippModusDataService from "@/service/community/TippModusDataService.js";
+import TippModusDataService from "../../../../service/tipps/TippModusDataService.js";
 
 
 

@@ -75,6 +75,11 @@ const routes = [
             },
 
 
+            {
+                path: 'tippConfigs',
+                name: 'TippConfigs',
+                component: () => import('../views/admin/tipper/tippconfig/TippConfigs.vue')
+            },
         ]
     },
     {
