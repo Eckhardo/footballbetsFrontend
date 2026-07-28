@@ -7,5 +7,9 @@ class TippConfigDataService {
     }
 
 
+    update(id, data) {
+        console.log("Update tipp config id", id);
+        return http.put(`/tippConfig/${id}`, data);
+    }
 }
 export default new TippConfigDataService();

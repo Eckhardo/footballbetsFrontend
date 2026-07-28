@@ -39,7 +39,6 @@
                      v-model="formData.passwortHint" min="2">
             </div>
           </div>
-
           <div class="mb-3  p-3 ">
             <button type="submit" class="btn btn-primary">
               Speichern

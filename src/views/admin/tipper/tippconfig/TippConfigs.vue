@@ -1,11 +1,9 @@
 <template>
 
-
   <div v-if="loggedIn && loaded" class="container mt-5">
     <!--  Form for Update -->
     <TippConfigForm v-if="formData.isVisible"  v-bind:tippModi="formData.tippModi"
                     v-bind:item="formData.editingItem" @save-item="handleSave"/>
-
     <!--  List for Read/Edit -->
     <TippConfigList v-if="! formData.isVisible" v-bind:items="formData.tippConfigs" @edit-item="handleEdit"/>
   </div>
@@ -14,7 +12,7 @@
 
 <script setup>
 import {storeToRefs} from "pinia";
-import {computed, ref, onMounted} from 'vue';
+import { ref, onMounted} from 'vue';
 import {useError} from '@/composables/useError.js';
 import {saveMessage} from "@/util/errorMessages.js";
 import {useUmsInfoStore} from "@/stores/umsInfoStore.js";
@@ -22,11 +20,9 @@ import {useMessage} from "@/composables/useMessage.js";
 import CommunityDataService from "@/service/community/CommunityDataService.js";
 import CompMembDataService from "@/service/competition/CompMembDataService.js";
 import TippConfigDataService from "@/service/tipps/TippConfigDataService.js";
-
+import TippModusDataService from "@/service/tipps/TippModusDataService.js";
 import TippConfigForm from "./TippConfigForm.vue";
 import TippConfigList from "./TippConfigList.vue";
-import TippModusDataService from "../../../../service/tipps/TippModusDataService.js";
-import MatchdaysForm from "../../competition/matchdays/MatchdaysForm.vue";
 
 const {setError} = useError();
 const {setMessage} = useMessage();
@@ -122,6 +118,7 @@ const retrieveTippConfigs = async () => {
 
 
 const handleSave = async (payload) => {
+  console.log("handleSave", JSON.stringify(payload));
   formData.value.isVisible = false;
   if (payload.id) {
     try {

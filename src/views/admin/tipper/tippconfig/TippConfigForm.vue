@@ -1,6 +1,30 @@
 
 <template>
+  <div class="bets-container">
+  <h5>Meine TippModi</h5>
 
+  <table class="table table-striped table-hover">
+    <thead>
+    <tr>
+      <th>Typ</th>
+      <th>Name</th>
+      <th>Deadline</th>
+      <th v-if="tippModi[0].type==='ResultTipp'">Tendenz Punkte</th>
+      <th v-if="tippModi[0].type==='ResultTipp'">Bonus Punkte</th>
+      <th v-if="tippModi[0].type==='PointTipp'">Gesamte Punkte</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr v-for="(item) in tippModi" :key="item.id">
+      <td> {{ item.type }}</td>
+      <td>{{ item.name }}</td>
+      <td>{{ item.deadline }}</td>
+      <td v-if="item.type==='ResultTipp'">{{ item.tendencyPoints }}</td>
+      <td v-if="item.type==='ResultTipp'">{{ item.bonusPoints }}</td>
+      <td v-if="item.type==='PointTipp'">{{ item.totalPoints }}</td>
+    </tr>
+    </tbody>
+  </table>
   <div class="card mb-4">
     <div class="card-header .bg-secondary  fs-5">
       TippModus  ändern
@@ -27,7 +51,7 @@
         <div>
           <label for="compId" class="form-label  fw-bold">Tipp Modus:</label>
           <!-- Use Bootstrap's form-select class for styling -->
-          <select id="compId" class="form-select  w-auto border border-3 " v-model="formData.tippModusName"
+          <select id="compId" class="form-select  w-auto border border-3 " v-model="selectedTippModus"
                   @change="handleTippModusChange" required>
             <option v-for="modus in tippModi" :value="modus" :key="modus.id">
               {{ modus.name }}
@@ -41,6 +65,7 @@
         </div>
       </form>
     </div>
+  </div>
   </div>
 </template>
 
@@ -59,11 +84,16 @@ const props=defineProps({
   }
 });
 
+const selectedTippModus = ref(null);
 const initialForm = {
+  id:'',
   competitionName: '',
+  compMembId:'',
   roundName: '',
-  spieltagNumber: '',
+  tippModusId:'',
   tippModusName: '',
+  spieltagId:'',
+  spieltagNumber: '',
 };
 
 // Initialize with a shallow copy
@@ -76,16 +106,16 @@ const resetForm = () => {
 const emit = defineEmits(['save-item']);
 
 
-// Änderungen an den Parent senden
-const handleSubmit = () => {
+
+
+const handleTippModusChange= ()=> {
+
+  formData.value.tippModusName =selectedTippModus.value.name;
+  formData.value.tippModusId =selectedTippModus.value.id;
+  console.log(" formData.value::", JSON.stringify( formData.value));
+
+  emit('save-item', formData.value);
   resetForm();
-  emit('save-item', formData.value)
-}
-
-
-const handleTippModusChange= (event)=> {
-  console.log("tippModusName", JSON.stringify(event.target.value));
-  formData.value.tippModusName = event.target.value;
 
 }
 
@@ -106,5 +136,11 @@ watch(
 </script>
 
 <style scoped>
-
+.bets-container {
+  max-width: 850px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
 </style>

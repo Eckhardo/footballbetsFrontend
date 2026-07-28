@@ -1,6 +1,6 @@
 
 <template>
-  <div class="card">
+  <div class="bets-container">
     <div class="card-header">
       TippModi für Spieltag
     </div>
@@ -54,5 +54,11 @@ const editItem = (item) => {
 </script>
 
 <style scoped>
-
+.bets-container {
+  max-width: 850px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
 </style>

@@ -25,7 +25,7 @@ const routes = [
             {
                 path: '/:commName',
                 name: 'SelectedCommMemb',
-                component: () => import('../views/admin/tipper/selectedCommunity/SelectedCommMemb.vue'),
+                component: () => import('@/views/admin/tipper/selectedCommunity/SelectedCommMemb.vue'),
                 props: true,
             },
 
@@ -59,7 +59,7 @@ const routes = [
             {
                 path: 'selectCommunity',
                 name: 'CommunityByURL',
-                component: () => import('../views/CommunityByURL.vue')
+                component: () => import('@/views/CommunityByURL.vue')
 
             },
             {
@@ -71,14 +71,14 @@ const routes = [
             {
                 path: 'tippModi',
                 name: 'TippModi',
-                component: () => import('@/views/admin/tipper/TippModi.vue')
+                component: () => import('@/views/admin/tipper/tippModi/TippModi.vue')
             },
 
 
             {
                 path: 'tippConfigs',
                 name: 'TippConfigs',
-                component: () => import('../views/admin/tipper/tippconfig/TippConfigs.vue')
+                component: () => import('@/views/admin/tipper/tippconfig/TippConfigs.vue')
             },
         ]
     },
