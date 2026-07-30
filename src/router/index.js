@@ -20,13 +20,32 @@ const routes = [
                 path: '',
                 name: 'Home',
                 component: () => import('@/views/Home.vue')
-
             },
             {
                 path: '/:commName',
                 name: 'SelectedCommMemb',
-                component: () => import('@/views/admin/tipper/selectedCommunity/SelectedCommMemb.vue'),
+                component: () => import('../views/admin/tipper/overview/SelectedCommMemb.vue'),
                 props: true,
+            },
+            {
+                path: '/:commName/tippspielplan',
+                name: 'Tippspielplan',
+                component: () => import('../views/admin/tipper/spielplan/Spielplan.vue')
+            },
+            {
+                path: '/:commName/tippModi',
+                name: 'TippModi',
+                component: () => import('@/views/admin/tipper/tippModi/TippModi.vue')
+            },
+            {
+                path: '/:commName/tippConfigs',
+                name: 'TippConfigs',
+                component: () => import('@/views/admin/tipper/tippconfig/TippConfigs.vue')
+            },
+            {
+                path: '/:commName/tippangabe',
+                name: 'Tippabgabe',
+                component: () => import('@/views/admin/tipper/tippabgabe/Tippabgabe.vue')
             },
 
             {
@@ -62,24 +81,7 @@ const routes = [
                 component: () => import('@/views/CommunityByURL.vue')
 
             },
-            {
-                path: '/tippspielplan',
-                name: 'Tippspielplan',
-                component: () => import('@/views/admin/tipper/Spielplan.vue')
-            },
 
-            {
-                path: 'tippModi',
-                name: 'TippModi',
-                component: () => import('@/views/admin/tipper/tippModi/TippModi.vue')
-            },
-
-
-            {
-                path: 'tippConfigs',
-                name: 'TippConfigs',
-                component: () => import('@/views/admin/tipper/tippconfig/TippConfigs.vue')
-            },
         ]
     },
     {

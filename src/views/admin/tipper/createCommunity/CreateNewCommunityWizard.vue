@@ -153,7 +153,7 @@ const submitForm = async () => {
       console.info("data:", JSON.stringify(response.data));
 
       const commMemb = response.data;
-      console.info("selectedCommunity: ", commMemb);
+      console.info("overview: ", commMemb);
       umsInfoStore.setCompId(commMemb.compId);
       umsInfoStore.setCommId(commMemb.commId);
       // Navigation zu einer Route mit Namen und Parametern

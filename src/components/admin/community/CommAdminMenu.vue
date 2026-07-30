@@ -5,7 +5,6 @@
 
         <li><router-link to="/communities">Communities</router-link></li>
         <li><router-link to="/tipper">Tipper</router-link></li>
-        <li><router-link to="/compMembs">CompMemb</router-link></li>
 
         <hr style="border: none; border-top: 2px dotted black; width: 180px;">
       </ul>
@@ -43,7 +42,7 @@ export default {
   background-color: #f4f4f4;
   width: 200px; /* Fixed width for sidebar */
   position: fixed;
-  top: 250px; /* Below the header */
+  top: 280px; /* Below the header */
 
   left: 0;
   bottom: 0;

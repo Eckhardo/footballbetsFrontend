@@ -9,14 +9,18 @@
           <router-link :to="{ name: 'SelectedCommMemb', params: { commName:getPath} }">Tippgemeinschaft</router-link>
         </li>
         <li v-if="isVisible && umsInfoStore.loggedIn && umsInfoStore.path!=='info'">
-          <router-link to="/tippspielplan">Spielplan</router-link>
+          <router-link :to="{ name: 'Tippspielplan', params: { commName:getPath} }">Spielplan</router-link>
         </li>
         <li v-if="isVisible && umsInfoStore.loggedIn && umsInfoStore.path!=='info'">
-          <router-link to="/tippModi">TippModi</router-link>
+          <router-link :to="{ name: 'TippModi', params: { commName:getPath} }">TippModi</router-link>
         </li>
         <li v-if="isVisible && umsInfoStore.loggedIn && umsInfoStore.path!=='info'">
-          <router-link to="/tippConfigs">TippConfigs</router-link>
+          <router-link :to="{ name: 'TippConfigs', params: { commName:getPath} }">TippConfigs</router-link>
         </li>
+        <li v-if="isVisible && umsInfoStore.loggedIn && umsInfoStore.path!=='info'">
+          <router-link :to="{ name: 'Tippabgabe', params: { commName:getPath} }">Tippabgabe</router-link>
+        </li>
+
         <hr style="border: none; border-top: 2px dotted black; width: 180px;">
       </ul>
     </nav>

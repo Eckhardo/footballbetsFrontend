@@ -1,8 +1,8 @@
 
 <template>
   <div v-if="items.length>0" class="bets-container">
-    <div>
-      <button type="button" class="btn btn-primary" @click="createItem">
+    <div style="padding-bottom:inherit ">
+      <button type="button" class="btn btn-primary btn-sm me-2" @click="createItem">
         TippModus neu anlegen
       </button>
     </div>

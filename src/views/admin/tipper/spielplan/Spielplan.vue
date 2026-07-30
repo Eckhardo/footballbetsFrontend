@@ -69,9 +69,14 @@
 </template>
 
 <script setup>
-import {ref, computed, onMounted, watch} from 'vue';
-import axios from 'axios';
-import MatchdayDataService from "@/service/competition/MatchdayDataService.js";
+import {onMounted, ref, watch} from 'vue';
+import MatchdayDataService from "../../../../service/competition/MatchdayDataService.js";
+import {storeToRefs} from "pinia";
+import {useUmsInfoStore} from "../../../../stores/umsInfoStore.js";
+import {useError} from '../../../../composables/useError.js';
+import {useMessage} from '../../../../composables/useMessage.js';
+import {saveMessage} from "../../../../util/errorMessages.js";
+import MatchDataService from "../../../../service/competition/MatchDataService.js";
 
 // --- Reaktive Zustände (State) ---
 const matches = ref([]);
@@ -81,15 +86,9 @@ const currentMatchday = ref(null);
 const currentMatchdayNumber = ref(1);
 const currentMatchdayId = ref(1);
 const loading = ref(false);
-import {storeToRefs} from "pinia";
-import {useUmsInfoStore} from "@/stores/umsInfoStore.js";
 
 const umsInfoStore = useUmsInfoStore();
 const {defaultCompetitionId} = storeToRefs(umsInfoStore);
-import {useError} from '@/composables/useError';
-import {useMessage} from '@/composables/useMessage';
-import {saveMessage} from "@/util/errorMessages.js";
-import MatchDataService from "../../../service/competition/MatchDataService.js";
 
 const {setMessage} = useMessage();
 const {setError} = useError();
@@ -103,22 +102,18 @@ let matchdays =[];
 const fetchMatchdays = async () => {
   loading.value = true;
 
-  console.log("Loading matchdays...", defaultCompetitionId.value);
   try {
     const matchdaysResponse = await MatchdayDataService.getMatchdaysByCompId(defaultCompetitionId.value);
-    console.log("...loaded matchdays", matchdaysResponse.status);
     if (matchdaysResponse.status === 200) {
 
       matchdays = matchdaysResponse.data;
       console.log("...loaded matchdays", JSON.stringify(matchdaysResponse.data));
       if (matchdays.length > 0) {
         currentMatchday.value = matchdays[0];
-        console.log("...currrent matchday:", JSON.stringify(currentMatchday.value));
+
         currentMatchdayId.value = currentMatchday.value.id;
-        console.log("...currrent matchday id:", JSON.stringify(  currentMatchdayId.value ));
         currentMatchdayNumber.value = currentMatchday.value.spieltagNumber;
         totalMatchdays.value = matchdays.length;
-        console.log("...currrent matchday:", currentMatchdayNumber.value);
         setMessage("Spieltage geladen");
         await fetchMatchesForMatchday();
       }
@@ -154,24 +149,17 @@ const fetchMatchesForMatchday = async () => {
 // --- Event-Handler ---
 const changeMatchday = (newMatchday) => {
   if (newMatchday >= 1 && newMatchday <= totalMatchdays.value) {
-
     currentMatchdayNumber.value = newMatchday;
   }
 };
 const getMatchdayById = (idToFind) => {
   console.log("selectedMatchday by id::",JSON.stringify(idToFind));
-
-  console.log("myDays by id::",JSON.stringify(matchdays));
-  const myDay= matchdays.find(matchday => matchday.id === idToFind);
-  console.log("selectedMatchday::",JSON.stringify(myDay));
-  return myDay;
+  return matchdays.find(matchday => matchday.id === idToFind);
 }
 
 const getMatchdayByNumber = (numberToFind) => {
   console.log("selectedMatchday by number::",JSON.stringify(numberToFind));
-  const myDay = matchdays.find(matchday => matchday.spieltagNumber === numberToFind);
-  console.log("selectedMatchday::",JSON.stringify(myDay));
-  return myDay;
+  return matchdays.find(matchday => matchday.spieltagNumber === numberToFind);
 }
 const handlePerPageChange = () => {
   // Wenn die Zeilenanzahl geändert wird, springen wir zurück auf Seite 1
