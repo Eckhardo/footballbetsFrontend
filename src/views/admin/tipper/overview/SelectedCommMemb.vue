@@ -61,13 +61,13 @@ import {storeToRefs} from "pinia";
 import {useUmsInfoStore} from "@/stores/umsInfoStore.js";
 import CommunityDataService from "@/service/community/CommunityDataService.js";
 import CommMembDataService from "@/service/community/CommMembDataService.js";
-import TippModusDataService from "../../../../service/tipps/TippModusDataService.js";
+import TippModusDataService from "@/service/tipps/TippModusDataService.js";
 import CompMembDataService from "@/service/competition/CompMembDataService.js";
 import {useError} from '@/composables/useError.js';
 import {saveMessage} from "@/util/errorMessages.js";
 // 2. Access the current path string (e.g., "/Bulitipper")
 const umsInfoStore = useUmsInfoStore();
-const {loggedIn} = storeToRefs(umsInfoStore);
+const {loggedIn, userId} = storeToRefs(umsInfoStore);
 const props = defineProps({
   commName: {
     type: String,
@@ -100,7 +100,31 @@ const retrieveCommunity = async () => {
       formData.value.community = response.data;
       console.info(" formData.value.community::", formData.value.community.id);
       umsInfoStore.setPath(props.commName);
-      umsInfoStore.setInvalidPath(false);
+      umsInfoStore.setInvalidPath(false)
+      umsInfoStore.setCommId(formData.value.community.id);
+
+    } else {
+      formData.value.communityNotFound = true;
+      umsInfoStore.setPath(null);
+      umsInfoStore.setInvalidPath(true);
+    }
+  } catch (e) {
+    console.error(e);
+    setError(saveMessage(e));
+
+  }
+}
+
+const retrieveCommMemb = async () => {
+  console.info("retrieveCommMemb()");
+  try {
+    const response = await CommMembDataService.findByCommIdAndTipperId(formData.value.community.id,userId.value);
+    if (response.status === 200) {
+      formData.value.commMemb = response.data;
+      console.info(" formData.value.commMemb id::",formData.value.commMemb.id);
+
+      umsInfoStore.setCommMembId(formData.value.commMemb.id);
+
     } else {
       formData.value.communityNotFound = true;
       umsInfoStore.setPath(null);
@@ -120,6 +144,7 @@ const retrieveCompetition = async () => {
     const response = await CompMembDataService.findCurrentCompetition(formData.value.community.id);
     if (response.status === 200) {
       formData.value.competition = response.data;
+      umsInfoStore.setCompId(formData.value.competition.id);
     }
   } catch (e) {
     console.error(e);
@@ -196,6 +221,7 @@ onMounted(async () => {
   await retrieveCommunity();
   if (loggedIn.value) {
     formData.value.communityNotFound = false;
+    await retrieveCommMemb();
     await retrieveCompetition();
     await retrieveTippModi();
     await retrieveTippers();

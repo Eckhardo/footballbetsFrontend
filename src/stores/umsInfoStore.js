@@ -6,6 +6,7 @@ export const useUmsInfoStore = defineStore('umsInfoStore', {
         {
             umsInfo: {
                 username: null,
+                userId:null,
                 loggedIn: false,
                 defaultCountry: null,
                 defaultCommunityId: String,
@@ -27,11 +28,13 @@ export const useUmsInfoStore = defineStore('umsInfoStore', {
 
         // Getters can access the state and return computed values
         username: (state) => state.umsInfo.username,
+        userId: (state) => state.umsInfo.userId,
         loggedIn: (state) => state.umsInfo.loggedIn,
         commAdmin: (state) => state.umsInfo.commAdmin,
         compAdmin: (state) => state.umsInfo.compAdmin,
         defaultCommunityId: (state) => state.umsInfo.defaultCommunityId,
         defaultCompetitionId: (state) => state.umsInfo.defaultCompetitionId,
+        defaultCommMembId: (state) => state.umsInfo.defaultCommMembId,
         defaultCountry: (state) => state.umsInfo.defaultCountry,
         adminCommunities: (state) => state.umsInfo.adminCommunities,
         adminCompetitions: (state) => state.umsInfo.adminCompetitions,
@@ -57,6 +60,10 @@ export const useUmsInfoStore = defineStore('umsInfoStore', {
         setCommId(id) {
             console.log("SetCommId", id);
             this.umsInfo.defaultCommunityId = id;
+        },
+        setCommMembId(id) {
+            console.log("setCommMembId", id);
+            this.umsInfo.defaultCommMembId = id;
         },
         setDefaultCountry(country) {
             console.log("set country", country);

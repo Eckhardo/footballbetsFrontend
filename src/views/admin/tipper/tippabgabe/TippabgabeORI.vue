@@ -15,14 +15,14 @@
       </tr>
       </thead>
       <tbody>
-      <tr v-for="(match) in matches" :key="match.id">
+      <tr v-for="(match) in formData.matches" :key="match.id">
         <td>{{ match.anpfiffdate }}</td>
-        <td>{{ match.heimTeamAcronym }}</td>
-        <td>{{ match.gastTeamAcronym }}</td>
+        <td>{{ match.heimName }}</td>
+        <td>{{ match.gastName }}</td>
         <td>{{ match.heimTore }}:{{ match.gastTore }}</td>
 
       </tr>
-      <tr v-if="matches.length === 0 && !loading">
+      <tr v-if="formData.matches.length === 0 && !loading">
         <td colspan="4" class="no-data">Keine Einträge gefunden.</td>
       </tr>
       </tbody>
@@ -69,52 +69,59 @@
 </template>
 
 <script setup>
-import {onMounted, ref, watch} from 'vue';
-import MatchdayDataService from "../../../../service/competition/MatchdayDataService.js";
+import {ref, onMounted, watch} from 'vue';
+import MatchdayDataService from "@/service/competition/MatchdayDataService.js";
+
 import {storeToRefs} from "pinia";
-import {useUmsInfoStore} from "../../../../stores/umsInfoStore.js";
-import {useError} from '../../../../composables/useError.js';
-import {useMessage} from '../../../../composables/useMessage.js';
-import {saveMessage} from "../../../../util/errorMessages.js";
-import MatchDataService from "../../../../service/competition/MatchDataService.js";
-
-// --- Reaktive Zustände (State) ---
-const matches = ref([]);
-
-const totalMatchdays = ref(34);
-const currentMatchday = ref(null);
-const currentMatchdayNumber = ref(1);
-const currentMatchdayId = ref(1);
-const loading = ref(false);
+import {useUmsInfoStore} from "@/stores/umsInfoStore.js";
 
 const umsInfoStore = useUmsInfoStore();
-const {defaultCompetitionId} = storeToRefs(umsInfoStore);
+const {defaultCompetitionId, defaultCommunityId, defaultCommMembId} = storeToRefs(umsInfoStore);
+
+import {useError} from '@/composables/useError.js';
+import {useMessage} from '@/composables/useMessage.js';
+import {saveMessage} from "@/util/errorMessages.js";
+import TippModusDataService from "@/service/tipps/TippModusDataService.js";
+import TippDataService from "@/service/tipps/TippDataService.js";
 
 const {setMessage} = useMessage();
 const {setError} = useError();
 
 // Paginierungs-Metriken
 
-const perPage = ref(9);
-let matchdays =[];
+const totalMatchdays = ref(34);
+const currentMatchday = ref(null);
+const currentMatchdayNumber = ref(1);
+const currentMatchdayId = ref(1);
+const loading = ref(false);
+const formData = ref(
+    {
+      matchdays: [],
+      matches: [],
+      tippModusType: ''
+    }
+)
+// --- Reaktive Zustände (State) ---
+
 
 // --- API-Aufruf (Axios) ---
 const fetchMatchdays = async () => {
   loading.value = true;
 
+  console.log("Loading matchdays for comp.", defaultCompetitionId.value);
   try {
     const matchdaysResponse = await MatchdayDataService.getMatchdaysByCompId(defaultCompetitionId.value);
     if (matchdaysResponse.status === 200) {
+      formData.value.matchdays = matchdaysResponse.data;
+      console.log("Loaded matchdays for comp.", JSON.stringify(formData.value.matchdays.length));
+      if (formData.value.matchdays.length > 0) {
 
-      matchdays = matchdaysResponse.data;
-      console.log("...loaded matchdays", JSON.stringify(matchdaysResponse.data));
-      if (matchdays.length > 0) {
-        currentMatchday.value = matchdays[0];
-
+        currentMatchday.value = formData.value.matchdays[0];
+        console.log("currentMatchday", currentMatchday.value);
         currentMatchdayId.value = currentMatchday.value.id;
         currentMatchdayNumber.value = currentMatchday.value.spieltagNumber;
-        totalMatchdays.value = matchdays.length;
-        setMessage("Spieltage geladen");
+        console.log("matchdays geladen.");
+        await retrieveTippModi();
         await fetchMatchesForMatchday();
       }
     }
@@ -126,21 +133,38 @@ const fetchMatchdays = async () => {
   }
 };
 
+const retrieveTippModi = async () => {
+  console.info("retrieveTippModi()", defaultCommunityId.value);
+  try {
+    const response = await TippModusDataService.getModiForCommunity(defaultCommunityId.value);
+    if (response.status === 200) {
+      formData.value.tippModi = response.data;
+      if (formData.value.tippModi.length > 0) {
+        formData.value.tippModusType = formData.value.tippModi[0].type;
+
+      }
+      loading.value = true;
+    }
+  } catch (e) {
+    console.error(e);
+    setError(saveMessage(e));
+  }
+}
+
 const fetchMatchesForMatchday = async () => {
   console.log("fetchMatchesForMatchday");
   try {
     currentMatchday.value = getMatchdayById(currentMatchdayId.value);
     currentMatchday.value = getMatchdayByNumber(currentMatchdayNumber.value);
-    if (currentMatchday.value) {}
-    currentMatchdayId.value = currentMatchday.value.id;
-
-    const matchesResponse = await MatchDataService.getAllByMatchdayId(currentMatchdayId.value);
-    matches.value = matchesResponse.data;
+    currentMatchdayId.value =currentMatchday.value.id;
+    console.log("findTippRowsForTipper");
+    const matchesResponse = await TippDataService.findTippRowsForTipper(currentMatchdayId.value, defaultCommMembId.value);
+    formData.value.matches = matchesResponse.data;
 
     setMessage("Spieltag " + currentMatchdayNumber.value + " geladen");
   } catch (err) {
     console.error(err);
- //   setError(saveMessage(err));
+    setError(saveMessage(err));
   } finally {
     loading.value = false;
 
@@ -148,30 +172,29 @@ const fetchMatchesForMatchday = async () => {
 }
 // --- Event-Handler ---
 const changeMatchday = (newMatchday) => {
+  console.log("chnageMatchday::", JSON.stringify(newMatchday));
   if (newMatchday >= 1 && newMatchday <= totalMatchdays.value) {
-
     currentMatchdayNumber.value = newMatchday;
+    fetchMatchesForMatchday();
   }
 };
 const getMatchdayById = (idToFind) => {
-  console.log("selectedMatchday by id::",JSON.stringify(idToFind));
-  return matchdays.find(matchday => matchday.id === idToFind);
+  console.log("selectedMatchday by id::", JSON.stringify(idToFind));
+  const myDay = formData.value.matchdays.find(matchday => matchday.id === idToFind);
+  console.log("selectedMatchday::", JSON.stringify(myDay));
+  return myDay;
 }
 
 const getMatchdayByNumber = (numberToFind) => {
-  console.log("selectedMatchday by number::",JSON.stringify(numberToFind));
-  return matchdays.find(matchday => matchday.spieltagNumber === numberToFind);
+  console.log("selectedMatchday by number::", JSON.stringify(numberToFind));
+  const myDay = formData.value.matchdays.find(matchday => matchday.spieltagNumber === numberToFind);
+  console.log("selectedMatchday::", JSON.stringify(myDay));
+  return myDay;
 }
-const handlePerPageChange = () => {
-  // Wenn die Zeilenanzahl geändert wird, springen wir zurück auf Seite 1
-  currentMatchdayNumber.value = 1;
-  fetchMatchdays();
-};
 
 // --- Watcher & Lifecycles ---
 // Sobald sich die aktuelle Seite ändert, werden die Daten neu geladen
-watch(currentMatchdayNumber, () => {
-
+watch(currentMatchdayNumber.value, () => {
   fetchMatchesForMatchday();
 });
 
@@ -180,16 +203,16 @@ watch(currentMatchdayNumber, () => {
 onMounted(() => {
   fetchMatchdays();
 
+
 });
 </script>
 
 <style scoped>
 .datatable-container {
-  max-width: 800px;
-  margin: 2rem auto;
-  padding: 1.5rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
+  font-family: sans-serif;
+  margin: 20px auto;
+  max-width: 1000px;
+  position: relative;
 }
 
 .custom-table {

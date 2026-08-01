@@ -7,8 +7,8 @@ class CommMembDataService {
    getCommunities(username) {
        return http.get(`/commMembs/${username}/communities`);
     }
-    getCommunity(commName) {
-        return http.get(`/commMembs/${commName}/communities`);
+    findByCommIdAndTipperId(commId, tipperId) {
+        return http.get(`/commMembs/${commId}/tipper/${tipperId}`);
     }
 }
 export default new CommMembDataService();

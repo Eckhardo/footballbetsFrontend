@@ -42,7 +42,6 @@ const formData = ref(
     }
 )
 const retrieveCommunity = async () => {
-  console.info("retrieveCommunity()", path.value);
   try {
     const response = await CommunityDataService.getByName(path.value);
     if (response.status === 200) {
@@ -56,8 +55,6 @@ const retrieveCommunity = async () => {
 }
 
 const retrieveCompetition = async () => {
-
-  console.info("retrieveCompetition()", formData.value.community.id);
   try {
     const response = await CompMembDataService.findCurrentCompetition(formData.value.community.id);
     if (response.status === 200) {
@@ -70,8 +67,6 @@ const retrieveCompetition = async () => {
 }
 
 const retrieveCompMemb = async () => {
-
-  console.info("retrieveCompMemb()", formData.value.community.id);
   try {
     const response = await CompMembDataService.findOne(formData.value.community.id, formData.value.competition.id);
     if (response.status === 200) {
@@ -83,7 +78,6 @@ const retrieveCompMemb = async () => {
   }
 }
 const retrieveTippModi = async () => {
-  console.info("retrieveTippModi()", formData.value.community.id);
   try {
     const response = await TippModusDataService.getModiForCommunity(formData.value.community.id);
     if (response.status === 200) {
@@ -101,8 +95,6 @@ const retrieveTippModi = async () => {
   }
 }
 const retrieveTippConfigs = async () => {
-
-  console.info("retrieveTippConfigs()", formData.value.compMemb.id);
   try {
     const response = await TippConfigDataService.getRowsForCompMemb(formData.value.compMemb.id);
     if (response.status === 200) {
@@ -118,7 +110,6 @@ const retrieveTippConfigs = async () => {
 
 
 const handleSave = async (payload) => {
-  console.log("handleSave", JSON.stringify(payload));
   formData.value.isVisible = false;
   if (payload.id) {
     try {
@@ -137,13 +128,11 @@ const handleSave = async (payload) => {
 }
 
 const handleEdit = (payload) => {
-  console.log("handleEdit", JSON.stringify(payload));
-  formData.value.editingItem = {...payload.item};
+   formData.value.editingItem = {...payload.item};
   formData.value.isVisible = payload.isVisible;
 }
 
 onMounted(async () => {
-  console.log("onMounted()");
   await retrieveCommunity();
   if (loggedIn.value) {
     await retrieveCompetition();

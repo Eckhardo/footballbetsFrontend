@@ -15,21 +15,18 @@
 
 <script setup>
 import {storeToRefs} from "pinia";
-import {computed, ref, onMounted} from 'vue';
+import { ref, onMounted} from 'vue';
 import {useError} from '@/composables/useError.js';
 import {saveMessage} from "@/util/errorMessages.js";
 import {useUmsInfoStore} from "@/stores/umsInfoStore.js";
 import CommunityDataService from "@/service/community/CommunityDataService.js";
 import TippModusDataService from "@/service/tipps/TippModusDataService.js";
-import {useMessage} from "@/composables/useMessage.js";
 
 import TippModusForm from "./TippModusForm.vue";
 import TippModusList from "./TippModusList.vue";
 
 
-const isUpdate = ref(false);
 const {setError} = useError();
-const {setMessage} = useMessage();
 const umsInfoStore = useUmsInfoStore();
 const {loggedIn, path} = storeToRefs(umsInfoStore);
 const loaded = ref(false);
@@ -45,14 +42,12 @@ const formData = ref(
 )
 
 const handleCreate = (payload) => {
-  console.log("handleCreate", JSON.stringify(payload));
   // Set the community to be edited in the form
   formData.value.editingItem = null;
   formData.value.isVisible = payload.isVisible;
 }
 
 const handleEdit = (payload) => {
-  console.log("handleEdit", JSON.stringify(payload));
   formData.value.editingItem = {...payload.item};
   formData.value.isVisible = payload.isVisible;
 }
@@ -63,8 +58,7 @@ const retrieveCommunity = async () => {
     const response = await CommunityDataService.getByName(path.value);
     if (response.status === 200) {
       formData.value.community = response.data;
-      console.info(" community id::", formData.value.community.id);
-    }
+       }
   } catch (e) {
     console.error(e);
     setError(saveMessage(e));
@@ -113,9 +107,7 @@ const retrieveTippModi = async () => {
   try {
     const response = await TippModusDataService.getModiForCommunity(formData.value.community.id);
     if (response.status === 200) {
-      console.log(JSON.stringify(response.data));
       formData.value.tippModi = response.data;
-
       if (formData.value.tippModi.length > 0) {
         formData.value.tippModusType = formData.value.tippModi[0].type;
        tippModusReference.value = formData.value.tippModi[0];
