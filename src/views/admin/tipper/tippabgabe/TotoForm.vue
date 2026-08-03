@@ -23,19 +23,19 @@
           <td>{{ match.heimName }}</td>
           <td>{{ match.gastName }}</td>
           <td>{{ match.heimTore }}:{{ match.gastTore }}</td>
-          <td><input
+          <td><input class="small-input form-control  border border-3 "
               type="radio"
               :name="match.id"
               :value=1
               v-model="match.heimTipp"
           /></td>
-          <td><input
+          <td><input class="small-input form-control  border border-3 "
               type="radio"
               :name="match.id"
               :value=0
               v-model="match.remisTipp"
           /></td>
-          <td><input
+          <td><input class="small-input form-control  border border-3 "
               type="radio"
               :name="match.id"
               :value=2
@@ -112,39 +112,9 @@ const props = defineProps({
     required: true
   }
 });
-const matchdays = toRef(props, 'matchdays');
-const currentMatchdayNumber = toRef(props, 'currentMatchdayNumber');
-const initialForm = {
-  spielId: '',
-  anpfiffdate: '',
-  heimTore: 0,
-  gastTore: 0,
-  hasStattgefunden: false,
-  heimName: '',
-  gastName: '',
-  spieltagNumber: '',
-  roundName: '',
-  competitionName: 0,
-  tippId: null,
-  heimTipp: 0,
-  remisTipp: 0,
-  gastTipp: 0,
-  commMembId: null
-};
 const editing = ref(false);
-// Initialize with a shallow copy
-const formData = ref({...initialForm})
 
-const resetForm = () => {
-  // Simple and clean reset
-  formData.value = {...initialForm}
-}
-
-const saveAll = () => {
-  console.log("saveAll");
-}
 const changeMatchday = (newMatchday) => {
-  console.log("changeMatchday", newMatchday);
   if (newMatchday >= 1 && newMatchday <= matchdays.value.length) {
     console.log("changeMatchday", newMatchday);
     currentMatchdayNumber.value = newMatchday;
@@ -158,6 +128,9 @@ const saveMatches = () => {
 </script>
 
 <style scoped>
+.small-input {
+  width: 100px;
+}
 .datatable-container {
   font-family: sans-serif;
   margin: 20px auto;

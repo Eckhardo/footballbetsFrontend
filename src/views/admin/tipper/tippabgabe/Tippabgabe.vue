@@ -1,8 +1,15 @@
 <template>
-  <TotoForm v-if="! formData.loading" v-model="formData.matches"
+  <div class="panel panel-default">TippModus: {{ formData.tippModusType }}</div>
+  <TotoForm v-if="! formData.tippModusType==='TotoTipp' && !formData.loading" v-model="formData.matches"
             v-bind:matchdays="formData.matchdays" @change-matchday="changeMatchday" @save-matches="saveAll"
             v-bind:current-matchday-number="currentMatchdayNumber"/>
-  <button v-if="! formData.loading" type="button" @click="saveAll">Speichern</button>
+  <PointForm v-if=" formData.tippModusType==='PointTipp' && !formData.loading" v-model="formData.matches"
+             v-bind:matchdays="formData.matchdays" @change-matchday="changeMatchday" @save-matches="saveAll"
+             v-bind:current-matchday-number="currentMatchdayNumber"/>
+  <ResultForm v-if=" formData.tippModusType==='ResultTipp' && !formData.loading" v-model="formData.matches"
+              v-bind:matchdays="formData.matchdays" @change-matchday="changeMatchday" @save-matches="saveAll"
+              v-bind:current-matchday-number="currentMatchdayNumber"/>
+
 </template>
 
 <script setup>
@@ -19,10 +26,13 @@ import {useError} from '@/composables/useError.js';
 import {useMessage} from '@/composables/useMessage.js';
 import {saveMessage} from "@/util/errorMessages.js";
 
+import {formatDateTime, formatGermanDate} from "@/util/DateFromatter.js";
+
 import TippModusDataService from "@/service/tipps/TippModusDataService.js";
 import TippDataService from "@/service/tipps/TippDataService.js";
 import TotoForm from "./TotoForm.vue";
-import TipperForm from "../../community/tipper/TipperForm.vue";
+import ResultForm from "./ResultForm.vue";
+import PointForm from "./PointForm.vue";
 
 const {setMessage} = useMessage();
 const {setError} = useError();
@@ -44,106 +54,142 @@ const saveAll = async () => {
   console.log("saveAll");
   try {
 
-    const response = await TippDataService.create(formData.value.matches);
-
+    await TippDataService.create(formData.value.matches);
+    await fetchMatchesForMatchday();
     setMessage("Tpps für  " + currentMatchdayNumber.value + "  gespiechert");
   } catch (err) {
     console.error(err);
     setError(saveMessage(err));
   }
 }
+
+const retrieveCurrentMatchday = () => {
+  let finished;
+  let timestampNow = Date.now();
+
+  console.log("timestampNow::", timestampNow);
+  const currentDate = new Date(timestampNow);
+  const formattedDate = formatDateTime(currentDate);
+  let timeStampFuture = currentDate.getTime();
+  const greaterMatchdays = formData.value.matchdays.filter(matchday => {console.log("ori: ::", matchday.startDate);
+    let _timestamp = new Date(matchday.startDate).getTime();
+    const germanDate = formatDateTime(_timestamp);
+    console.log(` ${matchday.spieltagNumber}: spieltag timestamp: ${_timestamp}, current timestamp: ${timeStampFuture}.`);
+    console.log(`${matchday.spieltagNumber}: spieltag date: ${germanDate}, current date: ${formattedDate}.`);
+    console.log(_timestamp > timeStampFuture);
+    return _timestamp > timeStampFuture;
+  });
+  console.log("greater matchdays::", greaterMatchdays.length);
+  if (greaterMatchdays.length > 0) {
+    currentMatchdayNumber.value = greaterMatchdays[0].spieltagNumber;
+
+  } else {
+    currentMatchdayNumber.value =formData.value.matchdays[1].spieltagNumber;
+  }
+
+
+    finished = true;
+    return finished;
+  }
+
 // --- API-Aufruf (Axios) ---
-const fetchMatchdays = async () => {
-  formData.value.loading = true;
-  try {
-    const matchdaysResponse = await MatchdayDataService.getMatchdaysByCompId(defaultCompetitionId.value);
-    console.log("...loaded matchdays", matchdaysResponse.status);
-    if (matchdaysResponse.status === 200) {
+  const fetchMatchdays = async () => {
+    formData.value.loading = true;
+    try {
+      const matchdaysResponse = await MatchdayDataService.getMatchdaysByCompId(defaultCompetitionId.value);
+      console.log("...loaded matchdays", matchdaysResponse.status);
+      if (matchdaysResponse.status === 200) {
+        console.log("status:", matchdaysResponse.status);
+        formData.value.matchdays = matchdaysResponse.data;
+        if (formData.value.matchdays.length > 0) {
+          formData.value.currentMatchday = formData.value.matchdays[0];
+          console.log("first date::", formData.value.currentMatchday.startDate);
+          formData.value.currentMatchdayId = formData.value.currentMatchday.id;
+          currentMatchdayNumber.value = formData.value.currentMatchday.spieltagNumber;
+          formData.value.totalMatchdays = formData.value.matchdays.length;
+          await fetchMatchesForMatchday();
 
-      formData.value.matchdays = matchdaysResponse.data;
-      if (formData.value.matchdays.length > 0) {
-        formData.value.currentMatchday = formData.value.matchdays[0];
+        }
+      }
+    } catch (err) {
+      console.error(err.message);
+      setError(saveMessage(err));
+    }
+  }
+  const retrieveTippModi = async () => {
+    formData.value.loading = true;
+
+    try {
+      const response = await TippModusDataService.getModiForCommunity(defaultCommunityId.value);
+      if (response.status === 200) {
+        formData.value.tippModi = response.data;
+        if (formData.value.tippModi.length > 0) {
+          formData.value.tippModusType = formData.value.tippModi[0].type;
+          console.log(formData.value.tippModusType);
+        }
+      }
+    } catch (e) {
+      console.error(e);
+      setError(saveMessage(e));
+    }
+  }
+
+  const fetchMatchesForMatchday = async () => {
+    console.log("fetchMatchesForMatchday");
+    formData.value.loading = true;
+    try {
+      console.log("retrieveCurrentMatchday.....");
+      if (retrieveCurrentMatchday()) {
+        console.log("....retrieveCurrentMatchday");
+        formData.value.currentMatchday = getMatchdayByNumber(currentMatchdayNumber.value);
         formData.value.currentMatchdayId = formData.value.currentMatchday.id;
-        currentMatchdayNumber.value = formData.value.currentMatchday.spieltagNumber;
-        formData.value.totalMatchdays = formData.value.matchdays.length;
-        await fetchMatchesForMatchday();
+        const matchesResponse = await TippDataService.findTippRowsForTipper(formData.value.currentMatchdayId, defaultCommMembId.value);
+        formData.value.matches = matchesResponse.data;
+        formData.value.matches.forEach((match, index) => {
+          match.commMembId = defaultCommMembId.value;
+        });
+        setMessage("Spieltag  " + currentMatchdayNumber.value + "  geladen");
       }
+    } catch
+        (err) {
+      console.error(err);
+      setError(saveMessage(err));
+    } finally {
+      formData.value.loading = false;
+
     }
-  } catch (err) {
-    console.error(err.message);
-    setError(saveMessage(err));
   }
-}
-const retrieveTippModi = async () => {
-  formData.value.loading = true;
-
-  console.info("retrieveTippModi()", defaultCommunityId.value);
-  try {
-    const response = await TippModusDataService.getModiForCommunity(defaultCommunityId.value);
-    if (response.status === 200) {
-      formData.value.tippModi = response.data;
-      if (formData.value.tippModi.length > 0) {
-        formData.value.tippModusType = formData.value.tippModi[0].type;
-      }
-    }
-  } catch (e) {
-    console.error(e);
-    setError(saveMessage(e));
-  }
-}
-
-const fetchMatchesForMatchday = async () => {
-  console.log("fetchMatchesForMatchday");
-  formData.value.loading = true;
-  try {
-    formData.value.currentMatchday = getMatchdayByNumber(currentMatchdayNumber.value);
-    formData.value.currentMatchdayId = formData.value.currentMatchday.id;
-    const matchesResponse = await TippDataService.findTippRowsForTipper(formData.value.currentMatchdayId, defaultCommMembId.value);
-    formData.value.matches = matchesResponse.data;
-    formData.value.matches.forEach((match, index) => {
-          match.commMembId=defaultCommMembId.value;
-
-    });
-    setMessage("Spieltag  " + currentMatchdayNumber.value + "  geladen");
-  } catch (err) {
-    console.error(err);
-    setError(saveMessage(err));
-  } finally {
-    formData.value.loading = false;
-
-  }
-}
 // --- Event-Handler ---
-const changeMatchday = (newMatchday) => {
-  console.log("changeMatchday", newMatchday);
-  if (newMatchday >= 1 && newMatchday <= formData.value.totalMatchdays) {
+  const changeMatchday = (newMatchday) => {
     console.log("changeMatchday", newMatchday);
-    currentMatchdayNumber.value = newMatchday;
+    if (newMatchday >= 1 && newMatchday <= formData.value.totalMatchdays) {
+      console.log("changeMatchday", newMatchday);
+      currentMatchdayNumber.value = newMatchday;
+    }
+  };
+
+
+  const getMatchdayByNumber = (numberToFind) => {
+    console.log("selectedMatchday by number::", JSON.stringify(numberToFind));
+    const myDay = formData.value.matchdays.find(matchday => matchday.spieltagNumber === numberToFind);
+    console.log("selectedMatchday::", JSON.stringify(myDay));
+    return myDay;
   }
-};
-
-
-const getMatchdayByNumber = (numberToFind) => {
-  console.log("selectedMatchday by number::", JSON.stringify(numberToFind));
-  const myDay = formData.value.matchdays.find(matchday => matchday.spieltagNumber === numberToFind);
-  console.log("selectedMatchday::", JSON.stringify(myDay));
-  return myDay;
-}
 
 // --- Watcher & Lifecycles ---
 // Sobald sich die aktuelle Seite ändert, werden die Daten neu geladen
-watch(currentMatchdayNumber, () => {
-  console.log("watch:" + currentMatchdayNumber.value);
-  fetchMatchesForMatchday();
-});
+  watch(currentMatchdayNumber, () => {
+    console.log("watch:" + currentMatchdayNumber.value);
+    fetchMatchesForMatchday();
+  });
 
 
 // Initialer API-Aufruf beim Laden der Komponente
-onMounted(() => {
-  fetchMatchdays();
-  retrieveTippModi();
+  onMounted(() => {
+    fetchMatchdays();
+    retrieveTippModi();
 
-});
+  });
 
 </script>
 
