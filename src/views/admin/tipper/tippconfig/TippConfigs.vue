@@ -81,9 +81,7 @@ const retrieveTippModi = async () => {
   try {
     const response = await TippModusDataService.getModiForCommunity(formData.value.community.id);
     if (response.status === 200) {
-      console.log(JSON.stringify(response.data));
       formData.value.tippModi = response.data;
-
       if (formData.value.tippModi.length > 0) {
         formData.value.tippModusType = formData.value.tippModi[0].type;
         formData.value.selectedTippModus = null;

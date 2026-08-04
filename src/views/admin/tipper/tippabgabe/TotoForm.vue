@@ -1,6 +1,6 @@
 <template>
-  <div class="datatable-container">
 
+Toto
     <div class="datatable-container">
       <!-- Status-Anzeigen -->
 
@@ -23,22 +23,22 @@
           <td>{{ match.heimName }}</td>
           <td>{{ match.gastName }}</td>
           <td>{{ match.heimTore }}:{{ match.gastTore }}</td>
-          <td><input class="small-input form-control  border border-3 "
+          <td><input class="small-input border border-3 "
               type="radio"
               :name="match.id"
               :value=1
               v-model="match.heimTipp"
           /></td>
-          <td><input class="small-input form-control  border border-3 "
+          <td><input class="small-input  border border-3 "
               type="radio"
               :name="match.id"
-              :value=0
+              :value=1
               v-model="match.remisTipp"
           /></td>
-          <td><input class="small-input form-control  border border-3 "
+          <td><input class="small-input  border border-3 "
               type="radio"
               :name="match.id"
-              :value=2
+              :value=1
               v-model="match.gastTipp"
           /></td>
         </tr>
@@ -89,7 +89,7 @@
         </div>
       </div>
     </div>
-  </div>
+
 </template>
 <script setup>
 import {defineEmits, defineProps, ref, toRef, defineModel} from 'vue';
@@ -113,6 +113,9 @@ const props = defineProps({
   }
 });
 const editing = ref(false);
+
+const matchdays = toRef(props, 'matchdays');
+const currentMatchdayNumber = toRef(props, 'currentMatchdayNumber');
 
 const changeMatchday = (newMatchday) => {
   if (newMatchday >= 1 && newMatchday <= matchdays.value.length) {

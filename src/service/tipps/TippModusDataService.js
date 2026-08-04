@@ -36,11 +36,19 @@ class TippModusDataService {
 
 
     }
-
+    findByMatchdayAndCompMemb(matchdayId, compMembId) {
+        console.log("findByMatchdayAndCompMemb:", matchdayId);
+        const dto = http.get(`/tippConfig/${matchdayId}/compMemb/${compMembId}`);
+        console.log("dto:", JSON.stringify(dto));
+        return dto;
+    }
     delete(id) {
         return http.delete(`/tippModus/${id}`);
     }
 
 
+  getOne(id) {
+      return http.get(`/tippModus/${id}`);
+    }
 }
 export default new TippModusDataService();

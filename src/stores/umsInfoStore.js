@@ -10,6 +10,8 @@ export const useUmsInfoStore = defineStore('umsInfoStore', {
                 loggedIn: false,
                 defaultCountry: null,
                 defaultCommunityId: String,
+                defaultCommMembId: String,
+                defaultCompMembId: String,
                 defaultCompetitionId: String,
                 commAdmin: false,
                 compAdmin: false,
@@ -35,6 +37,7 @@ export const useUmsInfoStore = defineStore('umsInfoStore', {
         defaultCommunityId: (state) => state.umsInfo.defaultCommunityId,
         defaultCompetitionId: (state) => state.umsInfo.defaultCompetitionId,
         defaultCommMembId: (state) => state.umsInfo.defaultCommMembId,
+        defaultCompMembId: (state) => state.umsInfo.defaultCompMembId,
         defaultCountry: (state) => state.umsInfo.defaultCountry,
         adminCommunities: (state) => state.umsInfo.adminCommunities,
         adminCompetitions: (state) => state.umsInfo.adminCompetitions,
@@ -64,6 +67,10 @@ export const useUmsInfoStore = defineStore('umsInfoStore', {
         setCommMembId(id) {
             console.log("setCommMembId", id);
             this.umsInfo.defaultCommMembId = id;
+        },
+        setCompMembId(id) {
+            console.log("setCompMembId", id);
+            this.umsInfo.defaultCompMembId = id;
         },
         setDefaultCountry(country) {
             console.log("set country", country);

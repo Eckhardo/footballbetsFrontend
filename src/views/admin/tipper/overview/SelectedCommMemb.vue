@@ -184,8 +184,19 @@ const retrieveTippModi = async () => {
     setError(saveMessage(e));
   }
 }
-const deleteItem = (item) => {
-  console.info("deleteItem()", item.name);
+
+const retrieveCompMemb = async () => {
+  try {
+    const response = await CompMembDataService.findOne(formData.value.community.id, formData.value.competition.id);
+    if (response.status === 200) {
+      console.log("compMemb::", JSON.stringify(response.data));
+
+      umsInfoStore.setCompMembId(response.data.id);
+    }
+  } catch (e) {
+    console.error(e);
+    setError(saveMessage(e));
+  }
 }
 const changeItem = (item) => {
   console.info("changeItem()", item.name);
@@ -225,6 +236,7 @@ onMounted(async () => {
     await retrieveCompetition();
     await retrieveTippModi();
     await retrieveTippers();
+    await retrieveCompMemb();
   }
 })
 </script>
