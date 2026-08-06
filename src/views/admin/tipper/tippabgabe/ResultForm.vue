@@ -1,9 +1,6 @@
 <template>
   <div class="datatable-container">
 
-    <div class="datatable-container">
-      <!-- Status-Anzeigen -->
-
       <!-- Die Datentabelle -->
       <table class="custom-table">
         <thead>
@@ -79,7 +76,7 @@
         </div>
       </div>
     </div>
-  </div>
+
 </template>
 <script setup>
 import {defineEmits, defineProps, ref, toRef, defineModel} from 'vue';
@@ -105,23 +102,12 @@ const props = defineProps({
 const matchdays = toRef(props, 'matchdays');
 const currentMatchdayNumber = toRef(props, 'currentMatchdayNumber');
 
-const editing = ref(false);
-// Initialize with a shallow copy
-
-
-const saveAll = () => {
-  console.log("saveAll");
-}
 const changeMatchday = (newMatchday) => {
-  console.log("changeMatchday", newMatchday);
   if (newMatchday >= 1 && newMatchday <= matchdays.value.length) {
-    console.log("changeMatchday", newMatchday);
-    currentMatchdayNumber.value = newMatchday;
     emit('change-matchday', newMatchday);
   }
 };
 const saveMatches = () => {
-  console.log("saveMatches");
   emit("save-matches");
 }
 </script>
@@ -131,10 +117,11 @@ const saveMatches = () => {
   width: 100px;
 
 }
+
 .datatable-container {
   font-family: sans-serif;
   margin: 20px auto;
-  max-width:750px;
+  max-width: 750px;
   position: relative;
 }
 

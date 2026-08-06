@@ -1,13 +1,13 @@
 <template>
   <div v-if=" formData.tippModus!==null">
     <TippModus v-bind:item="formData.tippModus"/>
-    <TotoForm v-if="formData.tippModus.type==='TotoTipp' && !formData.loading" v-model="formData.matches"
+    <TotoForm v-if="formData.tippModus.type==='TotoTipp' && !formData.loading" v-model="matches"
               v-bind:matchdays="formData.matchdays" @change-matchday="changeMatchday" @save-matches="saveAll"
               v-bind:current-matchday-number="currentMatchdayNumber"/>
-    <PointForm v-if=" formData.tippModus.type==='PointTipp' && !formData.loading" v-model="formData.matches"
+    <PointForm v-if=" formData.tippModus.type==='PointTipp' && !formData.loading" v-model="matches"
                v-bind:matchdays="formData.matchdays" @change-matchday="changeMatchday" @save-matches="saveAll"
                v-bind:current-matchday-number="currentMatchdayNumber"/>
-    <ResultForm v-if="formData.tippModus.type==='ResultTipp' && !formData.loading" v-model="formData.matches"
+    <ResultForm v-if="formData.tippModus.type==='ResultTipp' && !formData.loading" v-model="matches"
                 v-bind:matchdays="formData.matchdays" @change-matchday="changeMatchday" @save-matches="saveAll"
                 v-bind:current-matchday-number="currentMatchdayNumber"/>
   </div>
@@ -30,33 +30,50 @@ import ResultForm from "./ResultForm.vue";
 import PointForm from "./PointForm.vue";
 import TippModus from "./TippModus.vue";
 import TippConfigDataService from "@/service/tipps/TippConfigDataService.js";
+import {formatDateTime} from "../../../../util/DateFromatter.js";
 
 const umsInfoStore = useUmsInfoStore();
-const {defaultCompetitionId, defaultCommunityId, defaultCommMembId,defaultCompMembId} = storeToRefs(umsInfoStore);
+const {defaultCompetitionId, defaultCommMembId, defaultCompMembId} = storeToRefs(umsInfoStore);
 
 const {setMessage} = useMessage();
 const {setError} = useError();
 
 // --- Reaktive Zustände (State) ---
-const currentMatchdayNumber = ref(1);
+const currentMatchdayNumber = ref(null);
+const isUpdate = ref(false);
+const matches = ref([]);
 const formData = ref(
     {
       matchdays: [],
       totalMatchdays: 34,
       currentMatchday: null,
       currentMatchdayId: null,
-      matches: [],
+
       loading: false,
-      tippConfig:null,
+      tippConfig: null,
       tippModus: null,
       tippModusId: ''
     }
 )
-const saveAll = async () => {
-  console.log("saveAll");
-  try {
-    await TippDataService.create(formData.value.matches);
 
+const  logSaves= (matches)=> {
+  console.log("logSaves");
+  for (const item of matches) {
+    console.log(JSON.stringify(item));
+  }
+
+}
+
+const saveAll = async () => {
+         logSaves(matches.value);
+  try {
+    if (isUpdate.value) {
+      console.log("update");
+      await TippDataService.update(formData.value.currentMatchdayId, matches.value);
+    } else {
+      console.log("save");
+      await TippDataService.create(matches.value);
+    }
     await fetchMatchesForMatchday();
     setMessage("Tipps für Spieltag " + currentMatchdayNumber.value + "  gespeichert");
   } catch (err) {
@@ -73,11 +90,10 @@ const fetchMatchdays = async () => {
 
     if (matchdaysResponse.status === 200) {
       formData.value.matchdays = matchdaysResponse.data;
-      console.log("matchdays.size: ",  formData.value.matchdays.length);
+      console.log("matchdays.size: ", formData.value.matchdays.length);
       if (formData.value.matchdays.length > 0) {
         formData.value.currentMatchday = formData.value.matchdays[0];
         formData.value.currentMatchdayId = formData.value.currentMatchday.id;
-        currentMatchdayNumber.value = formData.value.currentMatchday.spieltagNumber;
         formData.value.totalMatchdays = formData.value.matchdays.length;
         await fetchMatchesForMatchday();
       }
@@ -96,18 +112,13 @@ const retrieveTippModus = async () => {
   try {
     const configResponse = await TippConfigDataService.findByMatchdayAndCompMemb(formData.value.currentMatchdayId, defaultCompMembId.value);
     if (configResponse.status === 200) {
-      console.log("config 200");
       formData.value.tippConfig = configResponse.data;
       const response = await TippModusDataService.getOne(formData.value.tippConfig.tippModusId);
       if (response.status === 200) {
-        console.log("modus 200");
         formData.value.tippModus = response.data;
-        console.log("modus: ", JSON.stringify(formData.value.tippModus));
       }
     }
-
     formData.value.loading = false;
-
   } catch (e) {
     console.error(e);
     setError(saveMessage(e));
@@ -125,12 +136,12 @@ const fetchMatchesForMatchday = async () => {
     formData.value.currentMatchday = getMatchdayByNumber(currentMatchdayNumber.value);
     formData.value.currentMatchdayId = formData.value.currentMatchday.id;
     const matchesResponse = await TippDataService.findTippRowsForTipper(formData.value.currentMatchdayId, defaultCommMembId.value);
-    formData.value.matches = matchesResponse.data;
-    console.log("matches.size: ",  formData.value.matches.length);
-    formData.value.matches.forEach((match, index) => {
-      match.commMembId = defaultCommMembId.value;
-    });
 
+    console.log("data:::", JSON.stringify(matchesResponse.data));
+    matches.value = matchesResponse.data.tippRows;
+
+    isUpdate.value = matchesResponse.data.update;
+    console.log(" isUpdate.value: ", isUpdate.value);
     await retrieveTippModus();
     formData.value.loading = false;
   } catch
@@ -145,14 +156,21 @@ const retrieveCurrentMatchday = async () => {
   let finished;
   console.log("retrieveCurrentMatchday");
   let timestampNow = Date.now();
+  const futureDate = new Date(timestampNow);
+  futureDate.setFullYear(futureDate.getFullYear() - 1);
+  futureDate.setMonth(futureDate.getMonth() + 2);
+  let germaDate = formatDateTime(futureDate);
+  console.log("germanDate::", germaDate);
+  const currentTimeStamp = new Date(futureDate).getTime();
+  console.log("timestamp::", currentTimeStamp);
+
   const greaterMatchdays = formData.value.matchdays.filter(matchday => {
     let _timestamp = new Date(matchday.startDate).getTime();
-    return _timestamp > timestampNow;
+    return _timestamp > currentTimeStamp;
   });
-
+  console.log("greaterMatchday::", JSON.stringify(greaterMatchdays[0]));
   if (greaterMatchdays.length > 0) {
     currentMatchdayNumber.value = greaterMatchdays[0].spieltagNumber;
-
   } else {
     currentMatchdayNumber.value = formData.value.matchdays[1].spieltagNumber;
   }

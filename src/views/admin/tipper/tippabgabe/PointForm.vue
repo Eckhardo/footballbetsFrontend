@@ -1,8 +1,6 @@
 <template>
   <div class="datatable-container">
-
-    <div class="datatable-container">
-      <!-- Status-Anzeigen -->
+    <!-- Status-Anzeigen -->
 
       <!-- Die Datentabelle -->
       <table class="custom-table">
@@ -84,7 +82,7 @@
         </div>
       </div>
     </div>
-  </div>
+
 </template>
 <script setup>
 import {defineEmits, defineProps, ref, toRef, defineModel} from 'vue';
@@ -126,7 +124,6 @@ const changeMatchday = (newMatchday) => {
   }
 };
 const saveMatches = () => {
-  console.log("saveMatches");
   emit("save-matches");
 }
 </script>
