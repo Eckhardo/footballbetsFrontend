@@ -27,19 +27,19 @@ Toto
               type="radio"
               :name="match.id"
               :value=1
-              v-model="match.heimTipp"
+              v-model="match.selectedToto"
           /></td>
           <td><input class="small-input  border border-3 "
               type="radio"
               :name="match.id"
               :value=0
-              v-model="match.heimTipp"
+              v-model="match.selectedToto"
           /></td>
           <td><input class="small-input  border border-3 "
               type="radio"
               :name="match.id"
               :value=2
-              v-model="match.heimTipp"
+              v-model="match.selectedToto"
           /></td>
         </tr>
         <tr v-if="matches.length === 0">

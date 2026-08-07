@@ -30,7 +30,8 @@ import ResultForm from "./ResultForm.vue";
 import PointForm from "./PointForm.vue";
 import TippModus from "./TippModus.vue";
 import TippConfigDataService from "@/service/tipps/TippConfigDataService.js";
-import {formatDateTime} from "../../../../util/DateFromatter.js";
+import {formatDateTime} from "@/util/DateFromatter.js";
+import {assignTotoTippsForSave, assignTotoTippsForLoad} from "@/util/TippUtil.js";
 
 const umsInfoStore = useUmsInfoStore();
 const {defaultCompetitionId, defaultCommMembId, defaultCompMembId} = storeToRefs(umsInfoStore);
@@ -56,7 +57,7 @@ const formData = ref(
     }
 )
 
-const  logSaves= (matches)=> {
+const logSaves = (matches) => {
   console.log("logSaves");
   for (const item of matches) {
     console.log(JSON.stringify(item));
@@ -65,7 +66,13 @@ const  logSaves= (matches)=> {
 }
 
 const saveAll = async () => {
-         logSaves(matches.value);
+  logSaves(matches.value);
+
+  if (formData.value.tippModus.type === 'TotoTipp') {
+    assignTotoTippsForSave(matches.value);
+    logSaves(matches.value);
+
+  }
   try {
     if (isUpdate.value) {
       console.log("update");
@@ -143,12 +150,19 @@ const fetchMatchesForMatchday = async () => {
     isUpdate.value = matchesResponse.data.update;
     console.log(" isUpdate.value: ", isUpdate.value);
     await retrieveTippModus();
+
     formData.value.loading = false;
   } catch
       (err) {
     console.error(err);
     setError(saveMessage(err));
   } finally {
+    console.log("finally");
+    if (formData.value.tippModus.type === 'TotoTipp') {
+      assignTotoTippsForLoad(matches.value);
+      logSaves(matches.value);
+
+    }
   }
 }
 
