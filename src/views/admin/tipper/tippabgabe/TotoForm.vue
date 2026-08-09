@@ -1,9 +1,10 @@
 <template>
 
-Toto
     <div class="datatable-container">
       <!-- Status-Anzeigen -->
-
+      <div v-if="editable===true" class="mb-3  ">
+        <button type="button" class="btn btn-primary" @click="saveMatches">Tipps speichern</button>
+      </div>
       <!-- Die Datentabelle -->
       <table class="custom-table">
         <thead>
@@ -24,20 +25,20 @@ Toto
           <td>{{ match.gastName }}</td>
           <td>{{ match.heimTore }}:{{ match.gastTore }}</td>
           <td><input class="small-input border border-3 "
-              type="radio"
+              type="radio"  :disabled="isEditable===false"
               :name="match.id"
               :value=1
               v-model="match.selectedToto"
           /></td>
           <td><input class="small-input  border border-3 "
               type="radio"
-              :name="match.id"
+              :name="match.id"  :disabled="isEditable===false"
               :value=0
               v-model="match.selectedToto"
           /></td>
           <td><input class="small-input  border border-3 "
               type="radio"
-              :name="match.id"
+              :name="match.id"  :disabled="isEditable===false"
               :value=2
               v-model="match.selectedToto"
           /></td>
@@ -45,46 +46,28 @@ Toto
         <tr v-if="matches.length === 0">
           <td colspan="4" class="no-data">Keine Einträge gefunden.</td>
         </tr>
-        <button type="button" @click="saveMatches">Save</button>
-        </tbody>
-      </table>
 
+        </tbody>
+
+      </table>
       <!-- Paginator / Steuerungselemente -->
       <div class="paginator-controls">
-
-
         <div class="pagination-buttons">
-          <button
-              :disabled="currentMatchdayNumber === 1 "
-              @click="changeMatchday(1)"
-          >
-            &laquo; Erste
+          <button class="btn btn-primary" :disabled="currentMatchdayNumber === 1 "
+                  @click="changeMatchday(1)">&laquo; Erste
           </button>
-          <button
-              :disabled="currentMatchdayNumber === 1 "
-              @click="changeMatchday(currentMatchdayNumber - 1)"
-          >
-            &lsaquo; Zurück
+          <button class="btn btn-primary" :disabled="currentMatchdayNumber === 1 "
+                  @click="changeMatchday(currentMatchdayNumber - 1)">&lsaquo; Zurück
           </button>
-
           <span class="page-info">
-          Spieltag <strong>{{ currentMatchdayNumber }}</strong> von <strong>{{
-              matchdays.length
-            }}</strong>
+          Spieltag <strong>{{ currentMatchdayNumber }}</strong> von <strong>{{ matchdays.length }}</strong>
           ({{ matchdays.length }} Einträge gesamt)
         </span>
-
-          <button
-              :disabled="currentMatchdayNumber === matchdays.length"
-              @click="changeMatchday(currentMatchdayNumber + 1)"
-          >
-            Weiter &rsaquo;
+          <button class="btn btn-primary" :disabled="currentMatchdayNumber === matchdays.length"
+                  @click="changeMatchday(currentMatchdayNumber + 1)">Weiter &rsaquo;
           </button>
-          <button
-              :disabled="currentMatchdayNumber === matchdays.length  "
-              @click="changeMatchday(matchdays.length)"
-          >
-            Letzte &raquo;
+          <button class="btn btn-primary" :disabled="currentMatchdayNumber === matchdays.length  "
+                  @click="changeMatchday(matchdays.length)">Letzte &raquo;
           </button>
         </div>
       </div>
@@ -110,12 +93,17 @@ const props = defineProps({
   currentMatchdayNumber: {
     type: Number,
     required: true
+  },
+  isEditable: {
+    type: Boolean,
+    required: true
   }
+
 });
-const editing = ref(false);
 
 const matchdays = toRef(props, 'matchdays');
 const currentMatchdayNumber = toRef(props, 'currentMatchdayNumber');
+const editable = toRef(props, 'isEditable');
 
 const changeMatchday = (newMatchday) => {
   if (newMatchday >= 1 && newMatchday <= matchdays.value.length) {
@@ -137,19 +125,19 @@ const saveMatches = () => {
 .datatable-container {
   font-family: sans-serif;
   margin: 20px auto;
-  max-width: 1000px;
+  max-width: 750px;
   position: relative;
 }
 
 .custom-table {
   width: 100%;
   border-collapse: collapse;
-  margin-bottom: 15px;
+  margin-bottom: 5px;
 }
 
 .custom-table th, .custom-table td {
   border: 1px solid #ddd;
-  padding: 10px;
+  padding: 5px;
   text-align: left;
 }
 
@@ -175,7 +163,7 @@ const saveMatches = () => {
   background-color: #f2dede;
   border: 1px solid #ebccd1;
   border-radius: 4px;
-  margin-bottom: 15px;
+  margin-bottom: 5px;
 }
 
 .no-data {
@@ -196,14 +184,6 @@ const saveMatches = () => {
   display: flex;
   align-items: center;
   gap: 5px;
-}
-
-button {
-  padding: 6px 12px;
-  border: 1px solid #ccc;
-  background-color: #fff;
-  cursor: pointer;
-  border-radius: 4px;
 }
 
 button:disabled {

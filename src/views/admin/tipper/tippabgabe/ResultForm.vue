@@ -1,6 +1,8 @@
 <template>
   <div class="datatable-container">
-
+    <div v-if="editable===true" class="mb-3 ">
+      <button type="button" class="btn btn-primary" @click="saveMatches">Tipps speichern</button>
+    </div>
       <!-- Die Datentabelle -->
       <table class="custom-table">
         <thead>
@@ -21,61 +23,45 @@
           <td>{{ match.heimTore }}:{{ match.gastTore }}</td>
           <td>
             <input type="number" class="small-input form-control  border border-3 " id="totalPoints"
-                   :name="match.id"
+                   :name="match.id"  :disabled="isEditable===false"
                    v-model="match.heimTipp" min="0" placeholder="0">
           </td>
           <td><input type="number" class="small-input  form-control   border border-3 " id="totalPoints"
-                     :name="match.id"
+                     :name="match.id"  :disabled="isEditable===false"
                      v-model="match.gastTipp" min="0" placeholder="0">
           </td>
         </tr>
         <tr v-if="matches.length === 0">
           <td colspan="4" class="no-data">Keine Einträge gefunden.</td>
         </tr>
-        <button type="button" @click="saveMatches">Save</button>
+
         </tbody>
+
       </table>
-
       <!-- Paginator / Steuerungselemente -->
-      <div class="paginator-controls">
 
-
-        <div class="pagination-buttons">
-          <button
-              :disabled="currentMatchdayNumber === 1 "
-              @click="changeMatchday(1)"
-          >
-            &laquo; Erste
-          </button>
-          <button
-              :disabled="currentMatchdayNumber === 1 "
-              @click="changeMatchday(currentMatchdayNumber - 1)"
-          >
-            &lsaquo; Zurück
-          </button>
-
-          <span class="page-info">
-          Spieltag <strong>{{ currentMatchdayNumber }}</strong> von <strong>{{
-              matchdays.length
-            }}</strong>
+    <!-- Paginator / Steuerungselemente -->
+    <div class="paginator-controls">
+      <div class="pagination-buttons">
+        <button class="btn btn-primary" :disabled="currentMatchdayNumber === 1 "
+                @click="changeMatchday(1)">&laquo; Erste
+        </button>
+        <button class="btn btn-primary" :disabled="currentMatchdayNumber === 1 "
+                @click="changeMatchday(currentMatchdayNumber - 1)">&lsaquo; Zurück
+        </button>
+        <span class="page-info">
+          Spieltag <strong>{{ currentMatchdayNumber }}</strong> von <strong>{{ matchdays.length }}</strong>
           ({{ matchdays.length }} Einträge gesamt)
         </span>
-
-          <button
-              :disabled="currentMatchdayNumber === matchdays.length"
-              @click="changeMatchday(currentMatchdayNumber + 1)"
-          >
-            Weiter &rsaquo;
-          </button>
-          <button
-              :disabled="currentMatchdayNumber === matchdays.length  "
-              @click="changeMatchday(matchdays.length)"
-          >
-            Letzte &raquo;
-          </button>
-        </div>
+        <button class="btn btn-primary" :disabled="currentMatchdayNumber === matchdays.length"
+                @click="changeMatchday(currentMatchdayNumber + 1)">Weiter &rsaquo;
+        </button>
+        <button class="btn btn-primary" :disabled="currentMatchdayNumber === matchdays.length  "
+                @click="changeMatchday(matchdays.length)">Letzte &raquo;
+        </button>
       </div>
     </div>
+  </div>
 
 </template>
 <script setup>
@@ -97,11 +83,15 @@ const props = defineProps({
   currentMatchdayNumber: {
     type: Number,
     required: true
+  },
+  isEditable: {
+    type: Boolean,
+    required: true
   }
 });
 const matchdays = toRef(props, 'matchdays');
 const currentMatchdayNumber = toRef(props, 'currentMatchdayNumber');
-
+const editable = toRef(props, 'isEditable');
 const changeMatchday = (newMatchday) => {
   if (newMatchday >= 1 && newMatchday <= matchdays.value.length) {
     emit('change-matchday', newMatchday);
@@ -128,12 +118,12 @@ const saveMatches = () => {
 .custom-table {
   width: 100%;
   border-collapse: collapse;
-  margin-bottom: 15px;
+  margin-bottom: 5px;
 }
 
 .custom-table th, .custom-table td {
   border: 1px solid #ddd;
-  padding: 10px;
+  padding: 5px;
   text-align: left;
 }
 
@@ -159,7 +149,7 @@ const saveMatches = () => {
   background-color: #f2dede;
   border: 1px solid #ebccd1;
   border-radius: 4px;
-  margin-bottom: 15px;
+  margin-bottom: 5px;
 }
 
 .no-data {
@@ -180,14 +170,6 @@ const saveMatches = () => {
   display: flex;
   align-items: center;
   gap: 5px;
-}
-
-button {
-  padding: 6px 12px;
-  border: 1px solid #ccc;
-  background-color: #fff;
-  cursor: pointer;
-  border-radius: 4px;
 }
 
 button:disabled {

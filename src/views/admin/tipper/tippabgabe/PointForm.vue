@@ -1,87 +1,70 @@
 <template>
   <div class="datatable-container">
     <!-- Status-Anzeigen -->
+    <div v-if="editable===true" class="mb-3  ">
+      <button type="button" class="btn btn-primary" @click="saveMatches">Tipps speichern</button>
+    </div>
+    <!-- Die Datentabelle -->
+    <table class="custom-table">
+      <thead>
+      <tr>
+        <th>Anpfiff</th>
+        <th>Heim</th>
+        <th>Gast</th>
+        <th>Ergebnis</th>
+        <th>HeimTipp</th>
+        <th>RemisTipp</th>
+        <th>GastTipp</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr v-for="(match) in matches" :key="match.id">
+        <td>{{ match.anpfiffdate }}</td>
+        <td>{{ match.heimName }}</td>
+        <td>{{ match.gastName }}</td>
+        <td>{{ match.heimTore }}:{{ match.gastTore }}</td>
+        <td>
+          <input type="number" class="small-input form-control  border border-3 " id="totalPoints"
+                 :name="match.id" :disabled="isEditable===false"
+                 v-model="match.heimTipp" min="0" placeholder="0">
+        </td>
+        <td><input type="number" class="small-input form-control  border border-3 " id="totalPoints"
+                   :name="match.id" :disabled="isEditable===false"
+                   v-model="match.remisTipp" min="0" placeholder="0">
+        </td>
+        <td><input type="number" class="small-input  form-control   border border-3 " id="totalPoints"
+                   :name="match.id" :disabled="isEditable===false"
+                   v-model="match.gastTipp" min="0" placeholder="0">
+        </td>
+      </tr>
+      <tr v-if="matches.length === 0">
+        <td colspan="4">Keine Einträge gefunden.</td>
+      </tr>
+      </tbody>
+    </table>
 
-      <!-- Die Datentabelle -->
-      <table class="custom-table">
-        <thead>
-        <tr>
-          <th>Anpfiff</th>
-          <th>Heim</th>
-          <th>Gast</th>
-          <th>Ergebnis</th>
-          <th>HeimTipp</th>
-          <th>RemisTipp</th>
-          <th>GastTipp</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-for="(match) in matches" :key="match.id">
-          <td>{{ match.anpfiffdate }}</td>
-          <td>{{ match.heimName }}</td>
-          <td>{{ match.gastName }}</td>
-          <td>{{ match.heimTore }}:{{ match.gastTore }}</td>
-          <td>
-            <input type="number" class="small-input form-control  border border-3 " id="totalPoints"
-                   :name="match.id"
-                   v-model="match.heimTipp" min="0" placeholder="0">
-          </td>
-          <td><input type="number" class="small-input form-control  border border-3 " id="totalPoints"
-                     :name="match.id"
-                     v-model="match.remisTipp" min="0" placeholder="0">
-          </td>
-          <td><input type="number" class="small-input  form-control   border border-3 " id="totalPoints"
-                     :name="match.id"
-                     v-model="match.gastTipp" min="0" placeholder="0">
-          </td>
-        </tr>
-        <tr v-if="matches.length === 0">
-          <td colspan="4" class="no-data">Keine Einträge gefunden.</td>
-        </tr>
-        <button type="button" @click="saveMatches">Save</button>
-        </tbody>
-      </table>
-
-      <!-- Paginator / Steuerungselemente -->
-      <div class="paginator-controls">
-
-
-        <div class="pagination-buttons">
-          <button
-              :disabled="currentMatchdayNumber === 1 "
-              @click="changeMatchday(1)"
-          >
-            &laquo; Erste
-          </button>
-          <button
-              :disabled="currentMatchdayNumber === 1 "
-              @click="changeMatchday(currentMatchdayNumber - 1)"
-          >
-            &lsaquo; Zurück
-          </button>
-
-          <span class="page-info">
-          Spieltag <strong>{{ currentMatchdayNumber }}</strong> von <strong>{{
-              matchdays.length
-            }}</strong>
+    <!-- Paginator / Steuerungselemente -->
+    <div class="paginator-controls">
+      <div class="pagination-buttons">
+        <button class="btn btn-primary" :disabled="currentMatchdayNumber === 1 "
+                @click="changeMatchday(1)">&laquo; Erste
+        </button>
+        <button class="btn btn-primary" :disabled="currentMatchdayNumber === 1 "
+                @click="changeMatchday(currentMatchdayNumber - 1)">&lsaquo; Zurück
+        </button>
+        <span class="page-info">
+          Spieltag <strong>{{ currentMatchdayNumber }}</strong> von <strong>{{ matchdays.length }}</strong>
           ({{ matchdays.length }} Einträge gesamt)
         </span>
-
-          <button
-              :disabled="currentMatchdayNumber === matchdays.length"
-              @click="changeMatchday(currentMatchdayNumber + 1)"
-          >
-            Weiter &rsaquo;
-          </button>
-          <button
-              :disabled="currentMatchdayNumber === matchdays.length  "
-              @click="changeMatchday(matchdays.length)"
-          >
-            Letzte &raquo;
-          </button>
-        </div>
+        <button class="btn btn-primary" :disabled="currentMatchdayNumber === matchdays.length"
+                @click="changeMatchday(currentMatchdayNumber + 1)">Weiter &rsaquo;
+        </button>
+        <button class="btn btn-primary" :disabled="currentMatchdayNumber === matchdays.length  "
+                @click="changeMatchday(matchdays.length)">Letzte &raquo;
+        </button>
       </div>
     </div>
+  </div>
 
 </template>
 <script setup>
@@ -103,18 +86,18 @@ const props = defineProps({
   currentMatchdayNumber: {
     type: Number,
     required: true
+  },
+  isEditable: {
+    type: Boolean,
+    required: true
   }
 });
 const matchdays = toRef(props, 'matchdays');
 const currentMatchdayNumber = toRef(props, 'currentMatchdayNumber');
-
-const editing = ref(false);
+const editable = toRef(props, 'isEditable');
 // Initialize with a shallow copy
 
 
-const saveAll = () => {
-  console.log("saveAll");
-}
 const changeMatchday = (newMatchday) => {
   console.log("changeMatchday", newMatchday);
   if (newMatchday >= 1 && newMatchday <= matchdays.value.length) {
@@ -133,22 +116,23 @@ const saveMatches = () => {
   width: 100px;
 
 }
+
 .datatable-container {
   font-family: sans-serif;
   margin: 20px auto;
-  max-width:750px;
+  max-width: 750px;
   position: relative;
 }
 
 .custom-table {
   width: 100%;
   border-collapse: collapse;
-  margin-bottom: 15px;
+  margin-bottom: 5px;
 }
 
 .custom-table th, .custom-table td {
   border: 1px solid #ddd;
-  padding: 10px;
+  padding: 5px;
   text-align: left;
 }
 
@@ -174,7 +158,7 @@ const saveMatches = () => {
   background-color: #f2dede;
   border: 1px solid #ebccd1;
   border-radius: 4px;
-  margin-bottom: 15px;
+  margin-bottom: 5px;
 }
 
 .no-data {
@@ -188,21 +172,13 @@ const saveMatches = () => {
   align-items: center;
   flex-wrap: wrap;
   gap: 15px;
-  padding: 10px 0;
+  padding: 5px 0;
 }
 
 .pagination-buttons {
   display: flex;
   align-items: center;
   gap: 5px;
-}
-
-button {
-  padding: 6px 12px;
-  border: 1px solid #ccc;
-  background-color: #fff;
-  cursor: pointer;
-  border-radius: 4px;
 }
 
 button:disabled {

@@ -3,13 +3,16 @@
     <TippModus v-bind:item="formData.tippModus"/>
     <TotoForm v-if="formData.tippModus.type==='TotoTipp' && !formData.loading" v-model="matches"
               v-bind:matchdays="formData.matchdays" @change-matchday="changeMatchday" @save-matches="saveAll"
-              v-bind:current-matchday-number="currentMatchdayNumber"/>
+              v-bind:current-matchday-number="selectedMatchdayNumber"
+              v-bind:is-editable="isEditable"/>
     <PointForm v-if=" formData.tippModus.type==='PointTipp' && !formData.loading" v-model="matches"
                v-bind:matchdays="formData.matchdays" @change-matchday="changeMatchday" @save-matches="saveAll"
-               v-bind:current-matchday-number="currentMatchdayNumber"/>
+               v-bind:current-matchday-number="selectedMatchdayNumber"
+               v-bind:is-editable="isEditable"/>
     <ResultForm v-if="formData.tippModus.type==='ResultTipp' && !formData.loading" v-model="matches"
                 v-bind:matchdays="formData.matchdays" @change-matchday="changeMatchday" @save-matches="saveAll"
-                v-bind:current-matchday-number="currentMatchdayNumber"/>
+                v-bind:current-matchday-number="selectedMatchdayNumber"
+                v-bind:is-editable="isEditable"/>
   </div>
 </template>
 
@@ -40,8 +43,11 @@ const {setMessage} = useMessage();
 const {setError} = useError();
 
 // --- Reaktive Zustände (State) ---
-const currentMatchdayNumber = ref(null);
+const germanDate = ref(null);
+const nextFutureMatchdayNumber = ref(null);
+const selectedMatchdayNumber = ref(null);
 const isUpdate = ref(false);
+const isEditable = ref(false);
 const matches = ref([]);
 const formData = ref(
     {
@@ -66,23 +72,21 @@ const logSaves = (matches) => {
 }
 
 const saveAll = async () => {
-  logSaves(matches.value);
+//  logSaves(matches.value);
 
   if (formData.value.tippModus.type === 'TotoTipp') {
     assignTotoTippsForSave(matches.value);
-    logSaves(matches.value);
+    //  logSaves(matches.value);
 
   }
   try {
     if (isUpdate.value) {
-      console.log("update");
       await TippDataService.update(formData.value.currentMatchdayId, matches.value);
     } else {
-      console.log("save");
       await TippDataService.create(matches.value);
     }
     await fetchMatchesForMatchday();
-    setMessage("Tipps für Spieltag " + currentMatchdayNumber.value + "  gespeichert");
+    setMessage("Tipps für Spieltag " + selectedMatchdayNumber.value + "  gespeichert");
   } catch (err) {
     console.error(err);
     setError(saveMessage(err));
@@ -137,66 +141,57 @@ const fetchMatchesForMatchday = async () => {
   formData.value.loading = true;
   try {
 
-    if (currentMatchdayNumber.value === null) {
+    if (selectedMatchdayNumber.value === null) {
       await retrieveCurrentMatchday();
     }
-    formData.value.currentMatchday = getMatchdayByNumber(currentMatchdayNumber.value);
+    formData.value.currentMatchday = getMatchdayByNumber(selectedMatchdayNumber.value);
     formData.value.currentMatchdayId = formData.value.currentMatchday.id;
     const matchesResponse = await TippDataService.findTippRowsForTipper(formData.value.currentMatchdayId, defaultCommMembId.value);
+    if (matchesResponse.status === 200) {
+      matches.value = matchesResponse.data.tippRows;
+      isUpdate.value = matchesResponse.data.update;
+      await retrieveTippModus();
+      formData.value.loading = false;
+    }
 
-    console.log("data:::", JSON.stringify(matchesResponse.data));
-    matches.value = matchesResponse.data.tippRows;
-
-    isUpdate.value = matchesResponse.data.update;
-    console.log(" isUpdate.value: ", isUpdate.value);
-    await retrieveTippModus();
-
-    formData.value.loading = false;
-  } catch
-      (err) {
+  } catch (err) {
     console.error(err);
     setError(saveMessage(err));
   } finally {
     console.log("finally");
     if (formData.value.tippModus.type === 'TotoTipp') {
       assignTotoTippsForLoad(matches.value);
-      logSaves(matches.value);
+      //   logSaves(matches.value);
 
     }
   }
 }
 
 const retrieveCurrentMatchday = async () => {
-  let finished;
-  console.log("retrieveCurrentMatchday");
   let timestampNow = Date.now();
-  const futureDate = new Date(timestampNow);
-  futureDate.setFullYear(futureDate.getFullYear() - 1);
-  futureDate.setMonth(futureDate.getMonth() + 2);
-  let germaDate = formatDateTime(futureDate);
-  console.log("germanDate::", germaDate);
-  const currentTimeStamp = new Date(futureDate).getTime();
-  console.log("timestamp::", currentTimeStamp);
-
+  const currentDate = new Date(timestampNow);
+  currentDate.setFullYear(currentDate.getFullYear() - 1);
+  currentDate.setMonth(currentDate.getMonth() + 2);
+  germanDate.value = formatDateTime(currentDate);
+  console.log("germanDate::", germanDate);
+  const currentTimeStamp = new Date(currentDate).getTime();
   const greaterMatchdays = formData.value.matchdays.filter(matchday => {
     let _timestamp = new Date(matchday.startDate).getTime();
     return _timestamp > currentTimeStamp;
   });
-  console.log("greaterMatchday::", JSON.stringify(greaterMatchdays[0]));
   if (greaterMatchdays.length > 0) {
-    currentMatchdayNumber.value = greaterMatchdays[0].spieltagNumber;
+    nextFutureMatchdayNumber.value = selectedMatchdayNumber.value = greaterMatchdays[0].spieltagNumber;
   } else {
-    currentMatchdayNumber.value = formData.value.matchdays[1].spieltagNumber;
+    nextFutureMatchdayNumber.value = selectedMatchdayNumber.value = formData.value.matchdays[0].spieltagNumber;
   }
-  finished = true;
-  console.log("RETURN retrieveCurrentMatchday");
-  return finished;
+ isEditable.value = true;
 }
 
 // --- Event-Handler ---
 const changeMatchday = (newMatchday) => {
   if (newMatchday >= 1 && newMatchday <= formData.value.totalMatchdays) {
-    currentMatchdayNumber.value = newMatchday;
+    isEditable.value = newMatchday >= nextFutureMatchdayNumber.value;
+    selectedMatchdayNumber.value = newMatchday;
   }
 };
 
@@ -207,8 +202,8 @@ const getMatchdayByNumber = (numberToFind) => {
 
 // --- Watcher & Lifecycles ---
 // Sobald sich die aktuelle Seite ändert, werden die Daten neu geladen
-watch(currentMatchdayNumber, () => {
-  console.log("watch:" + currentMatchdayNumber.value);
+watch(selectedMatchdayNumber, () => {
+  console.log("watch:" + selectedMatchdayNumber.value);
   fetchMatchesForMatchday();
 });
 
