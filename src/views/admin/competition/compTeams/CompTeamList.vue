@@ -15,6 +15,7 @@
           <th>Team</th>
           <th>ist Club</th>
           <th>Wettbewerb</th>
+          <th>Aktion</th>
         </tr>
         </thead>
         <tbody>
@@ -34,6 +35,8 @@
 
           </td>
           <td>{{ compTeam.compName }}</td>
+          <td>      <button class="btn btn-danger btn-sm" @click="$emit('delete-compTeam', compTeam)">Löschen</button>
+          </td>
         </tr>
         </tbody>
       </table>
@@ -44,7 +47,7 @@
 <script>
 export default {
   name: 'CompTeamList',
-  emits: ['create-compTeam'],
+  emits: ['create-compTeam','delete-compTeam'],
   props: {
     competition:{
       type:Object,

@@ -11,7 +11,7 @@
   <div class="container mt-5">
     <CompTeamForm v-if="compTeams.length>0 && isVisible" v-bind:comp-teams="compTeams" @update-compTeams="updateCompTeams"/>
     <!-- Team List for Read/Delete/Edit -->
-    <CompTeamList v-if="! isVisible && comp" v-bind:comp-teams="compTeams" v-bind:competition="comp" @create-compTeam="createCompTeam"/>
+    <CompTeamList v-if="! isVisible && comp" v-bind:comp-teams="compTeams" v-bind:competition="comp" @create-compTeam="createCompTeam"     @delete-compTeam="deleteCompTeam"/>/>
   </div>
 </template>
 
@@ -26,10 +26,13 @@ import CompDataService from "@/service/competition/CompDataService.js";
 import {saveMessage} from "@/util/errorMessages.js";
 import ShowError from "@/components/admin/competition/ShowError.vue";
 import ShowMessage from "@/components/admin/competition/ShowMessage.vue";
+import MatchdayList from "../matchdays/MatchdayList.vue";
+import MatchdayDataService from "../../../../service/competition/MatchdayDataService.js";
 
 export default {
   name: 'CompTeams',
   components: {
+    MatchdayList,
     ShowError,
     ShowMessage,
     CompTeamList,
@@ -123,6 +126,24 @@ export default {
       this.editingCompTeam = null;
       this.isVisible = payload.isVisible// Create a copy to prevent direct mutation
     },
+    deleteCompTeam(compTeam) {
+
+      console.log("deleting compTeam ", JSON.stringify(compTeam));
+      if (window.confirm('Are you sure you want to delete this item? This action cannot be undone.')) {
+        this.confirmDelete(compTeam);
+      }
+    },
+    confirmDelete(compTeam) {
+      CompTeamDataService.delete(compTeam.id)
+          .then(response => {
+            console.log(response.status);
+            this.retrieveCompTeams();
+          })
+          .catch(e => {
+            console.log(e);
+          });
+    },
+
     triggerAlert() {
       // Clear any existing timer to reset the duration if clicked again
       if (this.timer) clearTimeout(this.timer);

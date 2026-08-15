@@ -7,6 +7,22 @@ class TippDataService {
         return http.get(`/tipps/${matchdayId}/container/${commMembId}`);
     }
 
+
+    findTippRowsForCommunity(matchdayId, commId) {
+        console.log("findTippRowsForCommunity", matchdayId, commId);
+        const voData = {
+            commId: commId,
+            spieltagId: matchdayId
+        };
+
+// Convert your object into URL search parameters
+
+        return http.get(`/tipps`, {
+                params: voData // Axios converts this into URL parameters
+            }
+        );
+    }
+
     create(data) {
         console.log("Create tipps");
 
@@ -18,4 +34,5 @@ class TippDataService {
         return http.put(`/tipps/${spieltagId}`, data);
     }
 }
+
 export default new TippDataService();

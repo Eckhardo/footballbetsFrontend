@@ -4,15 +4,15 @@
     <TotoForm v-if="formData.tippModus.type==='TotoTipp' && !formData.loading" v-model="matches"
               v-bind:matchdays="formData.matchdays" @change-matchday="changeMatchday" @save-matches="saveAll"
               v-bind:current-matchday-number="selectedMatchdayNumber"
-              v-bind:is-editable="isEditable"/>
+              v-bind:is-editable="true"/>
     <PointForm v-if=" formData.tippModus.type==='PointTipp' && !formData.loading" v-model="matches"
                v-bind:matchdays="formData.matchdays" @change-matchday="changeMatchday" @save-matches="saveAll"
                v-bind:current-matchday-number="selectedMatchdayNumber"
-               v-bind:is-editable="isEditable"/>
+               v-bind:is-editable="true"/>
     <ResultForm v-if="formData.tippModus.type==='ResultTipp' && !formData.loading" v-model="matches"
                 v-bind:matchdays="formData.matchdays" @change-matchday="changeMatchday" @save-matches="saveAll"
                 v-bind:current-matchday-number="selectedMatchdayNumber"
-                v-bind:is-editable="isEditable"/>
+                v-bind:is-editable="true"/>
   </div>
 </template>
 
@@ -37,7 +37,7 @@ import {formatDateTime} from "@/util/DateFromatter.js";
 import {assignTotoTippsForSave, assignTotoTippsForLoad} from "@/util/TippUtil.js";
 
 const umsInfoStore = useUmsInfoStore();
-const {defaultCompetitionId, defaultCommMembId, defaultCompMembId} = storeToRefs(umsInfoStore);
+const {defaultCompetitionId, defaultCommMembId, defaultCompMembId, defaultCommunityId} = storeToRefs(umsInfoStore);
 
 const {setMessage} = useMessage();
 const {setError} = useError();
@@ -107,6 +107,7 @@ const fetchMatchdays = async () => {
         formData.value.currentMatchdayId = formData.value.currentMatchday.id;
         formData.value.totalMatchdays = formData.value.matchdays.length;
         await fetchMatchesForMatchday();
+        await retrieveTippModus();
       }
     }
   } catch (err) {
@@ -127,6 +128,7 @@ const retrieveTippModus = async () => {
       const response = await TippModusDataService.getOne(formData.value.tippConfig.tippModusId);
       if (response.status === 200) {
         formData.value.tippModus = response.data;
+        console.log("modus::",JSON.stringify(formData.value.tippModus));
       }
     }
     formData.value.loading = false;
@@ -153,7 +155,9 @@ const fetchMatchesForMatchday = async () => {
       await retrieveTippModus();
       formData.value.loading = false;
     }
-
+    const myResponse= await TippDataService.findTippRowsForCommunity(formData.value.currentMatchdayId,defaultCommunityId.value);
+     console.log("myResponse.status: ", myResponse.status);
+    console.log("myResponse.data: ", JSON.stringify(myResponse.data));
   } catch (err) {
     console.error(err);
     setError(saveMessage(err));

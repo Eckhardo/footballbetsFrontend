@@ -52,6 +52,7 @@ import CompRoundDataService from "@/service/competition/CompRoundDataService.js"
 import MatchdayDataService from "@/service/competition/MatchdayDataService.js";
 import MatchDataService from "@/service/competition/MatchDataService.js";
 import CompTeamDataService from "@/service/competition/CompTeamDataService.js";
+import TippEqualizerDataService from "../../../../service/tipps/TippEqualizerDataService.js";
 
 export default {
   name: 'Matches',
@@ -207,6 +208,9 @@ export default {
             (error) {
           console.error("ERROR update match {}", error);
         }
+        finally {
+          TippEqualizerDataService.equalizeTippForMatchday(this.matchdayId);
+        }
       } else {
 
         console.log("create new match", JSON.stringify(match));
@@ -227,6 +231,9 @@ export default {
           if (this.errorMessage) {
             this.triggerAlert();
           }
+        }
+        finally {
+          TippEqualizerDataService.equalizeTippForMatchday(this.matchdayId);
         }
       }
       this.editingMatch = null; // Clear editing state
