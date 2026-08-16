@@ -60,5 +60,13 @@ const formatGermanDate = (isoString) => {
         second: '2-digit'
     }).format(date);
 };
+const convertGermanDateToTimestamp=(germnaDate) => {
+    const [datePart, timePart] = germnaDate.split(" ");
+    const [day, month, year] = datePart.split("-");
+    const isoFormat = `${year}-${month}-${day}T${timePart}`;
 
-export  {formatDateTime,validateDateTime,formatGermanDate} ;
+// 2. Convert to millisecond timestamp (Local Time)
+  return  new Date(isoFormat).getTime();
+
+}
+export  {formatDateTime,validateDateTime,formatGermanDate,convertGermanDateToTimestamp} ;

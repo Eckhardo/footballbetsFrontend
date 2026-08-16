@@ -2,7 +2,7 @@
 
     <div class="datatable-container">
       <!-- Status-Anzeigen -->
-      <div v-if="editable===true" class="mb-3  ">
+      <div  class="mb-3  ">
         <button type="button" class="btn btn-primary" @click="saveMatches">Tipps speichern</button>
       </div>
       <!-- Die Datentabelle -->
@@ -25,20 +25,20 @@
           <td>{{ match.gastName }}</td>
           <td>{{ match.heimTore }}:{{ match.gastTore }}</td>
           <td><input class="small-input border border-3 "
-              type="radio"  :disabled="isEditable===false"
+              type="radio" :disabled=isDisabled(match)
               :name="match.id"
               :value=1
               v-model="match.selectedToto"
           /></td>
           <td><input class="small-input  border border-3 "
               type="radio"
-              :name="match.id"  :disabled="isEditable===false"
+              :name="match.id"  :disabled=isDisabled(match)
               :value=0
               v-model="match.selectedToto"
           /></td>
           <td><input class="small-input  border border-3 "
               type="radio"
-              :name="match.id"  :disabled="isEditable===false"
+              :name="match.id" :disabled=isDisabled(match)
               :value=2
               v-model="match.selectedToto"
           /></td>
@@ -94,8 +94,9 @@ const props = defineProps({
     type: Number,
     required: true
   },
-  isEditable: {
-    type: Boolean,
+
+  timestampNow: {
+    type: Number,
     required: true
   }
 
@@ -103,7 +104,18 @@ const props = defineProps({
 
 const matchdays = toRef(props, 'matchdays');
 const currentMatchdayNumber = toRef(props, 'currentMatchdayNumber');
-const editable = toRef(props, 'isEditable');
+const currentTimestamp = toRef(props, 'timestampNow');
+
+
+// Initialize with a shallow copy
+
+const isDisabled = (match) => {
+  console.log("now::",currentTimestamp.value);
+  const gameTimeStamp= new Date( match.anpfiffdate).getTime();
+  console.log("anpfiff::", gameTimeStamp);
+  console.log(currentTimestamp.value > gameTimeStamp);
+  return currentTimestamp.value > gameTimeStamp;
+}
 
 const changeMatchday = (newMatchday) => {
   if (newMatchday >= 1 && newMatchday <= matchdays.value.length) {

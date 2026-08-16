@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <div class="card-header fw-bold">
-      Spieltage der {{selected.name}} ({{ selected.compName }})
+      Spieltage der {{ selected.name }} ({{ selected.compName }})
     </div>
     <div class="mb-3  p-3 border rounded">
       <div>
@@ -22,13 +22,14 @@
           <button class="btn btn-warning btn-sm me-2" @click="$emit('create-matchday',{
               isVisible:true
             })">Einen Spieltag anlegen
-          </button>   </div>
+          </button>
+        </div>
         <div class="col-auto">
-        <button class="btn btn-warning btn-sm me-2" @click="$emit('create-matchdays',{
+          <button class="btn btn-warning btn-sm me-2" @click="$emit('create-matchdays',{
               isVisible:true,
               selectedRound:selected,
             })">Spieltage anlegen
-        </button>
+          </button>
         </div>
       </div>
 
@@ -44,7 +45,7 @@
         <tbody>
         <tr v-for="(matchday) in matchdays" :key="matchday.id">
           <td>{{ matchday.spieltagNumber }}</td>
-          <td>{{ matchday.startDate }}</td>
+          <td>{{ convertDate(matchday.startDate) }}</td>
           <td>{{ matchday.compRoundName }}</td>
           <td>
             <button class="btn btn-warning btn-sm me-2" @click="$emit('edit-matchday',{
@@ -62,9 +63,11 @@
 </template>
 
 <script>
+import {formatDateTime, formatGermanDate} from "@/util/DateFromatter.js";
+
 export default {
   name: 'MatchdayList',
-  emits: ['select-round','create-matchday', 'delete-matchday', 'edit-matchday'],
+  emits: ['select-round', 'create-matchday', 'delete-matchday', 'edit-matchday'],
   props: {
     matchdays: {
       type: Array,
@@ -91,7 +94,9 @@ export default {
 
   },
   methods: {
-
+    convertDate(matchdayDate) {
+      return formatGermanDate(matchdayDate);
+    },
 
     handleRoundChange(event) {
       this.form.roundId = this.selected.id;

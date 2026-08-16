@@ -1,7 +1,7 @@
 <template>
   <div class="datatable-container">
     <!-- Status-Anzeigen -->
-    <div v-if="editable===true" class="mb-3  ">
+    <div class="mb-3  ">
       <button type="button" class="btn btn-primary" @click="saveMatches">Tipps speichern</button>
     </div>
     <!-- Die Datentabelle -->
@@ -25,15 +25,15 @@
         <td>{{ match.heimTore }}:{{ match.gastTore }}</td>
         <td>
           <input type="number" class="small-input form-control  border border-3 " id="totalPoints"
-                 :name="match.id" :disabled="isEditable===false"
+                 :name="match.id" :disabled=isDisabled(match)
                  v-model="match.heimTipp" min="0" placeholder="0">
         </td>
         <td><input type="number" class="small-input form-control  border border-3 " id="totalPoints"
-                   :name="match.id" :disabled="isEditable===false"
+                   :name="match.id" :disabled=isDisabled(match)
                    v-model="match.remisTipp" min="0" placeholder="0">
         </td>
         <td><input type="number" class="small-input  form-control   border border-3 " id="totalPoints"
-                   :name="match.id" :disabled="isEditable===false"
+                   :name="match.id" :disabled=isDisabled(match)
                    v-model="match.gastTipp" min="0" placeholder="0">
         </td>
       </tr>
@@ -69,8 +69,7 @@
 </template>
 <script setup>
 import {defineEmits, defineProps, ref, toRef, defineModel} from 'vue';
-import {saveMessage} from "@/util/errorMessages.js";
-import TippModusDataService from "../../../../service/tipps/TippModusDataService.js";
+import {convertGermanDateToTimestamp} from "@/util/DateFromatter.js";
 // Define props using macro (no import needed)
 // Automatically handles prop and update emit
 const matches = defineModel({type: Array, required: true})
@@ -87,17 +86,25 @@ const props = defineProps({
     type: Number,
     required: true
   },
-  isEditable: {
-    type: Boolean,
+  timestampNow: {
+    type: Number,
     required: true
   }
 });
 const matchdays = toRef(props, 'matchdays');
 const currentMatchdayNumber = toRef(props, 'currentMatchdayNumber');
-const editable = toRef(props, 'isEditable');
+const currentTimestamp = toRef(props, 'timestampNow');
+
 // Initialize with a shallow copy
 
-
+const isDisabled = (match) => {
+  console.log("now::",currentTimestamp.value);
+  console.log("heimName::", match.heimName);
+  const gameTimeStamp= convertGermanDateToTimestamp(match.anpfiffdate);
+  console.log("anpfiff::", gameTimeStamp);
+  console.log(currentTimestamp.value > gameTimeStamp);
+  return currentTimestamp.value > gameTimeStamp;
+}
 const changeMatchday = (newMatchday) => {
   console.log("changeMatchday", newMatchday);
   if (newMatchday >= 1 && newMatchday <= matchdays.value.length) {
