@@ -129,7 +129,6 @@ const retrieveTippModus = async () => {
       const response = await TippModusDataService.getOne(formData.value.tippConfig.tippModusId);
       if (response.status === 200) {
         formData.value.tippModus = response.data;
-        console.log("modus::",JSON.stringify(formData.value.tippModus));
       }
     }
     formData.value.loading = false;
@@ -173,26 +172,29 @@ const fetchMatchesForMatchday = async () => {
 const retrieveCurrentMatchday = async () => {
   let timestampNow = Date.now();
   const currentDate = new Date(timestampNow);
-  currentDate.setDate(29);
+  currentDate.setDate(27);
   germanDate.value = formatDateTime(currentDate);
   console.log("germanDate::", germanDate);
   currentTimeStamp.value = new Date(currentDate).getTime();
   const greaterMatchdays = formData.value.matchdays.filter(matchday => {
-    console.log("matchdate::", matchday.startDate);
-    let _timestamp = new Date(matchday.startDate).getTime();
+     let _timestamp = new Date(matchday.startDate).getTime();
     return _timestamp > currentTimeStamp;
   });
+  console.log("greaterMatchdays.length::", greaterMatchdays.length);
   if (greaterMatchdays.length > 0) {
     nextFutureMatchdayNumber.value = selectedMatchdayNumber.value = greaterMatchdays[0].spieltagNumber;
   } else {
     nextFutureMatchdayNumber.value = selectedMatchdayNumber.value = formData.value.matchdays[0].spieltagNumber;
   }
+  console.log("nextFutureMatchdayNumber.value::",nextFutureMatchdayNumber.value);
 }
 
 // --- Event-Handler ---
 const changeMatchday = (newMatchday) => {
+  console.log("changeMatchday: ");
   if (newMatchday >= 1 && newMatchday <= formData.value.totalMatchdays) {
     selectedMatchdayNumber.value = newMatchday;
+    fetchMatchesForMatchday();
   }
 };
 
@@ -200,13 +202,6 @@ const changeMatchday = (newMatchday) => {
 const getMatchdayByNumber = (numberToFind) => {
   return formData.value.matchdays.find(matchday => matchday.spieltagNumber === numberToFind);
 }
-
-// --- Watcher & Lifecycles ---
-// Sobald sich die aktuelle Seite ändert, werden die Daten neu geladen
-watch(selectedMatchdayNumber, () => {
-  console.log("watch:" + selectedMatchdayNumber.value);
-  fetchMatchesForMatchday();
-});
 
 
 // Initialer API-Aufruf beim Laden der Komponente

@@ -98,17 +98,11 @@ const currentTimestamp = toRef(props, 'timestampNow');
 // Initialize with a shallow copy
 
 const isDisabled = (match) => {
-  console.log("now::",currentTimestamp.value);
-  console.log("heimName::", match.heimName);
   const gameTimeStamp= convertGermanDateToTimestamp(match.anpfiffdate);
-  console.log("anpfiff::", gameTimeStamp);
-  console.log(currentTimestamp.value > gameTimeStamp);
   return currentTimestamp.value > gameTimeStamp;
 }
 const changeMatchday = (newMatchday) => {
-  console.log("changeMatchday", newMatchday);
   if (newMatchday >= 1 && newMatchday <= matchdays.value.length) {
-    console.log("changeMatchday", newMatchday);
     currentMatchdayNumber.value = newMatchday;
     emit('change-matchday', newMatchday);
   }
