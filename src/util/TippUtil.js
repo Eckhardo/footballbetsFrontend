@@ -26,4 +26,21 @@ const assignTotoTippsForLoad = (matches) => {
     return matches;
 }
 
-export {assignTotoTippsForSave,assignTotoTippsForLoad};
+const retrieveCurrentMatchday = (matchdays) => {
+    let timestampNow = Date.now();
+    const currentDate = new Date(timestampNow);
+    currentDate.setDate(27);
+   const currentTimeStamp = new Date(currentDate).getTime();
+    const greaterMatchdays =matchdays.filter(matchday => {
+        let _timestamp = new Date(matchday.startDate).getTime();
+        return _timestamp > currentTimeStamp;
+    });
+    if (greaterMatchdays.length > 0) {
+      return greaterMatchdays[0].spieltagNumber;
+    } else {
+        return matchdays[0].spieltagNumber;
+    }
+}
+
+
+export {assignTotoTippsForSave,assignTotoTippsForLoad,retrieveCurrentMatchday};

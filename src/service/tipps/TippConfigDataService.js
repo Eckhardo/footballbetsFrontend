@@ -16,7 +16,7 @@ class TippConfigDataService {
         return http.get(`/config/${id}`);
 
     }
-    findByMatchdayAndCompMemb(matchdayId, compMembId) {
+    findTippConfig(matchdayId, compMembId) {
         console.log("findTippConfig:", matchdayId);
        return http.get(`/config/${matchdayId}/compMemb/${compMembId}`);
     }

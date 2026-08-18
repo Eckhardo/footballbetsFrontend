@@ -68,6 +68,7 @@
 import {defineEmits, defineProps, ref, toRef, defineModel} from 'vue';
 import {saveMessage} from "@/util/errorMessages.js";
 import TippModusDataService from "../../../../service/tipps/TippModusDataService.js";
+import {convertGermanDateToTimestamp} from "../../../../util/DateFromatter.js";
 // Define props using macro (no import needed)
 // Automatically handles prop and update emit
 const matches = defineModel({type: Array, required: true})
@@ -97,11 +98,9 @@ const currentTimestamp = toRef(props, 'timestampNow');
 
 // Initialize with a shallow copy
 
+
 const isDisabled = (match) => {
-  console.log("now::",currentTimestamp.value);
-  const gameTimeStamp= new Date( match.anpfiffdate).getTime();
-  console.log("anpfiff::", gameTimeStamp);
-  console.log(currentTimestamp.value > gameTimeStamp);
+  const gameTimeStamp= convertGermanDateToTimestamp(match.anpfiffdate);
   return currentTimestamp.value > gameTimeStamp;
 }
 const changeMatchday = (newMatchday) => {

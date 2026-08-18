@@ -12,13 +12,10 @@
           <router-link :to="{ name: 'Tippspielplan', params: { commName:getPath} }">Spielplan</router-link>
         </li>
         <li v-if="isVisible && umsInfoStore.loggedIn && umsInfoStore.path!=='info'">
-          <router-link :to="{ name: 'TippModi', params: { commName:getPath} }">TippModi</router-link>
+          <router-link :to="{ name: 'TippOverview', params: { commName:getPath} }">Tippübersicht</router-link>
         </li>
-        <li v-if="isVisible && umsInfoStore.loggedIn && umsInfoStore.path!=='info'">
-          <router-link :to="{ name: 'TippConfigs', params: { commName:getPath} }">TippConfigs</router-link>
-        </li>
-        <li v-if="isVisible && umsInfoStore.loggedIn && umsInfoStore.path!=='info'">
-          <router-link :to="{ name: 'Tippabgabe', params: { commName:getPath} }">Tippabgabe</router-link>
+          <li v-if="isVisible && umsInfoStore.loggedIn && umsInfoStore.path!=='info'">
+          <router-link :to="{ name: 'Tippabgabe', params:  { commName:getPath} }">Tippabgabe</router-link>
         </li>
 
         <hr style="border: none; border-top: 2px dotted black; width: 180px;">
@@ -45,7 +42,6 @@ export default {
   },
   computed: {
     getPath() {
-
       const path = this.umsInfoStore.path === null ? 'info' : this.umsInfoStore.path;
       console.log("my ^path:::", path);
       return path;
@@ -54,7 +50,7 @@ export default {
 
   methods: {
     isVisible() {
-      return this.umsInfo.tipperCommunities.includes(this.umsInfo.defaultCommunityId);
+      return this.umsInfoStore.tipperCommunities.includes(this.umsInfoStore.defaultCommunityId);
     }
   }
 };

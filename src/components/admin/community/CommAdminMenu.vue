@@ -1,10 +1,20 @@
 <template>
   <aside class="side-menu" id="community">
     <nav>
-      <ul v-if="isVisible && umsInfo.commAdmin">
+      <ul v-if="isVisible && umsInfoStore.commAdmin">
 
-        <li><router-link to="/communities">Communities</router-link></li>
-        <li><router-link to="/tipper">Tipper</router-link></li>
+        <li>
+          <router-link to="/communities">Communities</router-link>
+        </li>
+        <li>
+          <router-link to="/tipper">Tipper</router-link>
+        </li>
+        <li>
+          <router-link :to="{ name: 'TippModi', params: { commName:getPath} }">TippModi</router-link>
+        </li>
+        <li>
+          <router-link :to="{ name: 'TippConfigs', params: { commName:getPath} }">TippConfigs</router-link>
+        </li>
 
         <hr style="border: none; border-top: 2px dotted black; width: 180px;">
       </ul>
@@ -19,19 +29,27 @@ import {useUmsInfoStore} from "@/stores/umsInfoStore.js";
 
 export default {
   name: 'CommAdminMenu',
+  setup() {
+    const umsInfoStore = useUmsInfoStore();
+    return {umsInfoStore};
+  },
   data() {
     return {
-      isUsed: false
+      isUsed: false,
+      path: null
     }
   },
   computed: {
-    // mapState mappt das 'todos'-Array direkt in diese Komponente
-    ...mapState(useUmsInfoStore, ['umsInfo'])
+    getPath() {
 
+      const path = this.umsInfoStore.path === null ? 'info' : this.umsInfoStore.path;
+      console.log("my ^path:::", path);
+      return path;
+    }
   },
   methods: {
     isVisible() {
-      return this.umsInfo.adminCommunities.includes(this.umsInfo.defaultCommunityId);
+      return this.umsInfoStore.adminCommunities.includes(this.umsInfo.defaultCommunityId);
     }
   }
 };
@@ -42,7 +60,7 @@ export default {
   background-color: #f4f4f4;
   width: 200px; /* Fixed width for sidebar */
   position: fixed;
-  top: 280px; /* Below the header */
+  top: 240px; /* Below the header */
 
   left: 0;
   bottom: 0;

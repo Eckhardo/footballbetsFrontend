@@ -15,6 +15,7 @@
         <th>HeimTipp</th>
         <th>RemisTipp</th>
         <th>GastTipp</th>
+        <th>Punkte</th>
       </tr>
       </thead>
       <tbody>
@@ -36,6 +37,7 @@
                    :name="match.id" :disabled=isDisabled(match)
                    v-model="match.gastTipp" min="0" placeholder="0">
         </td>
+        <td>{{ match.winPoints }}</td>
       </tr>
       <tr v-if="matches.length === 0">
         <td colspan="4">Keine Einträge gefunden.</td>
