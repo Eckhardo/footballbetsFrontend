@@ -1,5 +1,7 @@
 <template>
-
+  <TippOverviewList v-if="!loading"   v-bind:tipp-rows="tippRows"
+            v-bind:matchdays="matchdays" @change-matchday="changeMatchday"
+            v-bind:current-matchday-number="selectedMatchdayNumber"/>
 </template>
 <script setup>
 import {onMounted, ref} from 'vue';
@@ -11,6 +13,8 @@ import {saveMessage} from "@/util/errorMessages.js";
 import TippDataService from "@/service/tipps/TippDataService.js";
 import MatchdayDataService from "@/service/competition/MatchdayDataService.js";
 import {retrieveCurrentMatchday} from "@/util/TippUtil.js";
+import TotoForm from "../tippabgabe/TotoForm.vue";
+import TippOverviewList from "./TippOverviewList.vue";
 
 const umsInfoStore = useUmsInfoStore();
 const {defaultCompetitionId, defaultCommunityId} = storeToRefs(umsInfoStore);
@@ -18,11 +22,11 @@ const {defaultCompetitionId, defaultCommunityId} = storeToRefs(umsInfoStore);
 const {setMessage} = useMessage();
 const {setError} = useError();
 
-
+const tippRows = ref([]);
 const currentTimeStamp = ref(null);
-const selectedMatchdayNumber = ref(null);
+const selectedMatchdayNumber = ref(1);
 const loading = ref(false);
-const matchdays = ref(null);
+const matchdays = ref([]);
 const totalMatchdays = ref(null);
 const currentMatchday = ref(null);
 const currentMatchdayId = ref(null);
@@ -59,6 +63,7 @@ const fetchTippOverview = async () => {
     const myResponse = await TippDataService.findTippRowsForCommunity(currentMatchdayId.value, defaultCommunityId.value);
     if (myResponse.status === 200) {
       console.log(JSON.stringify(myResponse.data));
+      tippRows.value = myResponse.data;
     }
     loading.value = false;
   } catch (err) {
@@ -72,6 +77,18 @@ const fetchTippOverview = async () => {
 const getMatchdayByNumber = (numberToFind) => {
   return matchdays.value.find(matchday => matchday.spieltagNumber === numberToFind);
 }
+
+
+// --- Event-Handler ---
+const changeMatchday = (newMatchday) => {
+  console.log("changeMatchday: ");
+  if (newMatchday >= 1 && newMatchday <= formData.value.totalMatchdays) {
+    selectedMatchdayNumber.value = newMatchday;
+    fetchTippOverview();
+  }
+};
+
+
 // Initialer API-Aufruf beim Laden der Komponente
 onMounted(() => {
   fetchMatchdays();
