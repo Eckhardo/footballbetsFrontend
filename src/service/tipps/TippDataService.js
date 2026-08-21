@@ -4,7 +4,7 @@ class TippDataService {
 
     findTippRowsForTipper(matchdayId, commMembId) {
         console.log("findTippRowsForTipper", matchdayId, commMembId);
-        return http.get(`/tipps/${matchdayId}/container/${commMembId}`);
+        return http.get(`/tippRows/${matchdayId}/container/${commMembId}`);
     }
 
 
@@ -17,7 +17,7 @@ class TippDataService {
 
 // Convert your object into URL search parameters
 
-        return http.get(`/tipps`, {
+        return http.get(`/tippRows`, {
                 params: voData // Axios converts this into URL parameters
             }
         );

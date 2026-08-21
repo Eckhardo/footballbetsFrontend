@@ -34,7 +34,12 @@ import PointForm from "./PointForm.vue";
 import TippModus from "./TippModus.vue";
 import TippConfigDataService from "@/service/tipps/TippConfigDataService.js";
 import {formatDateTime} from "@/util/DateFromatter.js";
-import {assignTotoTippsForSave, assignTotoTippsForLoad, retrieveCurrentMatchday} from "@/util/TippUtil.js";
+import {
+  assignTotoTippsForSave,
+  assignTotoTippsForLoad,
+  retrieveCurrentMatchday,
+  retrieveCurrentDate
+} from "@/util/TippUtil.js";
 
 const umsInfoStore = useUmsInfoStore();
 const {defaultCompetitionId, defaultCommMembId, defaultCompMembId, defaultCommunityId} = storeToRefs(umsInfoStore);
@@ -146,6 +151,7 @@ const fetchMatchesForMatchday = async () => {
     formData.value.currentMatchdayId = formData.value.currentMatchday.id;
     const matchesResponse = await TippDataService.findTippRowsForTipper(formData.value.currentMatchdayId, defaultCommMembId.value);
     if (matchesResponse.status === 200) {
+      currentTimeStamp.value = retrieveCurrentDate().getTime();
       matches.value = matchesResponse.data.tippRows;
       isUpdate.value = matchesResponse.data.update;
       await retrieveTippModus();

@@ -20,7 +20,7 @@
         <td>{{ tippRow.heimName }}</td>
         <td>{{ tippRow.gastName }}</td>
         <td>{{ tippRow.heimTore }}:{{ tippRow.gastTore }}</td>
-        <td>{{ tippRow.heimTipp }}:{{ tippRow.remisTipp }}:{{tippRow.gastTipp}}</td>
+        <td>{{ tippRow.heimTipp ? tippRow.heimTipp:0 }}:{{ tippRow.remisTipp ?tippRow.remisTipp:0 }}:{{tippRow.gastTipp ? tippRow.gastTipp:0}}</td>
         <td>{{ tippRow.winPoints }}</td>
       </tr>
       <tr v-if="tippRows.length === 0">

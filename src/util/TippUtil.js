@@ -27,9 +27,8 @@ const assignTotoTippsForLoad = (matches) => {
 }
 
 const retrieveCurrentMatchday = (matchdays) => {
-    let timestampNow = Date.now();
-    const currentDate = new Date(timestampNow);
-    currentDate.setDate(27);
+  const currentDate=retrieveCurrentDate();
+    console.log("currentDate", currentDate);
    const currentTimeStamp = new Date(currentDate).getTime();
     const greaterMatchdays =matchdays.filter(matchday => {
         let _timestamp = new Date(matchday.startDate).getTime();
@@ -43,4 +42,12 @@ const retrieveCurrentMatchday = (matchdays) => {
 }
 
 
-export {assignTotoTippsForSave,assignTotoTippsForLoad,retrieveCurrentMatchday};
+const retrieveCurrentDate = () => {
+    let timestampNow = Date.now();
+    const currentDate = new Date(timestampNow);
+    currentDate.setDate(27);
+    return currentDate;
+
+}
+
+export {assignTotoTippsForSave,assignTotoTippsForLoad,retrieveCurrentMatchday,retrieveCurrentDate};
