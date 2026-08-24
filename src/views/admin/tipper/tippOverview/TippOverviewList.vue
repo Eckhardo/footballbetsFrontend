@@ -76,17 +76,13 @@ const props = defineProps({
   currentMatchdayNumber: {
     type: Number,
     required: true
-  },
-  timestampNow: {
-    type: Number,
-    required: true
   }
 });
 
 const tippRows = toRef(props, 'tippRows');
 const matchdays = toRef(props, 'matchdays');
 const currentMatchdayNumber = toRef(props, 'currentMatchdayNumber');
-const currentTimestamp = toRef(props, 'timestampNow');
+
 
 // Initialize with a shallow copy
 

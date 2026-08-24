@@ -40,6 +40,7 @@ const fetchMatchdays = async () => {
 
     if (matchdaysResponse.status === 200) {
       matchdays.value = matchdaysResponse.data;
+      totalMatchdays.value = matchdays.value.length;
       if (matchdays.value.length > 0) {
            await fetchTippOverview();
       }
@@ -81,9 +82,10 @@ const getMatchdayByNumber = (numberToFind) => {
 
 // --- Event-Handler ---
 const changeMatchday = (newMatchday) => {
-  console.log("changeMatchday: ");
-  if (newMatchday >= 1 && newMatchday <= formData.value.totalMatchdays) {
+  console.log("changeMatchday: ",newMatchday);
+  if (newMatchday >= 1 && newMatchday <= totalMatchdays.value) {
     selectedMatchdayNumber.value = newMatchday;
+    console.log("selectedMatchdayNumber.value: ",selectedMatchdayNumber.value);
     fetchTippOverview();
   }
 };
