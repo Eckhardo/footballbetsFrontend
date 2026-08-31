@@ -4,24 +4,22 @@
     <table class="custom-table">
       <thead>
       <tr>
+        <th>Position</th>
+        <th>+/-</th>
         <th>Tipper</th>
-        <th>Anpfiff</th>
-        <th>Heim</th>
-        <th>Gast</th>
-        <th>Ergebnis</th>
-        <th>Tipp</th>
-        <th>Punkte</th>
+        <th>Gesamtpunkte</th>
+        <th>diffAbs</th>
+        <th>diffRel</th>
       </tr>
       </thead>
       <tbody>
-      <tr v-for="(tippRow) in tippRows" :key="tippRow.id">
+      <tr v-for="(tippRow) in tippRows" :key="tippRow.username">
+        <td>{{ tippRow.position }}</td>
+        <td>{{ tippRow.positionLast }}</td>
         <td>{{ tippRow.username }}</td>
-        <td>{{ tippRow.anpfiffdate }}</td>
-        <td>{{ tippRow.heimName }}</td>
-        <td>{{ tippRow.gastName }}</td>
-        <td>{{ tippRow.heimTore }}:{{ tippRow.gastTore }}</td>
-        <td>{{ tippRow.heimTipp ? tippRow.heimTipp:0 }}:{{ tippRow.remisTipp ?tippRow.remisTipp:0 }}:{{tippRow.gastTipp ? tippRow.gastTipp:0}}</td>
-        <td>{{ tippRow.winPoints }}</td>
+        <td>{{ tippRow.sumWinPoints }}</td>
+        <td>{{ tippRow.diffAbsolute }}</td>
+        <td>{{ tippRow.diffRelative }}</td>
       </tr>
       <tr v-if="tippRows.length === 0">
         <td colspan="4">Keine Einträge gefunden.</td>

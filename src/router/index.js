@@ -48,9 +48,9 @@ const routes = [
                 component: () => import('@/views/admin/tipper/tippabgabe/Tippabgabe.vue')
             },
             {
-                path: '/:commName/tippOverview',
+                path: '/:commName/tippTable',
                 name: 'TippOverview',
-                component: () => import('@/views/admin/tipper/tippOverview/TippOverview.vue')
+                component: () => import('../views/admin/tipper/tippTable/TippTable.vue')
             },
             {
                 path: '/:commName/login/:openDialog',

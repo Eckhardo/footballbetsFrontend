@@ -1,5 +1,5 @@
 <template>
-  <TippOverviewList v-if="!loading"   v-bind:tipp-rows="tippRows"
+  <TippTableList v-if="!loading"   v-bind:tipp-rows="tippRows"
             v-bind:matchdays="matchdays" @change-matchday="changeMatchday"
             v-bind:current-matchday-number="selectedMatchdayNumber"/>
 </template>
@@ -10,11 +10,11 @@ import {useUmsInfoStore} from "@/stores/umsInfoStore.js";
 import {useError} from '@/composables/useError.js';
 import {useMessage} from '@/composables/useMessage.js';
 import {saveMessage} from "@/util/errorMessages.js";
-import TippDataService from "@/service/tipps/TippDataService.js";
+import TippTableDataService from "@/service/tipps/TippTableDataService.js";
 import MatchdayDataService from "@/service/competition/MatchdayDataService.js";
 import {retrieveCurrentMatchday} from "@/util/TippUtil.js";
 import TotoForm from "../tippabgabe/TotoForm.vue";
-import TippOverviewList from "./TippOverviewList.vue";
+import TippTableList from "./TippTableList.vue";
 
 const umsInfoStore = useUmsInfoStore();
 const {defaultCompetitionId, defaultCommunityId} = storeToRefs(umsInfoStore);
@@ -61,7 +61,7 @@ const fetchTippOverview = async () => {
     }
     currentMatchday.value = getMatchdayByNumber(selectedMatchdayNumber.value);
     currentMatchdayId.value = currentMatchday.value.id;
-    const myResponse = await TippDataService.findTippRowsForCommunity(currentMatchdayId.value, defaultCommunityId.value);
+    const myResponse = await TippTableDataService.findTippTableForCommunity( defaultCommunityId.value,1,1);
     if (myResponse.status === 200) {
       console.log(JSON.stringify(myResponse.data));
       tippRows.value = myResponse.data;
