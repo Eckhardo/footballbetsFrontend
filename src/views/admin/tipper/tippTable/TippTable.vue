@@ -1,5 +1,5 @@
 <template>
-  <TippTableList v-if="!loading"   v-bind:tipp-rows="tippRows"
+  <TippTableList v-if="!loading"   v-bind:tipp-rows="tippTableRows"
             v-bind:matchdays="matchdays" @change-matchday="changeMatchday"
             v-bind:current-matchday-number="selectedMatchdayNumber"/>
 </template>
@@ -12,7 +12,7 @@ import {useMessage} from '@/composables/useMessage.js';
 import {saveMessage} from "@/util/errorMessages.js";
 import TippTableDataService from "@/service/tipps/TippTableDataService.js";
 import MatchdayDataService from "@/service/competition/MatchdayDataService.js";
-import {retrieveCurrentMatchday} from "@/util/TippUtil.js";
+import {retrieveCurrentMatchdayNumber} from "@/util/TippUtil.js";
 import TotoForm from "../tippabgabe/TotoForm.vue";
 import TippTableList from "./TippTableList.vue";
 
@@ -22,9 +22,9 @@ const {defaultCompetitionId, defaultCommunityId} = storeToRefs(umsInfoStore);
 const {setMessage} = useMessage();
 const {setError} = useError();
 
-const tippRows = ref([]);
+const tippTableRows = ref([]);
 const currentTimeStamp = ref(null);
-const selectedMatchdayNumber = ref(1);
+const selectedMatchdayNumber = ref(null);
 const loading = ref(false);
 const matchdays = ref([]);
 const totalMatchdays = ref(null);
@@ -42,7 +42,7 @@ const fetchMatchdays = async () => {
       matchdays.value = matchdaysResponse.data;
       totalMatchdays.value = matchdays.value.length;
       if (matchdays.value.length > 0) {
-           await fetchTippOverview();
+           await fetchTippTable();
       }
     }
   } catch (err) {
@@ -51,20 +51,20 @@ const fetchMatchdays = async () => {
   }
 }
 
-const fetchTippOverview = async () => {
-  console.log("fetchTippOverview");
+const fetchTippTable = async () => {
+  console.log("fetchTippTable");
   loading.value = true;
   try {
 
     if (selectedMatchdayNumber.value === null) {
-      selectedMatchdayNumber.value= retrieveCurrentMatchday(matchdays.value);
+      console.log("retrieveCurrentMatchdayNumber");
+      selectedMatchdayNumber.value= retrieveCurrentMatchdayNumber(matchdays.value);
     }
     currentMatchday.value = getMatchdayByNumber(selectedMatchdayNumber.value);
     currentMatchdayId.value = currentMatchday.value.id;
-    const myResponse = await TippTableDataService.findTippTableForCommunity( defaultCommunityId.value,1,1);
+    const myResponse = await TippTableDataService.findTippTableForCommunity( defaultCommunityId.value,1,selectedMatchdayNumber.value);
     if (myResponse.status === 200) {
-      console.log(JSON.stringify(myResponse.data));
-      tippRows.value = myResponse.data;
+      tippTableRows.value = myResponse.data;
     }
     loading.value = false;
   } catch (err) {
@@ -86,7 +86,7 @@ const changeMatchday = (newMatchday) => {
   if (newMatchday >= 1 && newMatchday <= totalMatchdays.value) {
     selectedMatchdayNumber.value = newMatchday;
     console.log("selectedMatchdayNumber.value: ",selectedMatchdayNumber.value);
-    fetchTippOverview();
+    fetchTippTable();
   }
 };
 

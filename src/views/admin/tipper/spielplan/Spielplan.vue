@@ -70,13 +70,14 @@
 
 <script setup>
 import {onMounted, ref, watch} from 'vue';
-import MatchdayDataService from "../../../../service/competition/MatchdayDataService.js";
+import MatchdayDataService from "@/service/competition/MatchdayDataService.js";
 import {storeToRefs} from "pinia";
-import {useUmsInfoStore} from "../../../../stores/umsInfoStore.js";
-import {useError} from '../../../../composables/useError.js';
-import {useMessage} from '../../../../composables/useMessage.js';
-import {saveMessage} from "../../../../util/errorMessages.js";
-import MatchDataService from "../../../../service/competition/MatchDataService.js";
+import {useUmsInfoStore} from "@/stores/umsInfoStore.js";
+import {useError} from '@/composables/useError.js';
+import {useMessage} from '@/composables/useMessage.js';
+import {saveMessage} from "@/util/errorMessages.js";
+import MatchDataService from "@/service/competition/MatchDataService.js";
+import {retrieveCurrentMatchday} from "../../../../util/TippUtil.js";
 
 // --- Reaktive Zustände (State) ---
 const matches = ref([]);
@@ -109,7 +110,7 @@ const fetchMatchdays = async () => {
       matchdays = matchdaysResponse.data;
       console.log("...loaded matchdays", JSON.stringify(matchdaysResponse.data));
       if (matchdays.length > 0) {
-        currentMatchday.value = matchdays[0];
+        currentMatchday.value =retrieveCurrentMatchday(matchdays);
 
         currentMatchdayId.value = currentMatchday.value.id;
         currentMatchdayNumber.value = currentMatchday.value.spieltagNumber;

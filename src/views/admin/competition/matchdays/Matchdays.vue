@@ -69,6 +69,7 @@ export default {
   },
   mounted() {
     this.selectedCompId = this.umsInfo.defaultCompetitionId;
+    console.log("compId::",this.selectedCompId);
     this.retrieveData();
   },
   data() {
@@ -104,12 +105,15 @@ export default {
       try {
         const roundResponse = await CompRoundDataService.findByCompId(this.selectedCompId);
         this.rounds = roundResponse.data;
+        for(const round of this.rounds) {
+          console.log(JSON.stringify(round));
+        }
 
         if (this.rounds.length >= 0) {
           this.selectedRound = this.rounds[0];
           this.roundId = this.selectedRound.id;
         }
-        console.log("retrieve Matchdays for selected round");
+        console.log("retrieve Matchdays for selected round:",JSON.stringify(this.selectedRound.id));
         const responseMatchday = await MatchdayDataService.getMatchdaysByRoundId(this.roundId);
         this.matchdays = responseMatchday.data;
       } catch (error) {

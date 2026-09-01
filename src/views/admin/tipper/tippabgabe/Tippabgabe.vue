@@ -37,7 +37,7 @@ import {formatDateTime} from "@/util/DateFromatter.js";
 import {
   assignTotoTippsForSave,
   assignTotoTippsForLoad,
-  retrieveCurrentMatchday,
+  retrieveCurrentMatchdayNumber,
   retrieveCurrentDate
 } from "@/util/TippUtil.js";
 
@@ -145,7 +145,7 @@ const fetchMatchesForMatchday = async () => {
   try {
 
     if (selectedMatchdayNumber.value === null) {
-     selectedMatchdayNumber.value= retrieveCurrentMatchday(formData.value.matchdays);
+     selectedMatchdayNumber.value= retrieveCurrentMatchdayNumber(formData.value.matchdays);
     }
     formData.value.currentMatchday = getMatchdayByNumber(selectedMatchdayNumber.value);
     formData.value.currentMatchdayId = formData.value.currentMatchday.id;

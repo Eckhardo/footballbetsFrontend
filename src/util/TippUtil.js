@@ -1,3 +1,5 @@
+import {convertGermanDateToTimestamp} from "./DateFromatter.js";
+
 const assignTotoTippsForSave = (matches) => {
     for (const item of matches) {
         item.heimTipp = 0;
@@ -27,15 +29,38 @@ const assignTotoTippsForLoad = (matches) => {
 }
 
 const retrieveCurrentMatchday = (matchdays) => {
-  const currentDate=retrieveCurrentDate();
+    const currentDate = retrieveCurrentDate();
+    console.log("currentDate::", currentDate);
+    const currentTimeStamp = new Date(currentDate).getTime();
+    console.log("currentTimeStamp::", currentTimeStamp);
+    const greaterMatchdays = matchdays.filter(matchday => {
+        console.log("matchday::", matchday.startDate);
+        let _timestamp = convertGermanDateToTimestamp(matchday.startDate);
+
+        console.log("_timestamp::", _timestamp);
+        return _timestamp > currentTimeStamp;
+    });
+    for(const matchday of greaterMatchdays) {
+        console.log("greater::", matchday.spieltagNumber);
+    }
+    if (greaterMatchdays.length > 0) {
+        return greaterMatchdays[0];
+    } else {
+        return matchdays[0];
+    }
+}
+
+
+const retrieveCurrentMatchdayNumber = (matchdays) => {
+    const currentDate = retrieveCurrentDate();
     console.log("currentDate", currentDate);
-   const currentTimeStamp = new Date(currentDate).getTime();
-    const greaterMatchdays =matchdays.filter(matchday => {
-        let _timestamp = new Date(matchday.startDate).getTime();
+    const currentTimeStamp = new Date(currentDate).getTime();
+    const greaterMatchdays = matchdays.filter(matchday => {
+        let _timestamp = convertGermanDateToTimestamp(matchday.startDate);
         return _timestamp > currentTimeStamp;
     });
     if (greaterMatchdays.length > 0) {
-      return greaterMatchdays[0].spieltagNumber;
+        return greaterMatchdays[0].spieltagNumber;
     } else {
         return matchdays[0].spieltagNumber;
     }
@@ -44,10 +69,14 @@ const retrieveCurrentMatchday = (matchdays) => {
 
 const retrieveCurrentDate = () => {
     let timestampNow = Date.now();
-    const currentDate = new Date(timestampNow);
-    currentDate.setDate(27);
-    return currentDate;
+    return new Date(timestampNow);
 
 }
 
-export {assignTotoTippsForSave,assignTotoTippsForLoad,retrieveCurrentMatchday,retrieveCurrentDate};
+export {
+    assignTotoTippsForSave,
+    assignTotoTippsForLoad,
+    retrieveCurrentMatchdayNumber,
+    retrieveCurrentMatchday,
+    retrieveCurrentDate
+};

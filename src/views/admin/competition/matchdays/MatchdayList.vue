@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <div class="card-header fw-bold">
-      Spieltage der {{ selected.name }} ({{ selected.compName }})
+      Spieltage der {{ selected.name }} ({{ selectedRound.name }})
     </div>
     <div class="mb-3  p-3 border rounded">
       <div>
@@ -45,7 +45,7 @@
         <tbody>
         <tr v-for="(matchday) in matchdays" :key="matchday.id">
           <td>{{ matchday.spieltagNumber }}</td>
-          <td>{{ convertDate(matchday.startDate) }}</td>
+          <td>{{ matchday.startDate }}</td>
           <td>{{ matchday.compRoundName }}</td>
           <td>
             <button class="btn btn-warning btn-sm me-2" @click="$emit('edit-matchday',{
@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import {formatDateTime, formatGermanDate} from "@/util/DateFromatter.js";
+import {formatGermanDate} from "@/util/DateFromatter.js";
 
 export default {
   name: 'MatchdayList',

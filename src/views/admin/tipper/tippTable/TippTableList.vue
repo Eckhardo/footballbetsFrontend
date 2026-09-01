@@ -73,7 +73,8 @@ const props = defineProps({
 
   currentMatchdayNumber: {
     type: Number,
-    required: true
+    required: true,
+    default: () => 1
   }
 });
 

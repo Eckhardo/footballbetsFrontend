@@ -53,6 +53,7 @@ import MatchdayDataService from "@/service/competition/MatchdayDataService.js";
 import MatchDataService from "@/service/competition/MatchDataService.js";
 import CompTeamDataService from "@/service/competition/CompTeamDataService.js";
 import TippEqualizerDataService from "@/service/tipps/TippEqualizerDataService.js";
+import {retrieveCurrentMatchday} from "@/util/TippUtil.js";
 
 export default {
   name: 'Matches',
@@ -69,6 +70,7 @@ export default {
   },
   mounted() {
     this.selectedCompId = this.compId;
+    console.log("compId::",this.selectedCompId);
     this.retrieveData();
   },
 
@@ -132,7 +134,7 @@ export default {
         this.matchdays = matchdaysResponse.data;
         console.log("matchday.size:" + this.matchdays.length);
         if (this.matchdays.length >= 0) {
-          this.selectedMatchday = this.matchdays[0];
+          this.selectedMatchday =   retrieveCurrentMatchday(this.matchdays);
           this.matchdayId = this.selectedMatchday.id;
         }
         const matchesResponse = await MatchDataService.getAllByMatchdayId(this.matchdayId);
