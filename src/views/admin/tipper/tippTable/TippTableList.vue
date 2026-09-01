@@ -82,7 +82,6 @@ const tippRows = toRef(props, 'tippRows');
 const matchdays = toRef(props, 'matchdays');
 const currentMatchdayNumber = toRef(props, 'currentMatchdayNumber');
 
-
 // Initialize with a shallow copy
 
 const changeMatchday = (newMatchday) => {
@@ -94,11 +93,6 @@ const changeMatchday = (newMatchday) => {
 </script>
 
 <style scoped>
-.small-input {
-  width: 100px;
-
-}
-
 .datatable-container {
   font-family: sans-serif;
   margin: 20px auto;
@@ -125,27 +119,6 @@ const changeMatchday = (newMatchday) => {
 
 .custom-table tr:nth-child(even) {
   background-color: #f9f9f9;
-}
-
-.loading-overlay {
-  background-color: rgba(255, 255, 255, 0.7);
-  padding: 10px;
-  text-align: center;
-  font-weight: bold;
-}
-
-.error-message {
-  color: #d9534f;
-  padding: 10px;
-  background-color: #f2dede;
-  border: 1px solid #ebccd1;
-  border-radius: 4px;
-  margin-bottom: 5px;
-}
-
-.no-data {
-  text-align: center;
-  color: #777;
 }
 
 .paginator-controls {
