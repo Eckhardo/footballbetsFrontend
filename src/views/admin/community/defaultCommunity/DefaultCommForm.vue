@@ -1,5 +1,5 @@
 <template>
-  <div  class="card mb-4 ">
+  <div class="card mb-4 ">
     <div class="card-header  fs-5 ">
       Tippgemeinschaft als Standard setzen
     </div>
@@ -53,7 +53,7 @@ const retrieveCommunities = async () => {
   try {
     const response = await CommMembDataService.getCommunities(username.value);
     if (response.status === 200) {
-       formData.value.communities = response.data;
+      formData.value.communities = response.data;
       if (formData.value.communities.length > 0) {
         formData.value.community = formData.value.communities[0];
       }

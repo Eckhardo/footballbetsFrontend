@@ -106,7 +106,7 @@ export default {
         spielNumber: '',
         anpfiffdate: formatDateTime(new Date()),
         spieltagNumber: null,
-        spieltagId:null,
+        spieltagId: null,
         heimTore: null,
         gastTore: null,
         stattgefunden: false,
@@ -115,7 +115,7 @@ export default {
         heimTeamAcronym: "",
         gastTeamAcronym: "",
       },
-      sharedMatchday:this.selectedMatchday,
+      sharedMatchday: this.selectedMatchday,
 
       editing: false,
       dateError: null,
@@ -133,8 +133,8 @@ export default {
         } else {
           console.log("resetForm");
           this.resetForm();
-          this.form.spieltagNumber=this.selectedMatchday.spieltagNumber;
-          this.form.spieltagId=this.selectedMatchday.spieltagId;
+          this.form.spieltagNumber = this.selectedMatchday.spieltagNumber;
+          this.form.spieltagId = this.selectedMatchday.spieltagId;
           this.editing = false;
         }
       },
@@ -148,7 +148,7 @@ export default {
       if (validateDateTime(this.form.anpfiffdate.trim()) === true) {
         this.form.spieltagId = this.selectedMatchday.id;
         this.form.spieltagNumber = this.selectedMatchday.spieltagNumber;
-        console.log("handleSubmit:: {}",JSON.stringify(this.form));
+        console.log("handleSubmit:: {}", JSON.stringify(this.form));
         this.$emit('save-match', {...this.form});
         this.resetForm();
       } else {
@@ -160,7 +160,7 @@ export default {
         id: null,
         spielNumber: '',
         spieltagNumber: null,
-        spieltagId:null,
+        spieltagId: null,
         anpfiffdate: formatDateTime(new Date()),
         heimTore: null,
         gastTore: null,

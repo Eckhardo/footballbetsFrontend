@@ -73,7 +73,7 @@
       </table>
     </div>
     <div v-if="twoTables && heimGast" class="card-header fw-bold">
-     Auswärts Tabelle der {{ selectedComp.name }}
+      Auswärts Tabelle der {{ selectedComp.name }}
     </div>
     <div v-if="twoTables && !heimGast" class="card-header fw-bold">
       Rückrunden Tabelle der {{ selectedComp.name }}
@@ -143,7 +143,7 @@ export default {
       compTableRows: Array,
       compTableRows2: Array,
       twoTables: false,
-      heimGast:false,
+      heimGast: false,
       selectedComp: null,
       selectedCompId: null,
       spieltage: Array,
@@ -239,7 +239,7 @@ export default {
             const compTableResponse2 = await CompTableDataService.findByCompId(this.selectedCompId, firstMatchday.spieltagNumber, lastMatchday.spieltagNumber, null);
             this.compTableRows2 = compTableResponse2.data;
             this.twoTables = true;
-            this.heimGast=false;
+            this.heimGast = false;
 
           } else {
             // do nothing
@@ -268,7 +268,7 @@ export default {
         const compTableResponseGast = await CompTableDataService.findByCompId(this.selectedCompId, 1, this.selectedSpieltagNumber, false);
         this.compTableRows2 = compTableResponseGast.data;
         this.twoTables = true;
-        this.heimGast=true;
+        this.heimGast = true;
 
       } catch (error) {
         console.error("ERROR retrieve table");

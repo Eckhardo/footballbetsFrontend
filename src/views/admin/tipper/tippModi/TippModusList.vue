@@ -1,4 +1,3 @@
-
 <template>
   <div v-if="items.length>0" class="bets-container">
     <div style="padding-bottom:inherit ">
@@ -37,13 +36,14 @@
 
 </template>
 <script setup>
-import {defineEmits, defineProps,computed,toRef} from 'vue';
-const props=defineProps({
+import {computed, defineEmits, defineProps, toRef} from 'vue';
+
+const props = defineProps({
   items: {
     type: Array,
     default: () => []
   },
-  type:{
+  type: {
     type: String,
     required: true
   }

@@ -52,15 +52,14 @@
 
 </template>
 <script setup>
-import {defineEmits, defineProps, ref, toRef, defineModel} from 'vue';
-import {convertGermanDateToTimestamp} from "@/util/DateFromatter.js";
+import {defineEmits, defineProps, toRef} from 'vue';
 // Define props using macro (no import needed)
 // Automatically handles prop and update emit
 
-const emit = defineEmits([ 'change-matchday']);
+const emit = defineEmits(['change-matchday']);
 const props = defineProps({
 
-  tippRows:{
+  tippRows: {
     type: Array,
     required: true,
     default: () => []

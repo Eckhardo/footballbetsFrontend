@@ -9,7 +9,6 @@
 
 <script>
 import {useUmsInfoStore} from "@/stores/umsInfoStore.js";
-import {mapState} from 'pinia';
 
 export default {
   name: 'Home',
@@ -32,7 +31,7 @@ export default {
       this.umsInfo.username = "";
       this.umsInfo.loggedIn = false;
       this.umsInfo.path = "info";
-      this.umsInfo.invalidPath =false;
+      this.umsInfo.invalidPath = false;
     }
 
   },
@@ -47,17 +46,5 @@ export default {
   padding: 1.5rem;
   border: 1px solid #ccc;
   border-radius: 8px;
-}
-.dropdown2 {
-  position: relative;
-  display: inline-block;
-}
-
-.dropdown-menu2 {
-  list-style: none;
-  padding: 10px;
-  min-width: 150px;
-  z-index: 100;
-
 }
 </style>

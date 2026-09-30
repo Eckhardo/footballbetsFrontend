@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <div class="card-header fw-bold">
-     Wettbewerbe der {{selected.name}}
+      Wettbewerbe der {{ selected.name }}
     </div>
     <div class="mb-3  p-3 border rounded">
       <div>
@@ -35,7 +35,7 @@
         <tbody>
         <tr v-for="(competition) in competitions" :key="competition.id">
           <td>{{ competition.name }}</td>
-          <td>{{ competition.description.substring(0,20) }}</td>
+          <td>{{ competition.description.substring(0, 20) }}</td>
           <td>{{ competition.winMultiplicator }}</td>
           <td>{{ competition.remisMultiplicator }}</td>
           <td>{{ competition.familyName }}</td>
@@ -57,7 +57,7 @@
 <script>
 export default {
   name: 'CompList',
-  emits: ['delete-competition', 'edit-competition',"delete-competition",'select-family'],
+  emits: ['delete-competition', 'edit-competition', "delete-competition", 'select-family'],
   props: {
     competitions: {
       type: Array,
@@ -84,7 +84,7 @@ export default {
   },
   methods: {
 
-    handleFamilyChange(event) {
+    handleFamilyChange() {
       this.form.familyId = this.selected.id;
       this.form.familyName = this.selected.name;
 

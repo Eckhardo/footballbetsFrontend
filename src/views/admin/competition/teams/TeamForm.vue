@@ -26,7 +26,7 @@
           </div>
         </div>
         <button type="submit" class="btn btn-primary">
-         Team {{ editing ? 'ändern' : 'speichern' }}
+          Team {{ editing ? 'ändern' : 'speichern' }}
         </button>
       </form>
     </div>
@@ -78,8 +78,8 @@ export default {
     handleSubmit() {
       console.log("handleSubmit");
 
-        this.$emit('save-team', {...this.form});
-        this.resetForm();
+      this.$emit('save-team', {...this.form});
+      this.resetForm();
 
     },
     resetForm() {

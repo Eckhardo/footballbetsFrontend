@@ -35,55 +35,55 @@
   <div class="card-body">
     <h5>Step 5: TippModus konfigurieren</h5>
 
-      <form @submit.prevent>
-        <div class="row g-4 mb-3">
-          <div class="col-auto">
-            <label for="name" class="form-label  fw-bold">Type</label>
-            <input type="text" class="form-control  w-auto border border-3 " id="name"
-                   v-model="model.selectedTippModus.type"
-                   readonly>
-          </div>
-          <div class="col-auto">
-            <label for="name" class="form-label  fw-bold">Name</label>
-            <input type="text" required class="form-control  w-auto border border-3 " id="name"
-                   v-model="model.selectedTippModus.name" placeholder="MyName"
-            >
-          </div>
-          <div class="col-auto">
-            <label for="deadline" class="form-label  fw-bold">Deadline (Minuten vor Spielbeginn)</label>
-            <input type="number" class="form-control  w-auto border border-3 " id="deadline"
-                   v-model="model.selectedTippModus.deadline" min="0">
-          </div>
-          <div v-if="model.selectedTippModus.type==='ResultTipp'" class="col-auto">
-            <label for="tendencyPoints" class="form-label  fw-bold">Tendenz Punkte</label>
-            <input type="number" class="form-control  w-auto border border-3 " id="tendencyPoints"
-                   v-model="model.selectedTippModus.tendencyPoints" min="1">
-          </div>
-          <div v-if="model.selectedTippModus.type==='ResultTipp'" class="col-auto">
-            <label for="bonusPoints" class="form-label  fw-bold">Bonus Punkte</label>
-            <input type="number" class="form-control  w-auto border border-3 " id="bonusPoints"
-                   v-model="model.selectedTippModus.bonusPoints" min="0">
-          </div>
-
-          <div v-if="model.selectedTippModus.type==='PointTipp'" class="col-auto">
-            <label for="totalPoints" class="form-label  fw-bold">Gesamte Punkte</label>
-            <input type="number" class="form-control  w-auto border border-3 " id="totalPoints"
-                   v-model="model.selectedTippModus.totalPoints" min="1">
-          </div>
+    <form @submit.prevent>
+      <div class="row g-4 mb-3">
+        <div class="col-auto">
+          <label for="name" class="form-label  fw-bold">Type</label>
+          <input type="text" class="form-control  w-auto border border-3 " id="name"
+                 v-model="model.selectedTippModus.type"
+                 readonly>
+        </div>
+        <div class="col-auto">
+          <label for="name" class="form-label  fw-bold">Name</label>
+          <input type="text" required class="form-control  w-auto border border-3 " id="name"
+                 v-model="model.selectedTippModus.name" placeholder="MyName"
+          >
+        </div>
+        <div class="col-auto">
+          <label for="deadline" class="form-label  fw-bold">Deadline (Minuten vor Spielbeginn)</label>
+          <input type="number" class="form-control  w-auto border border-3 " id="deadline"
+                 v-model="model.selectedTippModus.deadline" min="0">
+        </div>
+        <div v-if="model.selectedTippModus.type==='ResultTipp'" class="col-auto">
+          <label for="tendencyPoints" class="form-label  fw-bold">Tendenz Punkte</label>
+          <input type="number" class="form-control  w-auto border border-3 " id="tendencyPoints"
+                 v-model="model.selectedTippModus.tendencyPoints" min="1">
+        </div>
+        <div v-if="model.selectedTippModus.type==='ResultTipp'" class="col-auto">
+          <label for="bonusPoints" class="form-label  fw-bold">Bonus Punkte</label>
+          <input type="number" class="form-control  w-auto border border-3 " id="bonusPoints"
+                 v-model="model.selectedTippModus.bonusPoints" min="0">
         </div>
 
-        <div v-if="isUpdate===false" class="mb-3  p-3 ">
-          <button type="button" class="btn btn-primary" @click="handleAdd">
-            TippModus hinzufügen
-          </button>
+        <div v-if="model.selectedTippModus.type==='PointTipp'" class="col-auto">
+          <label for="totalPoints" class="form-label  fw-bold">Gesamte Punkte</label>
+          <input type="number" class="form-control  w-auto border border-3 " id="totalPoints"
+                 v-model="model.selectedTippModus.totalPoints" min="1">
         </div>
-        <div v-else class="mb-3  p-3 ">
-          <button type="button" class="btn btn-primary" @click="handleUpdate">
-            TippModus ändern
-          </button>
-        </div>
-      </form>
-    </div>
+      </div>
+
+      <div v-if="isUpdate===false" class="mb-3  p-3 ">
+        <button type="button" class="btn btn-primary" @click="handleAdd">
+          TippModus hinzufügen
+        </button>
+      </div>
+      <div v-else class="mb-3  p-3 ">
+        <button type="button" class="btn btn-primary" @click="handleUpdate">
+          TippModus ändern
+        </button>
+      </div>
+    </form>
+  </div>
 
 </template>
 
@@ -103,7 +103,7 @@ const handleAdd = () => {
     handleError('Name is required');
     return;
   }
-  if(isDuplicate(copy.name)) {
+  if (isDuplicate(copy.name)) {
     handleError('Name is not unique');
     return;
   }
@@ -130,7 +130,7 @@ const handleUpdate = () => {
 }
 const deleteItem = (item) => {
   const copy = {...item};
-   let name = copy.name;
+  let name = copy.name;
 
   let index = model.value.selectedTippModi.findIndex(modus => modus.name === name);
   if (index !== -1) {
@@ -147,7 +147,7 @@ const changeItem = (item) => {
 const isListEmpty = computed(() => model.value.selectedTippModi.length === 0);
 
 
-const handleError= (message)=> {
+const handleError = (message) => {
   const error = {
     response: {
       data: {
@@ -158,8 +158,8 @@ const handleError= (message)=> {
   setError(saveMessage(error));
 }
 
-const  isDuplicate=(name)=> {
-  for (const modus in  model.value.selectedTippModi) {
+const isDuplicate = (name) => {
+  for (const modus in model.value.selectedTippModi) {
     if (modus.name === name) {
       return true;
     }

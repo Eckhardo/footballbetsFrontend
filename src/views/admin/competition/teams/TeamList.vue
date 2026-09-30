@@ -3,15 +3,15 @@
     <h5 v-if="isClub" class="card-header">
       Aktuelle Clubs
     </h5>
-   <h5 v-else class="card-header">
-     Aktuelle Nationen
-   </h5>
+    <h5 v-else class="card-header">
+      Aktuelle Nationen
+    </h5>
     <div class="row mb-3  p-3">
       <div class="col-auto">
         <button class="btn btn-warning btn-sm me-2" @click="$emit('show-clubs')"><b>Clubs</b></button>
       </div>
       <div class="col-auto">
-        <button class="btn btn-warning btn-sm me-2"@click="$emit('show-nations')" ><b>Nationen</b></button>
+        <button class="btn btn-warning btn-sm me-2" @click="$emit('show-nations')"><b>Nationen</b></button>
       </div>
     </div>
     <div class="card-body">
@@ -61,7 +61,7 @@
 <script>
 export default {
   name: 'TeamList',
-  emits: ['create-team', 'edit-team', 'delete-team','show-clubs','show-nations'],
+  emits: ['create-team', 'edit-team', 'delete-team', 'show-clubs', 'show-nations'],
   props: {
     teams: {
       type: Array,

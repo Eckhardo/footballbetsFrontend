@@ -48,7 +48,7 @@ export default {
   },
   mounted() {
     this.selectedCompId = this.compId;
-    this.selectedCountry=this.country;
+    this.selectedCountry = this.country;
     this.retrieveTeams();
 
   },
@@ -66,7 +66,7 @@ export default {
   },
 
   computed: {
-    ...mapState(useUmsInfoStore, {country:'defaultCountry', compId: 'defaultCompetitionId'}),
+    ...mapState(useUmsInfoStore, {country: 'defaultCountry', compId: 'defaultCompetitionId'}),
   },
   methods: {
     async retrieveTeams() {

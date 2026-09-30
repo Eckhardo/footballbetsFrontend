@@ -52,7 +52,7 @@
 
 
 <script setup>
-import {ref, watch, defineEmits, defineProps} from 'vue';
+import {defineEmits, defineProps, ref, watch} from 'vue';
 
 const props = defineProps({
   item: {

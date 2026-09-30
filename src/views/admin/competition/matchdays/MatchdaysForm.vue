@@ -2,7 +2,7 @@
 
   <div class="card mb-4">
     <div class="card-header .bg-secondary fs-5">
-      Spieltage hinzufügen für {{sharedRound.name}}
+      Spieltage hinzufügen für {{ sharedRound.name }}
     </div>
 
 
@@ -16,10 +16,10 @@
                    required disabled>
           </div>
           <div class="col-auto">
-          <label for="spieltagEnd" class="form-label fw-bold">Spieltag Nummer Ende</label>
-          <input type="number" min="2" class="form-control  w-auto border border-3 " id="spieltagEnd"
-                 v-model="form.lastMatchdayNumber"
-                 required disabled>
+            <label for="spieltagEnd" class="form-label fw-bold">Spieltag Nummer Ende</label>
+            <input type="number" min="2" class="form-control  w-auto border border-3 " id="spieltagEnd"
+                   v-model="form.lastMatchdayNumber"
+                   required disabled>
           </div>
           <div class="col-auto">
             <label for="roundId" class="form-label  fw-bold">Wähle die Runde:</label>
@@ -36,9 +36,9 @@
           </p>
         </div>
         <div class="mb-3  p-3 ">
-        <button :disabled="!isFieldAValid" type="submit" class="btn btn-primary">
-          Spieltage speichern
-        </button>
+          <button :disabled="!isFieldAValid" type="submit" class="btn btn-primary">
+            Spieltage speichern
+          </button>
         </div>
       </form>
     </div>
@@ -62,7 +62,7 @@ export default {
       form: {
         id: null,
         firstMatchdayNumber: this.selectedRound.firstMatchday,
-        lastMatchdayNumber: this.selectedRound.firstMatchday+ this.selectedRound.matchdaysSize-1,
+        lastMatchdayNumber: this.selectedRound.firstMatchday + this.selectedRound.matchdaysSize - 1,
         compRoundName: "",
         compRoundId: null
       },
@@ -106,8 +106,8 @@ export default {
       console.log("sharedRound", JSON.stringify(this.sharedRound));
       this.form.compRoundId = this.sharedRound.id;
       this.form.compRoundName = this.sharedRound.name;
-      this.form.firstMatchdayNumber= this.sharedRound.firstMatchday;
-      this.form.lastMatchdayNumber= this.sharedRound.firstMatchday+ this.sharedRound.matchdaysSize-1;
+      this.form.firstMatchdayNumber = this.sharedRound.firstMatchday;
+      this.form.lastMatchdayNumber = this.sharedRound.firstMatchday + this.sharedRound.matchdaysSize - 1;
     }
   }
 }

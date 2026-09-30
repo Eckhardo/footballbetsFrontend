@@ -66,11 +66,11 @@ export default {
   },
 
   computed: {
-    ...mapState(useUmsInfoStore, { compId: 'defaultCompetitionId'}),
+    ...mapState(useUmsInfoStore, {compId: 'defaultCompetitionId'}),
   },
   mounted() {
     this.selectedCompId = this.compId;
-    console.log("compId::",this.selectedCompId);
+    console.log("compId::", this.selectedCompId);
     this.retrieveData();
   },
 
@@ -80,7 +80,7 @@ export default {
   },
   data() {
     return {
-      rounds:[],
+      rounds: [],
       selectedRound: {},
       matchdays: [],
       selectedMatchday: null,
@@ -134,7 +134,7 @@ export default {
         this.matchdays = matchdaysResponse.data;
         console.log("matchday.size:" + this.matchdays.length);
         if (this.matchdays.length >= 0) {
-          this.selectedMatchday =   retrieveCurrentMatchday(this.matchdays);
+          this.selectedMatchday = retrieveCurrentMatchday(this.matchdays);
           this.matchdayId = this.selectedMatchday.id;
         }
         const matchesResponse = await MatchDataService.getAllByMatchdayId(this.matchdayId);
@@ -176,9 +176,8 @@ export default {
           this.triggerMessage();
           await this.retrieveMatches();
           await this.updateMatchday();
-        }
-        else if (response.status === 400) {
-         console.log("response::", JSON.stringify(response));
+        } else if (response.status === 400) {
+          console.log("response::", JSON.stringify(response));
         }
       } catch (error) {
         console.error("ERROR save matches");
@@ -209,8 +208,7 @@ export default {
         } catch
             (error) {
           console.error("ERROR update match {}", error);
-        }
-        finally {
+        } finally {
           TippEqualizerDataService.equalizeTippForMatchday(this.matchdayId);
         }
       } else {
@@ -233,8 +231,7 @@ export default {
           if (this.errorMessage) {
             this.triggerAlert();
           }
-        }
-        finally {
+        } finally {
           TippEqualizerDataService.equalizeTippForMatchday(this.matchdayId);
         }
       }

@@ -2,25 +2,25 @@
 
   <div class="card mb-4">
     <div class="card-header .bg-secondary fs-5">
-      {{ editing ? 'Spieltag ändern' : ' Spieltag hinzufügen' }} für {{sharedRound.name}}
+      {{ editing ? 'Spieltag ändern' : ' Spieltag hinzufügen' }} für {{ sharedRound.name }}
     </div>
 
     <div class="card-body">
       <form @submit.prevent="handleSubmit">
         <div class="row g-4 mb-3">
           <div class="col-auto">
-          <label for="matchdayNumber" class="form-label fw-bold">Spieltag</label>
-          <input type="number" min="1" class="form-control  w-auto border border-3 " id="matchdayNumber"
-                 v-model="form.spieltagNumber" required>
-        </div>
+            <label for="matchdayNumber" class="form-label fw-bold">Spieltag</label>
+            <input type="number" min="1" class="form-control  w-auto border border-3 " id="matchdayNumber"
+                   v-model="form.spieltagNumber" required>
+          </div>
           <div class="col-auto">
-          <label for="theDate" class="form-label  fw-bold">Datum</label>
-          <input type="text" class="form-control  w-auto border border-3 " id="theDate"
-                 v-model="form.startDate" @change="validateDate" required>
-          <p v-if="dateError" style="color: red;">
-            {{ dateError }}
-          </p>
-        </div>
+            <label for="theDate" class="form-label  fw-bold">Datum</label>
+            <input type="text" class="form-control  w-auto border border-3 " id="theDate"
+                   v-model="form.startDate" @change="validateDate" required>
+            <p v-if="dateError" style="color: red;">
+              {{ dateError }}
+            </p>
+          </div>
           <div class="col-auto" v-if="! editing">
             <label for="roundId" class="form-label  fw-bold">Wähle die Runde:</label>
             <!-- Use Bootstrap's form-select class for styling -->
@@ -33,9 +33,9 @@
           </div>
         </div>
         <div class="mb-3  p-3 ">
-        <button :disabled="!isValidDate" type="submit" class="btn btn-primary">
-          Spieltag {{ editing ? 'ändern' : 'speichern' }}
-        </button>
+          <button :disabled="!isValidDate" type="submit" class="btn btn-primary">
+            Spieltag {{ editing ? 'ändern' : 'speichern' }}
+          </button>
         </div>
       </form>
     </div>

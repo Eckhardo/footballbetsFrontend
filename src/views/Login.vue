@@ -33,7 +33,6 @@
 
 <script>
 import AuthService from "@/service/auth/AuthService.js";
-import {mapActions} from 'pinia';
 import {useUmsInfoStore} from "@/stores/umsInfoStore.js";
 
 

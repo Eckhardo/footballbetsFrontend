@@ -1,10 +1,7 @@
 <!-- CreateNewCommunityWizard.vue -->
 <script setup>
-import {ref, computed, onMounted} from 'vue';
+import {computed, onMounted, ref} from 'vue';
 import {useRouter} from 'vue-router';
-
-const router = useRouter();
-
 import {storeToRefs} from "pinia";
 import {useUmsInfoStore} from "@/stores/umsInfoStore.js";
 import StepOneCommunity from './steps/StepOneCommunity.vue';
@@ -16,15 +13,14 @@ import LastStepConfirmation from './steps/LastStepConfirmation.vue';
 
 import {useError} from '@/composables/useError.js';
 import {saveMessage} from "@/util/errorMessages.js";
-
-const {setError} = useError();
-
 import CompDataService from "@/service/competition/CompDataService.js";
 import TipperDataService from "@/service/community/TipperDataService.js";
 import CommunityWizardDataService from "@/service/community/CommunityWizardDataService.js";
 import TippModusDataService from "../../../../service/tipps/TippModusDataService.js";
 
+const router = useRouter();
 
+const {setError} = useError();
 
 
 // Reactive states
@@ -107,18 +103,14 @@ const validateCurrentStep = () => {
     if (!formData.value.name) return ' Name is required.';
     if (formData.value.name.length < 5) return ' Name must be at least 5 characters.';
     if (!formData.value.description) return 'Description is required.';
-  }
-  else if (currentStepIndex.value === 1) {
+  } else if (currentStepIndex.value === 1) {
     if (!formData.value.competition) return 'Competition is required.';
-  }
-  else if (currentStepIndex.value === 2) {
+  } else if (currentStepIndex.value === 2) {
     if (!formData.value.tippers[1].length > 0) return 'Tipper is required.';
-  }
-  else if (currentStepIndex.value === 3) {
+  } else if (currentStepIndex.value === 3) {
     if (formData.value.selectedTippModus === null) return 'TippModus is required.';
-  }
-  else if (currentStepIndex.value === 3) {
-    if ( formData.value.selectedTippModi.length <0) return 'TippModus is required.';
+  } else if (currentStepIndex.value === 3) {
+    if (formData.value.selectedTippModi.length < 0) return 'TippModus is required.';
   }
 
   return null; // Null means no errors
@@ -144,7 +136,7 @@ const submitForm = async () => {
     compName: competition.name,
     tipperUserName,
     tipperIds,
-    tippModi:formData.value.selectedTippModi
+    tippModi: formData.value.selectedTippModi
   };
   console.log("commForm: ", JSON.stringify(submitForm));
   try {

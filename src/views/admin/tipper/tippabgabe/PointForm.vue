@@ -70,7 +70,7 @@
 
 </template>
 <script setup>
-import {defineEmits, defineProps, ref, toRef, defineModel} from 'vue';
+import {defineEmits, defineModel, defineProps, toRef} from 'vue';
 import {convertGermanDateToTimestamp} from "@/util/DateFromatter.js";
 // Define props using macro (no import needed)
 // Automatically handles prop and update emit
@@ -100,7 +100,7 @@ const currentTimestamp = toRef(props, 'timestampNow');
 // Initialize with a shallow copy
 
 const isDisabled = (match) => {
-  const gameTimeStamp= convertGermanDateToTimestamp(match.anpfiffdate);
+  const gameTimeStamp = convertGermanDateToTimestamp(match.anpfiffdate);
   return currentTimestamp.value > gameTimeStamp;
 }
 const changeMatchday = (newMatchday) => {

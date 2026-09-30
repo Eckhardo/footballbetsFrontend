@@ -15,7 +15,7 @@
 
 <script setup>
 import {storeToRefs} from "pinia";
-import { ref, onMounted} from 'vue';
+import {onMounted, ref} from 'vue';
 import {useError} from '@/composables/useError.js';
 import {saveMessage} from "@/util/errorMessages.js";
 import {useUmsInfoStore} from "@/stores/umsInfoStore.js";
@@ -30,7 +30,7 @@ const {setError} = useError();
 const umsInfoStore = useUmsInfoStore();
 const {loggedIn, path} = storeToRefs(umsInfoStore);
 const loaded = ref(false);
-const tippModusReference=ref(null);
+const tippModusReference = ref(null);
 const formData = ref(
     {
       community: null,
@@ -58,7 +58,7 @@ const retrieveCommunity = async () => {
     const response = await CommunityDataService.getByName(path.value);
     if (response.status === 200) {
       formData.value.community = response.data;
-       }
+    }
   } catch (e) {
     console.error(e);
     setError(saveMessage(e));
@@ -69,7 +69,7 @@ const handleSave = async (payload) => {
 
   if (!payload.name) {
     handleError('Name is required');
-    formData.value.isVisible=true;
+    formData.value.isVisible = true;
     return;
   }
 
@@ -110,7 +110,7 @@ const retrieveTippModi = async () => {
       formData.value.tippModi = response.data;
       if (formData.value.tippModi.length > 0) {
         formData.value.tippModusType = formData.value.tippModi[0].type;
-       tippModusReference.value = formData.value.tippModi[0];
+        tippModusReference.value = formData.value.tippModi[0];
       }
       loaded.value = true;
     }
@@ -119,7 +119,6 @@ const retrieveTippModi = async () => {
     setError(saveMessage(e));
   }
 }
-
 
 
 onMounted(async () => {

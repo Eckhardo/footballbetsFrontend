@@ -2,7 +2,7 @@
 
   <div class="card mb-4">
     <div class="card-header .bg-secondary  fs-5">
-    Tippgemeinschaft  {{ editing ? 'ändern' : 'hinzufügen' }}
+      Tippgemeinschaft {{ editing ? 'ändern' : 'hinzufügen' }}
     </div>
     <div class="card-body">
       <form @submit.prevent="handleSubmit">
@@ -21,7 +21,7 @@
 
         <div class="mb-3  p-3 ">
           <button type="submit" class="btn btn-primary">
-           Speichern
+            Speichern
           </button>
         </div>
       </form>
@@ -33,7 +33,7 @@
 <script setup>
 import {defineEmits, defineProps, ref, watch} from 'vue'
 // Define props using macro (no import needed)
-const props=defineProps({
+const props = defineProps({
   item: {
     type: Object,
     required: false
@@ -54,12 +54,11 @@ watch(
     () => props.item,
     (newItem) => {
       if (newItem) {
-        console.log(":new item",JSON.stringify(newItem));
+        console.log(":new item", JSON.stringify(newItem));
         // Tiefenkopie erstellen, um Referenzen zu trennen
         formData.value = {...newItem};
         editing.value = true;
-      }
-      else {
+      } else {
         console.log("newItem");
         editing.value = false;
       }

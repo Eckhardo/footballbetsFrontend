@@ -2,7 +2,8 @@
 
 <script setup>
 import {defineModel} from 'vue';
-const model = defineModel({ type: Object, required: true });
+
+const model = defineModel({type: Object, required: true});
 
 </script>
 
@@ -20,7 +21,7 @@ const model = defineModel({ type: Object, required: true });
       </thead>
       <tbody>
       <tr v-for="(item) in model.tippModi" :key="item.id">
-        <td>   <input
+        <td><input
             type="radio"
             name="table-selection"
             :value="item"
@@ -32,7 +33,8 @@ const model = defineModel({ type: Object, required: true });
       max-width: 50ch;
       word-wrap: break-word;
       word-break: break-all;
-      overflow-wrap: break-word;">{{ item.description }}</td>
+      overflow-wrap: break-word;">{{ item.description }}
+        </td>
       </tr>
       </tbody>
     </table>

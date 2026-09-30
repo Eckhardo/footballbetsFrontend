@@ -48,7 +48,8 @@ export default {
   },
 
   computed: {
-    ...mapState(useUmsInfoStore, ['umsInfo']) },
+    ...mapState(useUmsInfoStore, ['umsInfo'])
+  },
   mounted() {
     console.log("mounted: set compId from pinia to local writable id");
     this.selectedCompId = this.umsInfo.defaultCompetitionId;
@@ -71,7 +72,7 @@ export default {
       message: null,
       errorDetails: null, // Stores the full ProblemDetails object
       showAlert: false,// For validation errors (often in 'properties' or 'errors')
-      showMessage:false
+      showMessage: false
 
     };
   },
@@ -107,7 +108,7 @@ export default {
         const roundResponse = await CompRoundDataService.findByCompId(this.selectedCompId);
         this.compRounds = roundResponse.data;
 
-        for(const round of this.compRounds) {
+        for (const round of this.compRounds) {
           console.log(JSON.stringify(round));
         }
       } catch (error) {
@@ -122,7 +123,7 @@ export default {
       try {
         const roundResponse = await CompRoundDataService.findByCompId(this.selectedCompId);
         this.compRounds = roundResponse.data;
-        await  this.updateSelectedCompetition();
+        await this.updateSelectedCompetition();
       } catch (error) {
         console.error("ERROR round {}", error);
       }
@@ -138,7 +139,7 @@ export default {
         // Update compRound
         try {
           const updated = await CompRoundDataService.update(compRound.id, compRound);
-          if (updated.status===200) {
+          if (updated.status === 200) {
             this.message = "Änderungen wurden gespeichert."
             this.triggerMessage();
           }
@@ -154,7 +155,7 @@ export default {
 
           await this.updateSelectedCompetition();
           await this.retrieveRounds();
-          if (created.status===201) {
+          if (created.status === 201) {
             this.message = "Einträge wurden gespeichert."
             this.triggerMessage();
           }
@@ -194,7 +195,7 @@ export default {
     confirmDelete(compRound) {
       CompRoundDataService.delete(compRound.id)
           .then(response => {
-           this.retrieveRounds();
+            this.retrieveRounds();
           })
           .catch(e => {
             console.error(e);

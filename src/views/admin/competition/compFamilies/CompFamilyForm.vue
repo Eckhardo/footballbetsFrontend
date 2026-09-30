@@ -9,56 +9,58 @@
       <form @submit.prevent="handleSubmit">
         <div class="row g-4 mb-3">
           <div class="col-auto">
-          <label for="name" class="form-label  fw-bold">Name</label>
-          <input type="text" class="form-control  w-auto border border-3 " id="name" v-model.trim="form.name" required>
-        </div>
+            <label for="name" class="form-label  fw-bold">Name</label>
+            <input type="text" class="form-control  w-auto border border-3 " id="name" v-model.trim="form.name"
+                   required>
+          </div>
           <div class="col-auto">
-          <label for="description" class="form-label  fw-bold">Beschreibung</label>
-          <input type="text" class="form-control  w-auto border border-3 " id="description" v-model.trim="form.description" min="10">
-        </div>
+            <label for="description" class="form-label  fw-bold">Beschreibung</label>
+            <input type="text" class="form-control  w-auto border border-3 " id="description"
+                   v-model.trim="form.description" min="10">
+          </div>
         </div>
         <div class="row g-4">
           <div class="col-auto">
-          <label for="hasClubs" class="form-label  fw-bold ">hat Clubs</label>
-          <div class="form-check">
-            <input
-                class="form-check-input"
-                type="checkbox"
-                checked
-                id="hasClubs"
-                v-model="form.hasClubs"
-            />
+            <label for="hasClubs" class="form-label  fw-bold ">hat Clubs</label>
+            <div class="form-check">
+              <input
+                  class="form-check-input"
+                  type="checkbox"
+                  checked
+                  id="hasClubs"
+                  v-model="form.hasClubs"
+              />
+            </div>
           </div>
-        </div>
 
 
           <div class="col-auto">
-          <label for="hasLigaModus" class="form-label  fw-bold">spielt im Liga Modus</label>
-          <div class="form-check">
-            <input
-                class="form-check-input"
-                type="checkbox"
-                checked
-                id="hasLigaModus"
-                v-model="form.hasLigaModus"
-            />
+            <label for="hasLigaModus" class="form-label  fw-bold">spielt im Liga Modus</label>
+            <div class="form-check">
+              <input
+                  class="form-check-input"
+                  type="checkbox"
+                  checked
+                  id="hasLigaModus"
+                  v-model="form.hasLigaModus"
+              />
+            </div>
           </div>
-        </div>
           <div class="col-auto">
-          <label for="roundId" class="form-label  fw-bold">Wähle das Land:</label>
-          <!-- Use Bootstrap's form-select class for styling -->
-          <select id="roundId" class="form-select  w-auto border border-3 "
-                  @change="handleCountryChange" required >
-            <option v-for="country in countries" :value="country" :key="country">
-              {{ country }}
-            </option>
-          </select>
-        </div>
+            <label for="roundId" class="form-label  fw-bold">Wähle das Land:</label>
+            <!-- Use Bootstrap's form-select class for styling -->
+            <select id="roundId" class="form-select  w-auto border border-3 "
+                    @change="handleCountryChange" required>
+              <option v-for="country in countries" :value="country" :key="country">
+                {{ country }}
+              </option>
+            </select>
+          </div>
         </div>
         <div class="mb-3  p-3 ">
-        <button type="submit" class="btn btn-primary">
-         Sport Event {{ editing ? 'ändern' : 'speichern' }}
-        </button>
+          <button type="submit" class="btn btn-primary">
+            Sport Event {{ editing ? 'ändern' : 'speichern' }}
+          </button>
         </div>
       </form>
     </div>
@@ -81,7 +83,7 @@ export default {
         name: '',
         description: '',
         hasClubs: false,
-        country:null,
+        country: null,
         hasLigaModus: false
       },
 
@@ -117,7 +119,7 @@ export default {
 
     },
     resetForm() {
-      this.form = {id: null, name: '', description: '',hasClubs: false, hasLigaModus: false};
+      this.form = {id: null, name: '', description: '', hasClubs: false, hasLigaModus: false};
     },
   }
 };

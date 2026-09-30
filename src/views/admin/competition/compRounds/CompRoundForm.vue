@@ -35,17 +35,17 @@
         <div class="row g-4 mb-3">
 
           <div class="col-auto" v-if="! editing">
-          <div v-if="! editing">
-            <label for="compId" class="form-label fw-bold">Wähle den Wettbewerb:</label>
-            <!-- Use Bootstrap's form-select class for styling -->
-            <select id="compId" class="form-select   w-auto border border-3 " v-model="sharedComp"
-                    @change="handleCompChange">
-              <option v-for="competition in competitions" :value="competition" :key="competition.id">
-                {{ competition.name }}
-              </option>
-            </select>
+            <div v-if="! editing">
+              <label for="compId" class="form-label fw-bold">Wähle den Wettbewerb:</label>
+              <!-- Use Bootstrap's form-select class for styling -->
+              <select id="compId" class="form-select   w-auto border border-3 " v-model="sharedComp"
+                      @change="handleCompChange">
+                <option v-for="competition in competitions" :value="competition" :key="competition.id">
+                  {{ competition.name }}
+                </option>
+              </select>
+            </div>
           </div>
-        </div>
           <div class="col-auto">
             <label for="hasGroups" class="form-label fw-bold">hat Gruppen</label>
             <div class="form-check">
@@ -59,9 +59,9 @@
           </div>
         </div>
         <div class="mb-3  p-3 ">
-        <button type="submit" class="btn btn-primary">
-          Runde {{ editing ? 'ändern' : 'speichern' }}
-        </button>
+          <button type="submit" class="btn btn-primary">
+            Runde {{ editing ? 'ändern' : 'speichern' }}
+          </button>
         </div>
       </form>
     </div>
@@ -86,9 +86,9 @@ export default {
         name: '',
         roundNumber: '',
         hasGroups: false,
-        teamsSize:1,
-        matchdaysSize:1,
-        firstMatchday:1,
+        teamsSize: 1,
+        matchdaysSize: 1,
+        firstMatchday: 1,
         compName: "",
         compId: null
       },
@@ -122,7 +122,17 @@ export default {
       this.resetForm();
     },
     resetForm() {
-      this.form = {id: null, name: '', roundNumber: '', hasGroups: false, compId: null, compName: null, matchdaysSize: 1,teamsSize: 1, firstMatchday: 1};
+      this.form = {
+        id: null,
+        name: '',
+        roundNumber: '',
+        hasGroups: false,
+        compId: null,
+        compName: null,
+        matchdaysSize: 1,
+        teamsSize: 1,
+        firstMatchday: 1
+      };
     },
     handleCompChange(event) {
       console.log("handleCompChange: sharedComp", JSON.stringify(this.sharedComp));

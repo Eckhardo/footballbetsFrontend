@@ -2,7 +2,7 @@
 
   <div v-if="loggedIn && loaded" class="container mt-5">
     <!--  Form for Update -->
-    <TippConfigForm v-if="formData.isVisible"  v-bind:tippModi="formData.tippModi"
+    <TippConfigForm v-if="formData.isVisible" v-bind:tippModi="formData.tippModi"
                     v-bind:item="formData.editingItem" @save-item="handleSave"/>
     <!--  List for Read/Edit -->
     <TippConfigList v-if="! formData.isVisible" v-bind:items="formData.tippConfigs" @edit-item="handleEdit"/>
@@ -12,7 +12,7 @@
 
 <script setup>
 import {storeToRefs} from "pinia";
-import { ref, onMounted} from 'vue';
+import {onMounted, ref} from 'vue';
 import {useError} from '@/composables/useError.js';
 import {saveMessage} from "@/util/errorMessages.js";
 import {useUmsInfoStore} from "@/stores/umsInfoStore.js";
@@ -29,7 +29,7 @@ const {setMessage} = useMessage();
 const umsInfoStore = useUmsInfoStore();
 const {loggedIn, path} = storeToRefs(umsInfoStore);
 
-const loaded= ref(false);
+const loaded = ref(false);
 const formData = ref(
     {
       community: null,
@@ -37,7 +37,7 @@ const formData = ref(
       compMemb: null,
       editingItem: null,
       tippConfigs: [],
-      isVisible:false
+      isVisible: false
 
     }
 )
@@ -106,7 +106,6 @@ const retrieveTippConfigs = async () => {
 }
 
 
-
 const handleSave = async (payload) => {
   formData.value.isVisible = false;
   if (payload.id) {
@@ -122,11 +121,11 @@ const handleSave = async (payload) => {
     }
   }
 
- formData.value.editingItem = null;
+  formData.value.editingItem = null;
 }
 
 const handleEdit = (payload) => {
-   formData.value.editingItem = {...payload.item};
+  formData.value.editingItem = {...payload.item};
   formData.value.isVisible = payload.isVisible;
 }
 

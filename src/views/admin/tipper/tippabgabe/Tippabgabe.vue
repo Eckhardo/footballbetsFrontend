@@ -33,12 +33,11 @@ import ResultForm from "./ResultForm.vue";
 import PointForm from "./PointForm.vue";
 import TippModus from "./TippModus.vue";
 import TippConfigDataService from "@/service/tipps/TippConfigDataService.js";
-import {formatDateTime} from "@/util/DateFromatter.js";
 import {
-  assignTotoTippsForSave,
   assignTotoTippsForLoad,
-  retrieveCurrentMatchdayNumber,
-  retrieveCurrentDate
+  assignTotoTippsForSave,
+  retrieveCurrentDate,
+  retrieveCurrentMatchdayNumber
 } from "@/util/TippUtil.js";
 
 const umsInfoStore = useUmsInfoStore();
@@ -145,7 +144,7 @@ const fetchMatchesForMatchday = async () => {
   try {
 
     if (selectedMatchdayNumber.value === null) {
-     selectedMatchdayNumber.value= retrieveCurrentMatchdayNumber(formData.value.matchdays);
+      selectedMatchdayNumber.value = retrieveCurrentMatchdayNumber(formData.value.matchdays);
     }
     formData.value.currentMatchday = getMatchdayByNumber(selectedMatchdayNumber.value);
     formData.value.currentMatchdayId = formData.value.currentMatchday.id;
@@ -158,9 +157,9 @@ const fetchMatchesForMatchday = async () => {
       formData.value.loading = false;
     }
     const myResponse = await TippDataService.findTippRowsForCommunity(formData.value.currentMatchdayId, defaultCommunityId.value);
-  if (myResponse.status === 200) {
-    console.log(JSON.stringify(myResponse.data));
-  }
+    if (myResponse.status === 200) {
+      console.log(JSON.stringify(myResponse.data));
+    }
   } catch (err) {
     console.error(err);
     setError(saveMessage(err));

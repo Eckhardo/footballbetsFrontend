@@ -1,85 +1,83 @@
 <template>
 
-    <div class="datatable-container">
-      <!-- Status-Anzeigen -->
-      <div  class="mb-3  ">
-        <button type="button" class="btn btn-primary" @click="saveMatches">Tipps speichern</button>
-      </div>
-      <!-- Die Datentabelle -->
-      <table class="custom-table">
-        <thead>
-        <tr>
-          <th>Anpfiff</th>
-          <th>Heim</th>
-          <th>Gast</th>
-          <th>Ergebnis</th>
-          <th>HeimTipp</th>
-          <th>RemisTipp</th>
-          <th>GastTipp</th>
-          <th>Punkte</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-for="(match) in matches" :key="match.id">
-          <td>{{ match.anpfiffdate }}</td>
-          <td>{{ match.heimName }}</td>
-          <td>{{ match.gastName }}</td>
-          <td>{{ match.heimTore }}:{{ match.gastTore }}</td>
-          <td><input class="small-input border border-3 "
-              type="radio" :disabled=isDisabled(match)
-              :name="match.id"
-              :value=1
-              v-model="match.selectedToto"
-          /></td>
-          <td><input class="small-input  border border-3 "
-              type="radio"
-              :name="match.id"  :disabled=isDisabled(match)
-              :value=0
-              v-model="match.selectedToto"
-          /></td>
-          <td><input class="small-input  border border-3 "
-              type="radio"
-              :name="match.id" :disabled=isDisabled(match)
-              :value=2
-              v-model="match.selectedToto"
-          /></td>
-          <td>{{ match.winPoints }}</td>
-        </tr>
-        <tr v-if="matches.length === 0">
-          <td colspan="4" class="no-data">Keine Einträge gefunden.</td>
-        </tr>
+  <div class="datatable-container">
+    <!-- Status-Anzeigen -->
+    <div class="mb-3  ">
+      <button type="button" class="btn btn-primary" @click="saveMatches">Tipps speichern</button>
+    </div>
+    <!-- Die Datentabelle -->
+    <table class="custom-table">
+      <thead>
+      <tr>
+        <th>Anpfiff</th>
+        <th>Heim</th>
+        <th>Gast</th>
+        <th>Ergebnis</th>
+        <th>HeimTipp</th>
+        <th>RemisTipp</th>
+        <th>GastTipp</th>
+        <th>Punkte</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr v-for="(match) in matches" :key="match.id">
+        <td>{{ match.anpfiffdate }}</td>
+        <td>{{ match.heimName }}</td>
+        <td>{{ match.gastName }}</td>
+        <td>{{ match.heimTore }}:{{ match.gastTore }}</td>
+        <td><input class="small-input border border-3 "
+                   type="radio" :disabled=isDisabled(match)
+                   :name="match.id"
+                   :value=1
+                   v-model="match.selectedToto"
+        /></td>
+        <td><input class="small-input  border border-3 "
+                   type="radio"
+                   :name="match.id" :disabled=isDisabled(match)
+                   :value=0
+                   v-model="match.selectedToto"
+        /></td>
+        <td><input class="small-input  border border-3 "
+                   type="radio"
+                   :name="match.id" :disabled=isDisabled(match)
+                   :value=2
+                   v-model="match.selectedToto"
+        /></td>
+        <td>{{ match.winPoints }}</td>
+      </tr>
+      <tr v-if="matches.length === 0">
+        <td colspan="4" class="no-data">Keine Einträge gefunden.</td>
+      </tr>
 
-        </tbody>
+      </tbody>
 
-      </table>
-      <!-- Paginator / Steuerungselemente -->
-      <div class="paginator-controls">
-        <div class="pagination-buttons">
-          <button class="btn btn-primary" :disabled="currentMatchdayNumber === 1 "
-                  @click="changeMatchday(1)">&laquo; Erste
-          </button>
-          <button class="btn btn-primary" :disabled="currentMatchdayNumber === 1 "
-                  @click="changeMatchday(currentMatchdayNumber - 1)">&lsaquo; Zurück
-          </button>
-          <span class="page-info">
+    </table>
+    <!-- Paginator / Steuerungselemente -->
+    <div class="paginator-controls">
+      <div class="pagination-buttons">
+        <button class="btn btn-primary" :disabled="currentMatchdayNumber === 1 "
+                @click="changeMatchday(1)">&laquo; Erste
+        </button>
+        <button class="btn btn-primary" :disabled="currentMatchdayNumber === 1 "
+                @click="changeMatchday(currentMatchdayNumber - 1)">&lsaquo; Zurück
+        </button>
+        <span class="page-info">
           Spieltag <strong>{{ currentMatchdayNumber }}</strong> von <strong>{{ matchdays.length }}</strong>
           ({{ matchdays.length }} Einträge gesamt)
         </span>
-          <button class="btn btn-primary" :disabled="currentMatchdayNumber === matchdays.length"
-                  @click="changeMatchday(currentMatchdayNumber + 1)">Weiter &rsaquo;
-          </button>
-          <button class="btn btn-primary" :disabled="currentMatchdayNumber === matchdays.length  "
-                  @click="changeMatchday(matchdays.length)">Letzte &raquo;
-          </button>
-        </div>
+        <button class="btn btn-primary" :disabled="currentMatchdayNumber === matchdays.length"
+                @click="changeMatchday(currentMatchdayNumber + 1)">Weiter &rsaquo;
+        </button>
+        <button class="btn btn-primary" :disabled="currentMatchdayNumber === matchdays.length  "
+                @click="changeMatchday(matchdays.length)">Letzte &raquo;
+        </button>
       </div>
     </div>
+  </div>
 
 </template>
 <script setup>
-import {defineEmits, defineProps, ref, toRef, defineModel} from 'vue';
-import {saveMessage} from "@/util/errorMessages.js";
-import TippModusDataService from "../../../../service/tipps/TippModusDataService.js";
+import {defineEmits, defineModel, defineProps, toRef} from 'vue';
 import {convertGermanDateToTimestamp} from "../../../../util/DateFromatter.js";
 // Define props using macro (no import needed)
 // Automatically handles prop and update emit
@@ -113,7 +111,7 @@ const currentTimestamp = toRef(props, 'timestampNow');
 // Initialize with a shallow copy
 
 const isDisabled = (match) => {
-  const gameTimeStamp= convertGermanDateToTimestamp(match.anpfiffdate);
+  const gameTimeStamp = convertGermanDateToTimestamp(match.anpfiffdate);
   return currentTimestamp.value > gameTimeStamp;
 }
 
@@ -134,6 +132,7 @@ const saveMatches = () => {
 .small-input {
   width: 100px;
 }
+
 .datatable-container {
   font-family: sans-serif;
   margin: 20px auto;

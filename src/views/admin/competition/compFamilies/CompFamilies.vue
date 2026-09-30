@@ -6,7 +6,8 @@
                v-bind:error-message="errorMessage"
                v-bind:error-details="errorDetails"/>
     <!-- Competition Family Form for Create/Update -->
-    <CompFamilyForm v-if="isVisible" v-bind:current-comp-family="editingCompFamily" v-bind:countries="countries" @save-compFamily="saveCompFamily"/>
+    <CompFamilyForm v-if="isVisible" v-bind:current-comp-family="editingCompFamily" v-bind:countries="countries"
+                    @save-compFamily="saveCompFamily"/>
 
     <!-- CompFamily List for Read/Delete/Edit -->
     <CompFamilyList v-if="! isVisible" v-bind:comp-families="compFamilies" @create-compFamily="createCompFamily"
@@ -48,12 +49,12 @@ export default {
       compFamilies: [],
       editingCompFamily: null,
       isVisible: false,
-      errorMessage:null,
+      errorMessage: null,
       errorDetails: null, // Stores the full ProblemDetails object
       message: null,
       showAlert: false,// For validation errors (often in 'properties' or 'errors')
-      showMessage:false,
-      countries:["GERMANY", "ENGLAND", "ITALY", "SPAIN"],
+      showMessage: false,
+      countries: ["GERMANY", "ENGLAND", "ITALY", "SPAIN"],
     };
   },
   methods: {
@@ -96,9 +97,9 @@ export default {
           } catch (error) {
             console.info("ERROR save fam ");
             const data = saveMessage(error);
-            this.errorMessage=data.errorMessage;
-            this.errorDetails =data.errorDetails;
-            if (this.errorMessage){
+            this.errorMessage = data.errorMessage;
+            this.errorDetails = data.errorDetails;
+            if (this.errorMessage) {
               console.info("trigger alert ");
               this.triggerAlert();
 

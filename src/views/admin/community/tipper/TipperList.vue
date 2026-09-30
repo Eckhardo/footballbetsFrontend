@@ -63,7 +63,7 @@ const editItem = (item) => {
   })
 }
 const deleteItem = (item) => {
-  emit('delete-item', { item})
+  emit('delete-item', {item})
 }
 </script>
 

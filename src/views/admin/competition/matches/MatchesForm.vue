@@ -1,9 +1,8 @@
-
 <template>
 
   <div class="card mb-4">
     <div class="card-header .bg-secondary fs-5">
-    Spiele anlegen  für {{selectedRound.name}}
+      Spiele anlegen für {{ selectedRound.name }}
     </div>
 
     <div class="card-body">
@@ -40,7 +39,7 @@
           </div>
         </div>
         <div class="mb-3  p-3 ">
-          <button  type="submit" class="btn btn-primary">
+          <button type="submit" class="btn btn-primary">
             Spiele speichern
           </button>
         </div>
@@ -60,22 +59,22 @@ export default {
     compTeams: Array
   },
   data() {
-    return{
-      form:{
+    return {
+      form: {
         compRoundId: null,
         heimTeamId: null,
         gastTeamId: null,
       },
-      editing:false,
+      editing: false,
       sharedRound: this.selectedRound,
     }
 
   },
   methods: {
     handleSubmit() {
-        console.log("handleSubmit:: {}", JSON.stringify(this.form));
-        this.$emit('save-matches', {...this.form});
-        this.resetForm();
+      console.log("handleSubmit:: {}", JSON.stringify(this.form));
+      this.$emit('save-matches', {...this.form});
+      this.resetForm();
 
     },
     resetForm() {

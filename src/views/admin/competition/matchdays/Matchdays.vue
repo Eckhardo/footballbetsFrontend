@@ -12,9 +12,9 @@
 
     <!-- Matchdays Form for multipe create of matchdays -->
     <MatchdaysForm v-if="isVisible && multiCreate"
-                  v-bind:rounds="rounds"
-                  v-bind:selectedRound="selectedRound"
-                  @save-matchdays="saveMatchdays"/>
+                   v-bind:rounds="rounds"
+                   v-bind:selectedRound="selectedRound"
+                   @save-matchdays="saveMatchdays"/>
 
     <!-- Matchday Form for Create/Update -->
     <MatchdayForm v-if="isVisible && !multiCreate"
@@ -69,7 +69,7 @@ export default {
   },
   mounted() {
     this.selectedCompId = this.umsInfo.defaultCompetitionId;
-    console.log("compId::",this.selectedCompId);
+    console.log("compId::", this.selectedCompId);
     this.retrieveData();
   },
   data() {
@@ -78,7 +78,7 @@ export default {
       matchdays: [],
       editingMatchday: null,
       isVisible: false,
-      multiCreate:false,
+      multiCreate: false,
       selectedRound: null,
       selectedCompId: null,
       roundId: null,
@@ -86,7 +86,7 @@ export default {
       message: null,
       errorDetails: null, // Stores the full ProblemDetails object
       showAlert: false,// For validation errors (often in 'properties' or 'errors')
-      showMessage:false
+      showMessage: false
     };
   },
   methods: {
@@ -105,7 +105,7 @@ export default {
       try {
         const roundResponse = await CompRoundDataService.findByCompId(this.selectedCompId);
         this.rounds = roundResponse.data;
-        for(const round of this.rounds) {
+        for (const round of this.rounds) {
           console.log(JSON.stringify(round));
         }
 
@@ -113,7 +113,7 @@ export default {
           this.selectedRound = this.rounds[0];
           this.roundId = this.selectedRound.id;
         }
-        console.log("retrieve Matchdays for selected round:",JSON.stringify(this.selectedRound.id));
+        console.log("retrieve Matchdays for selected round:", JSON.stringify(this.selectedRound.id));
         const responseMatchday = await MatchdayDataService.getMatchdaysByRoundId(this.roundId);
         this.matchdays = responseMatchday.data;
       } catch (error) {
@@ -146,26 +146,26 @@ export default {
     async saveMatchdays(payload) {
       console.info("saveMatchdays::", JSON.stringify(payload));
       this.isVisible = false;
-        try {
-          const response = await MatchdayDataService.createBatch(payload);
-          if (response.status === 201) {
-            this.message = "Einträge wurden gespeichert."
-            this.triggerMessage();
-            await this.retrieveMatchdays();
-            await this.updateSelectedRound();
-          }
-        } catch (error) {
-          console.error("ERROR save competition");
-          const data = saveMessage(error);
-          this.errorMessage = data.errorMessage;
-          this.errorDetails = data.errorDetails;
-          this.message = data.message;
-          if (this.errorMessage) {
-            this.triggerAlert();
-          }
+      try {
+        const response = await MatchdayDataService.createBatch(payload);
+        if (response.status === 201) {
+          this.message = "Einträge wurden gespeichert."
+          this.triggerMessage();
+          await this.retrieveMatchdays();
+          await this.updateSelectedRound();
         }
+      } catch (error) {
+        console.error("ERROR save competition");
+        const data = saveMessage(error);
+        this.errorMessage = data.errorMessage;
+        this.errorDetails = data.errorDetails;
+        this.message = data.message;
+        if (this.errorMessage) {
+          this.triggerAlert();
+        }
+      }
 
-     this.multiCreate = false;
+      this.multiCreate = false;
     },
 
     async saveMatchday(matchday) {
@@ -210,14 +210,14 @@ export default {
       // Set the round to be edited in the form
       this.selectedRound = payload.selectedRound;
       this.isVisible = payload.isVisible;
-      this.multiCreate=true;
+      this.multiCreate = true;
     },
     createMatchday(payload) {
       console.log("creating matchday", JSON.stringify(payload));
       // Set the compFamily to be edited in the form
       this.editingMatchday = null;
       this.isVisible = payload.isVisible// Create a copy to prevent direct mutation
-      this.multiCreate=false
+      this.multiCreate = false
     },
     editMatchday(payload) {
       console.log("editing matchday", JSON.stringify(payload));

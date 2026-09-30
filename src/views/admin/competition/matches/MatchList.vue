@@ -1,11 +1,11 @@
 <template>
   <div class="card">
     <div class="card-header fw-bold">
-      Spiele des Spieltages {{selectedMatchday.spieltagNumber}} ( {{ selected.compRoundName }})
+      Spiele des Spieltages {{ selectedMatchday.spieltagNumber }} ( {{ selected.compRoundName }})
     </div>
     <div class="mb-3  p-3 border rounded">
       <div>
-        <label for="roundId" class="form-label fw-bold">Spieltag auswählen  </label>
+        <label for="roundId" class="form-label fw-bold">Spieltag auswählen </label>
         <!-- Use Bootstrap's form-select class for styling -->
         <form>
           <select id="roundId" class="form-select w-auto" v-model="selected" @change="handleMatchdayChange">
@@ -19,10 +19,10 @@
     <div class="card-body">
       <div class="row mb-3  p-1">
         <div class="col-auto">
-      <button class="btn btn-warning btn-sm me-2" @click="$emit('create-match',{
+          <button class="btn btn-warning btn-sm me-2" @click="$emit('create-match',{
               isVisible:true
             })">Neues Spiel anlegen
-      </button>
+          </button>
         </div>
         <div class="col-auto">
           <button class="btn btn-warning btn-sm me-2" @click="$emit('create-matches',{
@@ -36,13 +36,13 @@
         <thead>
         <tr>
           <th>Spieltag</th>
-          <th >Anpfiff</th>
-          <th >Heim</th>
-          <th >Gast</th>
-          <th >HeimTore</th>
-          <th >GastTore</th>
-          <th >stattgefunden</th>
-          <th >Aktionen</th>
+          <th>Anpfiff</th>
+          <th>Heim</th>
+          <th>Gast</th>
+          <th>HeimTore</th>
+          <th>GastTore</th>
+          <th>stattgefunden</th>
+          <th>Aktionen</th>
         </tr>
         </thead>
         <tbody>
@@ -82,7 +82,7 @@
 <script>
 export default {
   name: 'MatchList',
-  emits: ['select-matchday', 'create-match','create-matches', 'edit-match', 'delete-match'],
+  emits: ['select-matchday', 'create-match', 'create-matches', 'edit-match', 'delete-match'],
   props: {
     matchdays: {
       type: Array,

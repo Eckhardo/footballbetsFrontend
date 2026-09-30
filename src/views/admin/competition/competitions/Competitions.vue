@@ -70,7 +70,7 @@ export default {
       errorDetails: null,
       message: null,// Stores the full ProblemDetails object
       showAlert: false,// For validation errors (often in 'properties' or 'errors')
-      showMessage:false
+      showMessage: false
 
     };
   },

@@ -3,42 +3,42 @@
     <div class="mb-3 ">
       <button type="button" class="btn btn-primary" @click="saveMatches">Tipps speichern</button>
     </div>
-      <!-- Die Datentabelle -->
-      <table class="custom-table">
-        <thead>
-        <tr>
-          <th>Anpfiff</th>
-          <th>Heim</th>
-          <th>Gast</th>
-          <th>Ergebnis</th>
-          <th>HeimTipp</th>
-          <th>GastTipp</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-for="(match) in matches" :key="match.id">
-          <td>{{ match.anpfiffdate }}</td>
-          <td>{{ match.heimName }}</td>
-          <td>{{ match.gastName }}</td>
-          <td>{{ match.heimTore }}:{{ match.gastTore }}</td>
-          <td>
-            <input type="number" class="small-input form-control  border border-3 " id="totalPoints"
-                   :name="match.id"  :disabled=isDisabled(match)
-                   v-model="match.heimTipp" min="0" placeholder="0">
-          </td>
-          <td><input type="number" class="small-input  form-control   border border-3 " id="totalPoints"
-                     :name="match.id"   :disabled=isDisabled(match)
-                     v-model="match.gastTipp" min="0" placeholder="0">
-          </td>
-        </tr>
-        <tr v-if="matches.length === 0">
-          <td colspan="4" class="no-data">Keine Einträge gefunden.</td>
-        </tr>
+    <!-- Die Datentabelle -->
+    <table class="custom-table">
+      <thead>
+      <tr>
+        <th>Anpfiff</th>
+        <th>Heim</th>
+        <th>Gast</th>
+        <th>Ergebnis</th>
+        <th>HeimTipp</th>
+        <th>GastTipp</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr v-for="(match) in matches" :key="match.id">
+        <td>{{ match.anpfiffdate }}</td>
+        <td>{{ match.heimName }}</td>
+        <td>{{ match.gastName }}</td>
+        <td>{{ match.heimTore }}:{{ match.gastTore }}</td>
+        <td>
+          <input type="number" class="small-input form-control  border border-3 " id="totalPoints"
+                 :name="match.id" :disabled=isDisabled(match)
+                 v-model="match.heimTipp" min="0" placeholder="0">
+        </td>
+        <td><input type="number" class="small-input  form-control   border border-3 " id="totalPoints"
+                   :name="match.id" :disabled=isDisabled(match)
+                   v-model="match.gastTipp" min="0" placeholder="0">
+        </td>
+      </tr>
+      <tr v-if="matches.length === 0">
+        <td colspan="4" class="no-data">Keine Einträge gefunden.</td>
+      </tr>
 
-        </tbody>
+      </tbody>
 
-      </table>
-      <!-- Paginator / Steuerungselemente -->
+    </table>
+    <!-- Paginator / Steuerungselemente -->
 
     <!-- Paginator / Steuerungselemente -->
     <div class="paginator-controls">
@@ -65,9 +65,7 @@
 
 </template>
 <script setup>
-import {defineEmits, defineProps, ref, toRef, defineModel} from 'vue';
-import {saveMessage} from "@/util/errorMessages.js";
-import TippModusDataService from "../../../../service/tipps/TippModusDataService.js";
+import {defineEmits, defineModel, defineProps, toRef} from 'vue';
 import {convertGermanDateToTimestamp} from "../../../../util/DateFromatter.js";
 // Define props using macro (no import needed)
 // Automatically handles prop and update emit
@@ -100,7 +98,7 @@ const currentTimestamp = toRef(props, 'timestampNow');
 
 
 const isDisabled = (match) => {
-  const gameTimeStamp= convertGermanDateToTimestamp(match.anpfiffdate);
+  const gameTimeStamp = convertGermanDateToTimestamp(match.anpfiffdate);
   return currentTimestamp.value > gameTimeStamp;
 }
 const changeMatchday = (newMatchday) => {

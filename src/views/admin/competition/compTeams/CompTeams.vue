@@ -9,9 +9,12 @@
              v-bind:error-details="errorDetails"/>
 
   <div class="container mt-5">
-    <CompTeamForm v-if="compTeams.length>0 && isVisible" v-bind:comp-teams="compTeams" @update-compTeams="updateCompTeams"/>
+    <CompTeamForm v-if="compTeams.length>0 && isVisible" v-bind:comp-teams="compTeams"
+                  @update-compTeams="updateCompTeams"/>
     <!-- Team List for Read/Delete/Edit -->
-    <CompTeamList v-if="! isVisible && comp" v-bind:comp-teams="compTeams" v-bind:competition="comp" @create-compTeam="createCompTeam"     @delete-compTeam="deleteCompTeam"/>/>
+    <CompTeamList v-if="! isVisible && comp" v-bind:comp-teams="compTeams" v-bind:competition="comp"
+                  @create-compTeam="createCompTeam" @delete-compTeam="deleteCompTeam"/>
+    />
   </div>
 </template>
 
@@ -27,7 +30,6 @@ import {saveMessage} from "@/util/errorMessages.js";
 import ShowError from "@/components/admin/competition/ShowError.vue";
 import ShowMessage from "@/components/admin/competition/ShowMessage.vue";
 import MatchdayList from "../matchdays/MatchdayList.vue";
-import MatchdayDataService from "../../../../service/competition/MatchdayDataService.js";
 
 export default {
   name: 'CompTeams',
@@ -55,7 +57,7 @@ export default {
       message: null,
       errorDetails: null, // Stores the full ProblemDetails object
       showAlert: false,// For validation errors (often in 'properties' or 'errors')
-      showMessage:false
+      showMessage: false
     };
   },
   watch: {
@@ -102,10 +104,10 @@ export default {
       this.isVisible = false;
       try {
         const response = await CompTeamDataService.create(this.compTeams);
-      if (response.status===201) {
-        this.message = "Einträge wurden gespeichert."
-        this.triggerMessage();
-      }
+        if (response.status === 201) {
+          this.message = "Einträge wurden gespeichert."
+          this.triggerMessage();
+        }
 
       } catch (error) {
         console.error("ERROR save competition teams");

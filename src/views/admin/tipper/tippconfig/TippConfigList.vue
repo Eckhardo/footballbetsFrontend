@@ -1,4 +1,3 @@
-
 <template>
   <div class="bets-container">
     <div class="card-header">
@@ -25,7 +24,7 @@
           <td>
             <button class="btn btn-warning btn-sm me-2" @click="editItem(item)">Ändern
             </button>
-           </td>
+          </td>
         </tr>
         </tbody>
       </table>

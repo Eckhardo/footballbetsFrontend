@@ -3,7 +3,7 @@
     <CompFamilyItem v-if="compFamily" v-bind:compFamily="compFamily"/>
     <CompItem v-if="competition" v-bind:competition="competition"/>
     <CompRoundItem v-if="compRounds" v-bind:compRounds="compRounds" v-bind:compName="compName"/>
-    <MatchdayItem v-if="matchdays"  v-bind:matchdays="matchdays" />
+    <MatchdayItem v-if="matchdays" v-bind:matchdays="matchdays"/>
   </div>
   <div v-else class="container mt-5">
     Du bist nicht angemeldet....
@@ -70,14 +70,14 @@ export default {
         this.competition = responseComp.data;
         this.compName = this.competition.name;
       } catch (error) {
-        console.log("ERROR comp {}",error);
+        console.log("ERROR comp {}", error);
       }
 
       try {
         const responseRound = await CompRoundDataService.findByCompId(this.compId);
         this.compRounds = responseRound.data;
       } catch (error) {
-        console.log("ERROR round {}",error);
+        console.log("ERROR round {}", error);
       }
 
       try {

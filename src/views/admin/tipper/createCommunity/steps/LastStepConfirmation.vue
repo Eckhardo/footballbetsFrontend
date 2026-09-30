@@ -20,12 +20,12 @@ const model = defineModel({type: Object, required: true});
         <tbody>
         <tr>
           <td> {{ model.name }}</td>
-          <td>{{  model.description }}</td>
-          <td>{{  model.competition.name}}</td>
+          <td>{{ model.description }}</td>
+          <td>{{ model.competition.name }}</td>
         </tr>
         </tbody>
       </table>
-        <p><strong>Teilnehmer:</strong> <span v-for="(item, index) in model.tippers[1]" :key="index">
+      <p><strong>Teilnehmer:</strong> <span v-for="(item, index) in model.tippers[1]" :key="index">
     {{ item.username }}<span v-if="index < model.tippers[1].length - 1">, </span></span></p>
       <table class="table table-striped table-hover">
         <thead>
@@ -48,6 +48,7 @@ const model = defineModel({type: Object, required: true});
           <td v-if="item.type==='PointTipp'">{{ item.totalPoints }}</td>
         </tr>
         </tbody>
-      </table> </div>
+      </table>
+    </div>
   </div>
 </template>

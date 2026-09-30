@@ -56,7 +56,7 @@
   </div>
 </template>
 <script setup>
-import {onMounted, defineProps, ref} from 'vue';
+import {defineProps, onMounted, ref} from 'vue';
 import {storeToRefs} from "pinia";
 import {useUmsInfoStore} from "@/stores/umsInfoStore.js";
 import CommunityDataService from "@/service/community/CommunityDataService.js";
@@ -118,10 +118,10 @@ const retrieveCommunity = async () => {
 const retrieveCommMemb = async () => {
   console.info("retrieveCommMemb()");
   try {
-    const response = await CommMembDataService.findByCommIdAndTipperId(formData.value.community.id,userId.value);
+    const response = await CommMembDataService.findByCommIdAndTipperId(formData.value.community.id, userId.value);
     if (response.status === 200) {
       formData.value.commMemb = response.data;
-      console.info(" formData.value.commMemb id::",formData.value.commMemb.id);
+      console.info(" formData.value.commMemb id::", formData.value.commMemb.id);
 
       umsInfoStore.setCommMembId(formData.value.commMemb.id);
 
@@ -172,7 +172,7 @@ const retrieveTippModi = async () => {
     const response = await TippModusDataService.getModiForCommunity(formData.value.community.id);
     if (response.status === 200) {
       formData.value.tippModi = response.data;
-      response.data.forEach(modus =>{
+      response.data.forEach(modus => {
         console.log(JSON.stringify(modus));
       })
       if (formData.value.tippModi.length > 0) {

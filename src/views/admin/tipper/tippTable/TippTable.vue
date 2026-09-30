@@ -1,7 +1,7 @@
 <template>
-  <TippTableList v-if="!loading"   v-bind:tipp-rows="tippTableRows"
-            v-bind:matchdays="matchdays" @change-matchday="changeMatchday"
-            v-bind:current-matchday-number="selectedMatchdayNumber"/>
+  <TippTableList v-if="!loading" v-bind:tipp-rows="tippTableRows"
+                 v-bind:matchdays="matchdays" @change-matchday="changeMatchday"
+                 v-bind:current-matchday-number="selectedMatchdayNumber"/>
 </template>
 <script setup>
 import {onMounted, ref} from 'vue';
@@ -13,7 +13,6 @@ import {saveMessage} from "@/util/errorMessages.js";
 import TippTableDataService from "@/service/tipps/TippTableDataService.js";
 import MatchdayDataService from "@/service/competition/MatchdayDataService.js";
 import {retrieveCurrentMatchdayNumber} from "@/util/TippUtil.js";
-import TotoForm from "../tippabgabe/TotoForm.vue";
 import TippTableList from "./TippTableList.vue";
 
 const umsInfoStore = useUmsInfoStore();
@@ -42,7 +41,7 @@ const fetchMatchdays = async () => {
       matchdays.value = matchdaysResponse.data;
       totalMatchdays.value = matchdays.value.length;
       if (matchdays.value.length > 0) {
-           await fetchTippTable();
+        await fetchTippTable();
       }
     }
   } catch (err) {
@@ -58,11 +57,11 @@ const fetchTippTable = async () => {
 
     if (selectedMatchdayNumber.value === null) {
       console.log("retrieveCurrentMatchdayNumber");
-      selectedMatchdayNumber.value= retrieveCurrentMatchdayNumber(matchdays.value);
+      selectedMatchdayNumber.value = retrieveCurrentMatchdayNumber(matchdays.value);
     }
     currentMatchday.value = getMatchdayByNumber(selectedMatchdayNumber.value);
     currentMatchdayId.value = currentMatchday.value.id;
-    const myResponse = await TippTableDataService.findTippTableForCommunity( defaultCommunityId.value,1,selectedMatchdayNumber.value);
+    const myResponse = await TippTableDataService.findTippTableForCommunity(defaultCommunityId.value, 1, selectedMatchdayNumber.value);
     if (myResponse.status === 200) {
       tippTableRows.value = myResponse.data;
     }
@@ -82,10 +81,10 @@ const getMatchdayByNumber = (numberToFind) => {
 
 // --- Event-Handler ---
 const changeMatchday = (newMatchday) => {
-  console.log("changeMatchday: ",newMatchday);
+  console.log("changeMatchday: ", newMatchday);
   if (newMatchday >= 1 && newMatchday <= totalMatchdays.value) {
     selectedMatchdayNumber.value = newMatchday;
-    console.log("selectedMatchdayNumber.value: ",selectedMatchdayNumber.value);
+    console.log("selectedMatchdayNumber.value: ", selectedMatchdayNumber.value);
     fetchTippTable();
   }
 };

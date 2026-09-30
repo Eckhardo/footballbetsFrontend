@@ -97,7 +97,7 @@ const {setError} = useError();
 // Paginierungs-Metriken
 
 const perPage = ref(9);
-let matchdays =[];
+let matchdays = [];
 
 // --- API-Aufruf (Axios) ---
 const fetchMatchdays = async () => {
@@ -110,7 +110,7 @@ const fetchMatchdays = async () => {
       matchdays = matchdaysResponse.data;
       console.log("...loaded matchdays", JSON.stringify(matchdaysResponse.data));
       if (matchdays.length > 0) {
-        currentMatchday.value =retrieveCurrentMatchday(matchdays);
+        currentMatchday.value = retrieveCurrentMatchday(matchdays);
 
         currentMatchdayId.value = currentMatchday.value.id;
         currentMatchdayNumber.value = currentMatchday.value.spieltagNumber;
@@ -132,7 +132,8 @@ const fetchMatchesForMatchday = async () => {
   try {
     currentMatchday.value = getMatchdayById(currentMatchdayId.value);
     currentMatchday.value = getMatchdayByNumber(currentMatchdayNumber.value);
-    if (currentMatchday.value) {}
+    if (currentMatchday.value) {
+    }
     currentMatchdayId.value = currentMatchday.value.id;
 
     const matchesResponse = await MatchDataService.getAllByMatchdayId(currentMatchdayId.value);
@@ -141,7 +142,7 @@ const fetchMatchesForMatchday = async () => {
     setMessage("Spieltag " + currentMatchdayNumber.value + " geladen");
   } catch (err) {
     console.error(err);
- //   setError(saveMessage(err));
+    //   setError(saveMessage(err));
   } finally {
     loading.value = false;
 
@@ -155,12 +156,12 @@ const changeMatchday = (newMatchday) => {
   }
 };
 const getMatchdayById = (idToFind) => {
-  console.log("selectedMatchday by id::",JSON.stringify(idToFind));
+  console.log("selectedMatchday by id::", JSON.stringify(idToFind));
   return matchdays.find(matchday => matchday.id === idToFind);
 }
 
 const getMatchdayByNumber = (numberToFind) => {
-  console.log("selectedMatchday by number::",JSON.stringify(numberToFind));
+  console.log("selectedMatchday by number::", JSON.stringify(numberToFind));
   return matchdays.find(matchday => matchday.spieltagNumber === numberToFind);
 }
 const handlePerPageChange = () => {

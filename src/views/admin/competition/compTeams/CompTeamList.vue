@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <div class="card-header">
-     Teams des Wettbewerbs {{competition.name}}
+      Teams des Wettbewerbs {{ competition.name }}
     </div>
     <div class="card-body">
       <button class="btn btn-warning btn-sm me-2" @click="$emit('create-compTeam',{
@@ -35,7 +35,8 @@
 
           </td>
           <td>{{ compTeam.compName }}</td>
-          <td>      <button class="btn btn-danger btn-sm" @click="$emit('delete-compTeam', compTeam)">Löschen</button>
+          <td>
+            <button class="btn btn-danger btn-sm" @click="$emit('delete-compTeam', compTeam)">Löschen</button>
           </td>
         </tr>
         </tbody>
@@ -47,11 +48,11 @@
 <script>
 export default {
   name: 'CompTeamList',
-  emits: ['create-compTeam','delete-compTeam'],
+  emits: ['create-compTeam', 'delete-compTeam'],
   props: {
-    competition:{
-      type:Object,
-      required:true
+    competition: {
+      type: Object,
+      required: true
     },
     compTeams: {
       type: Array,

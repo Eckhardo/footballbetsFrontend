@@ -48,7 +48,6 @@
 <script setup>
 import {defineEmits, defineProps, ref, toRef, watch} from 'vue'
 import {saveMessage} from "@/util/errorMessages.js";
-import TippModusDataService from "../../../../service/tipps/TippModusDataService.js";
 // Define props using macro (no import needed)
 const props = defineProps({
   item: {
