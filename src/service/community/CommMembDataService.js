@@ -5,7 +5,7 @@ class CommMembDataService {
         return http.get(`/commMembs/${commId}/tipper`);
     }
    getCommunities(username) {
-       return http.get(`/commMembs/${username}/communities`);
+       return http.get(`/communities/${username}/communities`);
     }
     findByCommIdAndTipperId(commId, tipperId) {
         return http.get(`/commMembs/${commId}/tipper/${tipperId}`);

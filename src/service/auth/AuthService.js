@@ -4,7 +4,8 @@ class AuthService {
 
 
     login(data) {
-        return http.post("/login", data);
+        console.log(data);
+        return http.post("/auth/login", data);
     }
 }
 
