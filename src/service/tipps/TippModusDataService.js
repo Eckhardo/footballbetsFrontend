@@ -5,7 +5,7 @@ class TippModusDataService {
         return http.get(`/tippModus/types`);
     }
     getModiForCommunity(communityId) {
-        return http.get(`/tippModus/community/${communityId}`);
+        return http.get(`/tippModus?communityId=${communityId}`);
     }
     create(modus) {
         modus.id=null;

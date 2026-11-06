@@ -24,5 +24,10 @@ class TipperDataService {
         console.log("findByName", username);
         return http.get(`/tipper/${username}`);
     }
+
+    getForCommunity(communityId) {
+        console.log("getTipper For Community", communityId);
+        return http.get(`/tipper?communityId=${communityId}`);
+    }
 }
 export default new TipperDataService();

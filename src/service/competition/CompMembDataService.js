@@ -19,7 +19,7 @@ class CompMembDataService {
         return http.get(`/compMembs/${commId}/competition`);
     }
     findOne(commId,compId) {
-        return http.get(`/compMembs/${commId}/compMemb/${compId}`);
+        return http.get(`/compMembs?communityId=${commId}&competitionId=${compId}`);
     }
 
 

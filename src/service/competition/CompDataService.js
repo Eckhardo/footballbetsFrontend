@@ -7,6 +7,7 @@ class CompetitionDataService {
     }
 
     get(id) {
+        console.log("Getting  Competition", id);
         return http.get(`/competitions/${id}`);
     }
 

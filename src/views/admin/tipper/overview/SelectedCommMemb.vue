@@ -63,8 +63,10 @@ import CommunityDataService from "@/service/community/CommunityDataService.js";
 import CommMembDataService from "@/service/community/CommMembDataService.js";
 import TippModusDataService from "@/service/tipps/TippModusDataService.js";
 import CompMembDataService from "@/service/competition/CompMembDataService.js";
+import CompDataService from "@/service/competition/CompDataService.js";
 import {useError} from '@/composables/useError.js';
 import {saveMessage} from "@/util/errorMessages.js";
+import TipperDataService from "../../../../service/community/TipperDataService.js";
 // 2. Access the current path string (e.g., "/Bulitipper")
 const umsInfoStore = useUmsInfoStore();
 const {loggedIn, userId} = storeToRefs(umsInfoStore);
@@ -141,7 +143,7 @@ const retrieveCompetition = async () => {
 
   console.info("retrieveCompetition()", formData.value.community.id);
   try {
-    const response = await CompMembDataService.findCurrentCompetition(formData.value.community.id);
+    const response = await CompDataService.get(formData.value.community.id);
     if (response.status === 200) {
       formData.value.competition = response.data;
       umsInfoStore.setCompId(formData.value.competition.id);
@@ -155,7 +157,7 @@ const retrieveCompetition = async () => {
 const retrieveTippers = async () => {
   console.info("retrieveTippers()", formData.value.community.id);
   try {
-    const response = await CommMembDataService.getTippers(formData.value.community.id);
+    const response = await TipperDataService.getForCommunity(formData.value.community.id);
     if (response.status === 200) {
       formData.value.tippers = response.data;
     }
