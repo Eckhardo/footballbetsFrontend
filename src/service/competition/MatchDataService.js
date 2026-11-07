@@ -23,8 +23,8 @@ class MatchDataService {
     }
 
     getAllByMatchdayId(matchdayId) {
-        console.log("Getting all matchdays by matchdayId", matchdayId);
-        return http.get(`/matchdays/${matchdayId}/matches`);
+        console.log("Getting all matches by matchdayId", matchdayId);
+        return http.get(`/matches?spieltagId=${matchdayId}`);
     }
 }
 

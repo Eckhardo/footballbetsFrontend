@@ -27,7 +27,7 @@ class CompRoundDataService {
 
     findByCompId(compId) {
         console.log("Getting rounds for compId", compId);
-        return http.get(`/competitions/${compId}/rounds`);
+        return http.get(`/rounds?competitionId=${compId}`);
     }
 
 

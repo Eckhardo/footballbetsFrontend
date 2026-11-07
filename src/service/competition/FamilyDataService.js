@@ -34,7 +34,7 @@ class FamilyDataService {
     }
     findFamilyByCompId(id) {
         console.log("family findByCompId", id);
-        return http.get(`/families/${id}/families`);
+        return http.get(`/families?competitionId=${id}`);
     }
 
 

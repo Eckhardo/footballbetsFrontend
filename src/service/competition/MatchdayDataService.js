@@ -26,7 +26,7 @@ class MatchdayDataService {
     }
     getMatchdaysByCompId(compId) {
         console.log("Getting all matchdays by compId", compId);
-        return http.get(`/competitions/${compId}/matchdays`);
+        return http.get(`/matchdays?competitionId=${compId}`);
     }
 
     getMatchdaysByRoundId(roundId) {

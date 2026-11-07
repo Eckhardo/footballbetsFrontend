@@ -51,7 +51,7 @@ export default {
     ...mapState(useUmsInfoStore, ['umsInfo'])
   },
   mounted() {
-    console.log("mounted: set compId from pinia to local writable id");
+    console.log("mounted: set compId from pinia to local writable id:", this.umsInfo.defaultCompetitionId);
     this.selectedCompId = this.umsInfo.defaultCompetitionId;
     this.retrieveData();
     this.retrieveRounds();
@@ -107,7 +107,7 @@ export default {
       try {
         const roundResponse = await CompRoundDataService.findByCompId(this.selectedCompId);
         this.compRounds = roundResponse.data;
-
+        console.log("retrieved rounds::", JSON.stringify(this.compRounds));
         for (const round of this.compRounds) {
           console.log(JSON.stringify(round));
         }

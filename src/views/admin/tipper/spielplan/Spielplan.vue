@@ -16,7 +16,7 @@
       </thead>
       <tbody>
       <tr v-for="(match) in matches" :key="match.id">
-        <td>{{ match.anpfiffdate }}</td>
+        <td>{{ match.anpfiffDate }}</td>
         <td>{{ match.heimTeamAcronym }}</td>
         <td>{{ match.gastTeamAcronym }}</td>
         <td>{{ match.heimTore }}:{{ match.gastTore }}</td>

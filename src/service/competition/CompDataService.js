@@ -34,7 +34,8 @@ class CompetitionDataService {
     }
 
    findAllCompsByFamId(familyId) {
-        return http.get(`/competitions/${familyId}/competitions`);
+       console.log("findAllCompsByFamId:", familyId);
+        return http.get(`/competitions?competitionFamilyId=${familyId}`);
     }
 }
 export default new CompetitionDataService();

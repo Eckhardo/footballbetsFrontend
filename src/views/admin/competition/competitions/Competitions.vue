@@ -50,7 +50,7 @@ export default {
     this.selectedCompId = this.umsInfo.defaultCompetitionId;
     this.retrieveData();
 
-    this.retrieveCompetitions();
+  //  this.retrieveCompetitions();
 
   },
 
@@ -92,9 +92,13 @@ export default {
 
         const famResponse = await FamilyDataService.getAll();
         this.families = famResponse.data;
+        console.log("this.families::",  JSON.stringify(this.families));
+        console.log("selectedCompId::",  this.selectedCompId);
         const familyResponse = await FamilyDataService.findFamilyByCompId(this.selectedCompId);
         this.selectedFamily = familyResponse.data;
+        console.log("selected.family::",  JSON.stringify(this.selectedFamily));
         this.selectedFamId = this.selectedFamily.id;
+        console.log("familyId::",  this.selectedFamId);
         const compResponse = await CompDataService.findAllCompsByFamId(this.selectedFamId);
         this.competitions = compResponse.data;
       } catch (error) {
