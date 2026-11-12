@@ -12,6 +12,35 @@ const formatDateTime = (date) => {
 return  formattedDate.replaceAll('.', '-').replace(', ', ' ');
 
 }
+/**
+ * Validates a German date-time string ("DD.MM.YYYY, HH:mm" or "DD.MM.YYYY HH:mm")
+ * @param {string} germanDateStr
+ * @returns {boolean}
+ */
+ const isValidGermanDateTime= (germanDateStr) => {
+    // Matches DD.MM.YYYY, HH:mm (comma is optional)
+    console.log("check date::", germanDateStr);
+    const regex = /^(\d{2})\.(\d{2})\.(\d{4}),?\s(\d{2}):(\d{2})$/;
+    const match = germanDateStr.match(regex);
+    console.log("is valid?");
+    if (!match) return false;
+
+    const [, day, month, year, hour, minute] = match.map(Number);
+
+    // Check basic time bounds
+    if (hour > 23 || minute > 59 || month < 1 || month > 12 || day < 1) {
+        return false;
+    }
+
+    // Verify exact calendar date (e.g. rejects Feb 30)
+    const date = new Date(year, month - 1, day, hour, minute);
+    return (
+        date.getFullYear() === year &&
+        date.getMonth() === month - 1 &&
+        date.getDate() === day
+    );
+}
+
 const validateDateTime = (dateString) => {
 
         const regex = /^(\d{2})-(\d{2})-(\d{4}) (\d{2}):(\d{2})$/;
@@ -69,4 +98,4 @@ const convertGermanDateToTimestamp=(germnaDate) => {
   return  new Date(isoFormat).getTime();
 
 }
-export  {formatDateTime,validateDateTime,formatGermanDate,convertGermanDateToTimestamp} ;
+export  {formatDateTime,validateDateTime,formatGermanDate,isValidGermanDateTime, convertGermanDateToTimestamp} ;

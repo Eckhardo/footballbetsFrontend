@@ -44,7 +44,7 @@
 
 <script>
 
-import {formatDateTime, validateDateTime} from "@/util/DateFromatter.js";
+import {formatDateTime, formatGermanDate, isValidGermanDateTime, validateDateTime} from "@/util/DateFromatter.js";
 
 
 export default {
@@ -61,7 +61,7 @@ export default {
       form: {
         id: null,
         spieltagNumber: '',
-        startDate: formatDateTime(new Date()),
+        startDate: formatGermanDate(new Date()),
         compRoundName: "",
         compRoundId: null
       },
@@ -76,8 +76,9 @@ export default {
     currentMatchday: {
       handler(newMatchday) {
         if (newMatchday) {
-          console.log("new matchday", newMatchday);
+          console.log("new matchday");
           this.form = {...newMatchday};
+          this.form.startDate = formatGermanDate(newMatchday.startDate);
           this.editing = true;
           this.isValidDate = true;
         } else {
@@ -100,7 +101,7 @@ export default {
         this.$emit('save-matchday', {...this.form});
         this.resetForm();
       } else {
-        console.log(validateDateTime("error:", this.form.startDate));
+        console.log("error:", this.form.startDate);
       }
     },
     resetForm() {
@@ -123,9 +124,9 @@ export default {
       // Clear previous errors/status
       this.dateError = null;
       this.isValidDate = false;
-
-      if (validateDateTime(this.form.startDate) === false) {
-        this.dateError = 'Datum muss dem Format dd-MM-yyyy HH:mm entsprechen.';
+      console.log("validateDate");
+      if (!isValidGermanDateTime(this.form.startDate)) {
+        this.dateError = 'Datum muss dem Format dd-MM-yyyy HH:mm:ss entsprechen.';
         this.isValidDate = false;
 
       } else {

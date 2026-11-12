@@ -30,7 +30,8 @@ class MatchdayDataService {
     }
 
     getMatchdaysByRoundId(roundId) {
-        return http.get(`/rounds/${roundId}/matchdays`);
+        console.log("Getting all matchdays by roundId", roundId);
+        return http.get(`/matchdays?competitionRoundId=${roundId}`);
     }e
 }
 export default new MatchdayDataService();

@@ -45,7 +45,7 @@
         <tbody>
         <tr v-for="(matchday) in matchdays" :key="matchday.id">
           <td>{{ matchday.spieltagNumber }}</td>
-          <td>{{ matchday.startDate }}</td>
+          <td>{{formatGermanDate( matchday.startDate) }}</td>
           <td>{{ matchday.compRoundName }}</td>
           <td>
             <button class="btn btn-warning btn-sm me-2" @click="$emit('edit-matchday',{
@@ -94,6 +94,7 @@ export default {
 
   },
   methods: {
+    formatGermanDate,
     convertDate(matchdayDate) {
       return formatGermanDate(matchdayDate);
     },
