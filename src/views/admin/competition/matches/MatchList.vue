@@ -47,8 +47,8 @@
         </thead>
         <tbody>
         <tr v-for="(match) in matches" :key="match.id">
-          <td>{{ match.spieltagNumber }}</td>
-          <td>{{ match.anpfiffdate }}</td>
+          <td>{{ selectedMatchday.spieltagNumber }}</td>
+          <td>{{ formatGermanDate(match.anpfiffDate) }}</td>
           <td>{{ match.heimTeamAcronym }}</td>
           <td>{{ match.gastTeamAcronym }}</td>
           <td>{{ match.heimTore }}</td>
@@ -80,6 +80,8 @@
 </template>
 
 <script>
+import {formatGermanDate} from "../../../../util/DateFromatter.js";
+
 export default {
   name: 'MatchList',
   emits: ['select-matchday', 'create-match', 'create-matches', 'edit-match', 'delete-match'],
@@ -109,6 +111,7 @@ export default {
 
   },
   methods: {
+    formatGermanDate,
 
 
     handleMatchdayChange(event) {

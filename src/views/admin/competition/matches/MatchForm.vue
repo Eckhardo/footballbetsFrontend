@@ -12,7 +12,7 @@
           <div class="col-auto">
             <label for="theDate" class="form-label fw-bold">Anpfiff Datum</label>
             <input type="text" class="form-control  w-auto border border-3 " id="theDate"
-                   v-model="form.anpfiffdate" @change="validateDate" required>
+                   v-model="form.anpfiffDate" @change="validateDate" required>
             <p v-if="dateError" style="color: red;">
               {{ dateError }}
             </p>
@@ -86,7 +86,13 @@
 
 <script>
 
-import {formatDateTime, validateDateTime} from "@/util/DateFromatter.js";
+import {
+  formatDateTime,
+  formatGermanDate,
+  isValidGermanDateTime,
+  toJavaLocalDateTime,
+  validateDateTime
+} from "@/util/DateFromatter.js";
 
 
 export default {
@@ -104,7 +110,7 @@ export default {
       form: {
         id: null,
         spielNumber: '',
-        anpfiffdate: formatDateTime(new Date()),
+        startDate: formatGermanDate(new Date()),
         spieltagNumber: null,
         spieltagId: null,
         heimTore: null,
@@ -128,6 +134,8 @@ export default {
         if (newMatch) {
           console.log("new match", JSON.stringify(newMatch));
           this.form = {...newMatch};
+          this.form.anpfiffDate = this.form.anpfiffDate == null ? formatGermanDate((formatDateTime(new Date()))) : formatGermanDate(newMatch.anpfiffDate);
+
           this.editing = true;
           this.isValidDate = true;
         } else {
@@ -145,15 +153,12 @@ export default {
   methods: {
     handleSubmit() {
 
-      if (validateDateTime(this.form.anpfiffdate.trim()) === true) {
-        this.form.spieltagId = this.selectedMatchday.id;
-        this.form.spieltagNumber = this.selectedMatchday.spieltagNumber;
-        console.log("handleSubmit:: {}", JSON.stringify(this.form));
-        this.$emit('save-match', {...this.form});
-        this.resetForm();
-      } else {
-        console.log(validateDateTime("error:", this.form.anpfiffdate));
-      }
+      this.form.anpfiffDate= toJavaLocalDateTime(this.form.anpfiffDate.trim())
+      this.form.spieltagId = this.selectedMatchday.id;
+      this.form.spieltagNumber = this.selectedMatchday.spieltagNumber;
+      console.log("handleSubmit:: {}", JSON.stringify(this.form));
+      this.$emit('save-match', {...this.form});
+      this.resetForm();
     },
     resetForm() {
       this.form = {
@@ -161,7 +166,7 @@ export default {
         spielNumber: '',
         spieltagNumber: null,
         spieltagId: null,
-        anpfiffdate: formatDateTime(new Date()),
+        anpfiffDate: formatGermanDate((formatDateTime(new Date()))),
         heimTore: null,
         gastTore: null,
         stattgefunden: false,
@@ -188,8 +193,8 @@ export default {
       this.dateError = null;
       this.isValidDate = false;
 
-      if (validateDateTime(this.form.anpfiffdate) === false) {
-        this.dateError = 'Datum muss dem Format dd-MM-yyyy HH:mm entsprechen.';
+      if (!isValidGermanDateTime(this.form.anpfiffDate)) {
+        this.dateError = 'Datum muss dem Format dd.MM.yyyy HH:mm entsprechen.';
         this.isValidDate = false;
 
       } else {
@@ -198,7 +203,8 @@ export default {
       }
     }
   }
-};
+}
+;
 </script>
 <style scoped>
 </style>

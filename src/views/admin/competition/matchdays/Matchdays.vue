@@ -170,6 +170,7 @@ export default {
 
     async saveMatchday(matchday) {
       this.isVisible = false;
+      console.log("matchday::", JSON.stringify(matchday));
 
       if (matchday.id) {
         try {

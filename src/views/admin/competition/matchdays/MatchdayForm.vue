@@ -44,7 +44,11 @@
 
 <script>
 
-import {formatDateTime, formatGermanDate, isValidGermanDateTime, validateDateTime} from "@/util/DateFromatter.js";
+import {
+  formatDateTime,
+  formatGermanDate,
+  isValidGermanDateTime, toJavaLocalDateTime
+} from "@/util/DateFromatter.js";
 
 
 export default {
@@ -62,8 +66,7 @@ export default {
         id: null,
         spieltagNumber: '',
         startDate: formatGermanDate(new Date()),
-        compRoundName: "",
-        compRoundId: null
+        competitionRoundId: null
       },
 
       sharedRound: this.selectedRound,
@@ -78,7 +81,7 @@ export default {
         if (newMatchday) {
           console.log("new matchday");
           this.form = {...newMatchday};
-          this.form.startDate = formatGermanDate(newMatchday.startDate);
+          this.form.startDate = this.form.startDate==null? formatGermanDate((formatDateTime(new Date()))): formatGermanDate(newMatchday.startDate);
           this.editing = true;
           this.isValidDate = true;
         } else {
@@ -94,21 +97,17 @@ export default {
   methods: {
     handleSubmit() {
       console.log("handleSubmit");
-      this.form.compRoundId = this.sharedRound.id;
-      this.form.compRoundName = this.sharedRound.name;
-      if (validateDateTime(this.form.startDate.trim()) === true) {
+      this.form.startDate = toJavaLocalDateTime(this.form.startDate.trim());
+      console.log("handleSubmit:emit", this.form.startDate);
+      this.$emit('save-matchday', {...this.form});
+      this.resetForm();
 
-        this.$emit('save-matchday', {...this.form});
-        this.resetForm();
-      } else {
-        console.log("error:", this.form.startDate);
-      }
     },
     resetForm() {
       this.form = {
         id: null,
         spieltagNumber: '',
-        startDate: formatDateTime(new Date()),
+        startDate: formatGermanDate((formatDateTime(new Date()))),
         compRoundId: null,
         compRoundName: null,
       };
@@ -117,8 +116,7 @@ export default {
     },
     handleRoundChange() {
       console.log("sharedRound", JSON.stringify(this.sharedRound));
-      this.form.compRoundId = this.sharedRound.id;
-      this.form.compRoundName = this.sharedRound.name;
+      this.form.competitionRoundId = this.sharedRound.id;
     },
     validateDate() {
       // Clear previous errors/status

@@ -29,7 +29,7 @@ class TeamDataService {
     }
 
     findAllForComp(compId) {
-        return http.get(`/compTeams/${compId}`);
+        return http.get(`/compTeams?competitionId=${compId}`);
     }
 
     findAllRegAndUnregForComp(compId) {

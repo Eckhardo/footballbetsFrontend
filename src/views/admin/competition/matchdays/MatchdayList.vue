@@ -46,7 +46,7 @@
         <tr v-for="(matchday) in matchdays" :key="matchday.id">
           <td>{{ matchday.spieltagNumber }}</td>
           <td>{{formatGermanDate( matchday.startDate) }}</td>
-          <td>{{ matchday.compRoundName }}</td>
+          <td>{{ selectedRound.name }}</td>
           <td>
             <button class="btn btn-warning btn-sm me-2" @click="$emit('edit-matchday',{
               matchday:matchday,
