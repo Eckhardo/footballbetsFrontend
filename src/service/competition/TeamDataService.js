@@ -1,17 +1,14 @@
 import http from "@/service/http-common.js";
 
 class TeamDataService {
-    getAll() {
-        console.log("Getting all teams");
-        return http.get("/teams");
-    }
+
     getAllForClubs() {
         console.log("Getting all teams");
-        return http.get("/teams/clubs");
+        return http.get("/teams?hasClubs=true");
     }
     getAllForNations() {
-        console.log("Getting all teams");
-        return http.get("/teams/nations");
+        console.log("Getting all nation teams");
+        return http.get("/teams?hasClubs=false");
     }
     get(id) {
         return http.get(`/teams/${id}`);

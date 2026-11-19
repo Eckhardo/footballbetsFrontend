@@ -87,7 +87,7 @@ export default {
         id: null,
         name: '',
         acronym: '',
-        isClub: false
+        hasClub: false
       };
 
     },
