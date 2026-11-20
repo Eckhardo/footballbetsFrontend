@@ -19,7 +19,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr v-for="(compTeam) in compTeams[1]" :key="compTeam.id">
+        <tr v-for="(compTeam) in compTeams[0]" :key="compTeam.id">
 
           <td>{{ compTeam.teamAcronym }}</td>
           <td>

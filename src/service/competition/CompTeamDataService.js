@@ -24,20 +24,12 @@ class TeamDataService {
         return http.delete(`/compTeam/${id}`);
     }
 
-    deleteAll(ids) {
-        return http.delete(`/compTeams${ids}`);
-    }
-
     findAllForComp(compId) {
         return http.get(`/compTeams?competitionId=${compId}`);
     }
 
     findAllRegAndUnregForComp(compId) {
         return http.get(`/compTeams/${compId}/teams`);
-    }
-    findByName(name) {
-
-        return http.get(`/teams?name=${name}`);
     }
 }
 
